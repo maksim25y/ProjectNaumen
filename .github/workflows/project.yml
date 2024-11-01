@@ -47,7 +47,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn -pl project -am checkstyle:check
+      - run: mvn checkstyle:check
 
   integration-test:
     name: Integration Tests
@@ -61,4 +61,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn -pl project -am verify -Dskip.unit.tests=true
+      - run: mvn verify -Dskip.unit.tests=true
