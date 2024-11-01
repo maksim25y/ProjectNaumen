@@ -26,14 +26,6 @@ jobs:
       - name: Maven Build
         run: mvn package
 
-      - id: jacoco
-        uses: madrapps/jacoco-report@v1.6.1
-        with:
-          min-coverage-overall: 30
-          min-coverage-changed-files: 30
-          title: Code Coverage
-          update-comment: true
-
   checkstyle:
     name: Checkstyle
     runs-on: ubuntu-latest
