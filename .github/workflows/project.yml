@@ -1,0 +1,64 @@
+name: Project Build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/project.yml
+      - /**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    permissions:
+      packages: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Maven Build
+        run: mvn -pl project -am package
+
+      - id: jacoco
+        uses: madrapps/jacoco-report@v1.6.1
+        if: ( github.event_name != 'workflow_dispatch' )
+        with:
+          min-coverage-overall: 30
+          min-coverage-changed-files: 30
+          title: Code Coverage
+          update-comment: true
+
+  checkstyle:
+    name: Checkstyle
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - run: mvn -pl project -am checkstyle:check
+
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - run: mvn -pl project -am verify -Dskip.unit.tests=true
