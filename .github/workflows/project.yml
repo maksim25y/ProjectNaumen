@@ -24,7 +24,7 @@ jobs:
           cache: maven
 
       - name: Maven Build
-        run: mvn -pl project -am package
+        run: mvn package
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
