@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.mudan.services.MyUserDetailsService;
+import ru.mudan.services.auth.MyUserDetailsService;
 
 @Component
 @RequiredArgsConstructor

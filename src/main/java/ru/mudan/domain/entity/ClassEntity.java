@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -23,6 +25,8 @@ public class ClassEntity {
     private Integer number;
     @Column(name = "description")
     private String description;
+    @OneToMany
+    private List<Subject> subjects;
 
     public ClassEntity(Character letter, Integer number, String description) {
         this.letter = letter;

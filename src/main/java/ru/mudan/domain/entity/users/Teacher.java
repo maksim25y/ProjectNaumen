@@ -3,12 +3,15 @@ package ru.mudan.domain.entity.users;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.entity.users.enums.Role;
 
 @Getter
@@ -32,6 +35,8 @@ public class Teacher implements UserDetails {
     private String email;
     @Column(name = "hashed_password")
     private String hashedPassword;
+    @OneToMany(mappedBy = "teacher")
+    private List<Subject> subjects;
 
     public Teacher(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;

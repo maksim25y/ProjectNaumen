@@ -1,10 +1,10 @@
-package ru.mudan.controller;
+package ru.mudan.controller.classes;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.mudan.dto.ClassDTO;
+import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.services.classes.ClassService;
 
 @Controller

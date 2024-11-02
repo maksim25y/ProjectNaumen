@@ -1,4 +1,4 @@
-package ru.mudan.dto;
+package ru.mudan.dto.classes;
 
 import lombok.Builder;
 

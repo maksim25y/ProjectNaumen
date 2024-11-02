@@ -1,4 +1,4 @@
-package ru.mudan.services;
+package ru.mudan.services.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

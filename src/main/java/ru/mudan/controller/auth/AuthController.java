@@ -1,9 +1,9 @@
-package ru.mudan.controller;
+package ru.mudan.controller.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.mudan.dto.RegisterUserDTO;
+import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.services.users.RegistrationService;
 
 @Controller

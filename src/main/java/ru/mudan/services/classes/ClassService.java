@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.repositories.ClassRepository;
-import ru.mudan.dto.ClassDTO;
+import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.exceptions.ClassAlreadyExistsException;
 import ru.mudan.services.CrudService;
 

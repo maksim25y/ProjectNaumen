@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.*;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
-import ru.mudan.dto.RegisterUserDTO;
+import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.exceptions.UserAlreadyExistsException;
 
 @Service
