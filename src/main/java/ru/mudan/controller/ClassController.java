@@ -9,9 +9,11 @@ import ru.mudan.services.classes.ClassService;
 
 @Controller
 @RequestMapping("/classes")
+@SuppressWarnings("MemberName")
 @RequiredArgsConstructor
 public class ClassController {
 
+    private final String REDIRECT_CLASSES_ALL = "redirect:/classes/all";
     private final ClassService classService;
 
     @GetMapping("/all")
@@ -34,7 +36,7 @@ public class ClassController {
     @PostMapping("/add")
     public String createClass(ClassDTO classDTO) {
         classService.save(classDTO);
-        return "redirect:/classes/all";
+        return REDIRECT_CLASSES_ALL;
     }
 
     @GetMapping("/{id}/edit")
@@ -52,6 +54,6 @@ public class ClassController {
     @DeleteMapping("/{id}")
     public String deleteClass(@PathVariable Long id) {
         classService.deleteById(id);
-        return "redirect:/classes/all";
+        return REDIRECT_CLASSES_ALL;
     }
 }

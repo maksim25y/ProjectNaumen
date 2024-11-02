@@ -11,8 +11,12 @@ import ru.mudan.exceptions.ClassAlreadyExistsException;
 import ru.mudan.services.CrudService;
 
 @Service
+@SuppressWarnings("MemberName")
 @RequiredArgsConstructor
 public class ClassService implements CrudService<ClassDTO> {
+
+    private final String CLASS_ALREADY_EXIST = "Class already exists";
+    private final String CLASS_NOT_FOUND = "Class not found";
 
     private final ClassRepository classRepository;
 
@@ -31,7 +35,9 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public ClassDTO findById(Long id) {
-        var foundClass = classRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Class not found"));
+        var foundClass = classRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+
         return ClassDTO
                 .builder()
                 .id(foundClass.getId())
@@ -56,7 +62,7 @@ public class ClassService implements CrudService<ClassDTO> {
     @Override
     public void update(ClassDTO request, Long id) {
         var foundClass = classRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Class not found"));
+                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
 
         checkClassAlreadyExistsAndIdNotEquals(request, id);
 
@@ -70,8 +76,8 @@ public class ClassService implements CrudService<ClassDTO> {
     public void deleteById(Long id) {
         var foundClass = classRepository.findById(id);
 
-        if(foundClass.isEmpty()) {
-            throw new NoSuchElementException("Class not found");
+        if (foundClass.isEmpty()) {
+            throw new NoSuchElementException(CLASS_NOT_FOUND);
         }
 
         classRepository.deleteById(id);
@@ -83,8 +89,8 @@ public class ClassService implements CrudService<ClassDTO> {
                         request.letter(),
                         request.number());
 
-        if(foundClass.isPresent()) {
-            throw new ClassAlreadyExistsException("Class already exists");
+        if (foundClass.isPresent()) {
+            throw new ClassAlreadyExistsException(CLASS_ALREADY_EXIST);
         }
     }
 
@@ -94,9 +100,9 @@ public class ClassService implements CrudService<ClassDTO> {
                         request.letter(),
                         request.number());
 
-        if(foundClass.isPresent()) {
-            if(!foundClass.get().getId().equals(id)) {
-                throw new ClassAlreadyExistsException("Class already exists");
+        if (foundClass.isPresent()) {
+            if (!foundClass.get().getId().equals(id)) {
+                throw new ClassAlreadyExistsException(CLASS_ALREADY_EXIST);
             }
         }
     }
