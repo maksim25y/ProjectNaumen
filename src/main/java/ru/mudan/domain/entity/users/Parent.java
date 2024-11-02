@@ -1,10 +1,15 @@
 package ru.mudan.domain.entity.users;
 
 import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import ru.mudan.domain.entity.users.enums.Role;
 
 @Getter
 @Setter
@@ -12,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name = "parents")
-public class Parent {
+public class Parent implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,11 +30,28 @@ public class Parent {
     private String patronymic;
     @Column(name = "email")
     private String email;
+    @Column(name = "hashed_password")
+    private String hashedPassword;
 
     public Parent(String firstname, String lastname, String patronymic, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;
         this.email = email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList((GrantedAuthority) Role.ROLE_PARENT::toString);
+    }
+
+    @Override
+    public String getPassword() {
+        return hashedPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }
