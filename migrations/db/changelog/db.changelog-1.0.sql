@@ -130,4 +130,10 @@ INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_TEACHER','teche
 INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_PARENT','parent@mail.ru');
 INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_STUDENT','student@mail.ru');
 
+-- Test classes
+INSERT INTO classes (letter, number, description) VALUES ('Д', 10, 'Introduction to Computer Science');
+INSERT INTO classes (letter, number, description) VALUES ('Г', 2, 'Calculus II');
+INSERT INTO classes (letter, number, description) VALUES ('В', 1, 'Composition I');
+INSERT INTO classes (letter, number, description) VALUES ('Б', 6, 'US History II');
+INSERT INTO classes (letter, number) VALUES ('А', 4);
 

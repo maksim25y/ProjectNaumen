@@ -39,22 +39,22 @@ public class AuthController {
 
     @GetMapping("/admin")
     public String registerAdmin() {
-        return "registration-admin";
+        return "registration/registration-admin";
     }
 
     @GetMapping("/teacher")
     public String registerTeacher() {
-        return "registration-teacher";
+        return "registration/registration-teacher";
     }
 
     @GetMapping("/parent")
     public String registerParent() {
-        return "registration-parent";
+        return "registration/registration-parent";
     }
 
     @GetMapping("/student")
     public String registerStudent() {
-        return "registration-student";
+        return "registration/registration-student";
     }
 
 }
