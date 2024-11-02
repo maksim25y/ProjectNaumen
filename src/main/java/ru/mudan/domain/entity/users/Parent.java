@@ -20,7 +20,7 @@ import ru.mudan.domain.entity.users.enums.Role;
 public class Parent implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "firstname")
     private String firstname;

@@ -1,6 +1,7 @@
 package ru.mudan.services.users;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.Admin;
 import ru.mudan.domain.entity.users.AppUser;
@@ -18,6 +19,7 @@ public class RegistrationService {
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void registerAdmin(RegisterUserDTO registerUserDTO) {
         checkUserExists(registerUserDTO.email());
@@ -26,7 +28,8 @@ public class RegistrationService {
                 registerUserDTO.firstname(),
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
-                registerUserDTO.email());
+                registerUserDTO.email(),
+                encodePassword(registerUserDTO.password()));
 
         var savedAdmin = adminRepository.save(admin);
 
@@ -44,5 +47,9 @@ public class RegistrationService {
         if (user.isPresent()) {
             throw new UserAlreadyExistsException("User already exists");
         }
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }
