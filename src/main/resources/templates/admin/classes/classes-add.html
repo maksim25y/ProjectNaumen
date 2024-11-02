@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Классы в школе</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Создание класса</title>
 </head>
 <body>
 <div class="container">
@@ -13,7 +14,7 @@
             <span class="fs-4">Электронный дневник</span>
         </a>
         <ul class="nav nav-pills me-2">
-            <li class="nav-item"><a href="/registration/admin" class="nav-link active" aria-current="page">Регистрация</a></li>
+            <li class="nav-item"><a href="/registration/admin" class="nav-link active" aria-current="page">Регистрация админа</a></li>
         </ul>
         <form th:action="@{/logout}" th:method="POST" class="me-2">
             <button class="btn btn-outline-danger active" type="submit">
@@ -22,27 +23,21 @@
         </form>
     </header>
     <hr>
-    <ul class="list-group mb-2">
-        <li class="list-group-item" aria-current="true">
-            Номер класса: <span class="text-danger" th:text="${cl.number()}"></span>
-        </li>
-        <li class="list-group-item" aria-current="true">
-            Буква класса: <span class="text-danger" th:text="${cl.letter()}"></span>
-        </li>
-        <li class="list-group-item" aria-current="true">
-            Описание класса: <span class="text-danger" th:text="${cl.description != null} ? ${cl.description} : 'Нет описания'"></span>
-        </li>
-    </ul>
-    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/classes/{id}(id=${cl.id})}">
-        <button class="btn btn-outline-danger active" type="submit">
-            Удалить класс
-        </button>
+    <form class="mb-2 w-25" th:method="POST" th:action="@{/classes/add}">
+        <div class="form-group mb-2">
+            <label for="number">Введите номер класса: </label>
+            <input class="form-control" type="number" name="number" id="number" max="11" min="1" required/>
+        </div>
+        <div class="form-group mb-2">
+            <label for="letter">Введите номер класса: </label>
+            <input class="form-control" type="text" name="letter" id="letter" required/>
+        </div>
+        <div class="form-group mb-2">
+            <label for="letter">Введите описание класса: </label>
+            <input class="form-control" type="text" name="description" id="description"/>
+        </div>
+        <input type="submit" class="btn btn-success" value="Создать"/>
     </form>
-    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2">
-        <button class="btn btn-outline-warning active" type="submit">
-            Редактировать информацию о классе
-        </button>
-    </a>
     <hr>
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
