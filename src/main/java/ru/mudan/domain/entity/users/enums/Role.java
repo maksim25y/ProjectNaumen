@@ -1,4 +1,4 @@
-package ru.mudan.entity.users.enums;
+package ru.mudan.domain.entity.users.enums;
 
 public enum Role {
     ROLE_PARENT,

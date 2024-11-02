@@ -1,11 +1,11 @@
-package ru.mudan.entity.users;
+package ru.mudan.domain.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.mudan.entity.users.enums.Role;
+import ru.mudan.domain.entity.users.enums.Role;
 
 @Getter
 @Setter

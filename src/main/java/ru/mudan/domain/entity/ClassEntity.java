@@ -1,4 +1,4 @@
-package ru.mudan.entity;
+package ru.mudan.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
