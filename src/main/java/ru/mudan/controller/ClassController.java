@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.mudan.services.classes.ClassService;
 
@@ -16,7 +17,13 @@ public class ClassController {
 
     @GetMapping("/all")
     public String all(Model model) {
-        model.addAttribute("classes", classService.findAllClasses());
-        return "admin/classes-index";
+        model.addAttribute("classes", classService.findAll());
+        return "admin/classes/classes-index";
+    }
+
+    @GetMapping("/{id}")
+    public String getClassInfo(Model model, @PathVariable Long id) {
+        model.addAttribute("cl", classService.findById(id));
+        return "admin/classes/classes-show";
     }
 }
