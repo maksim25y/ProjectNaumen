@@ -23,11 +23,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(matcherRegistry ->
 
                         matcherRegistry
-                                .requestMatchers("/registration", "/login").permitAll()
-                                .requestMatchers("/admin").hasRole("ADMIN")
-                                .requestMatchers("/teacher").hasRole("TEACHER")
-                                .requestMatchers("/student").hasRole("STUDENT")
-                                .requestMatchers("/parent").hasRole("PARENT")
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/registration/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);

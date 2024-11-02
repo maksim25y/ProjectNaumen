@@ -15,7 +15,7 @@ import lombok.ToString;
 public class ClassEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "letter")
     private Character letter;

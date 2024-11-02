@@ -3,10 +3,7 @@ package ru.mudan.domain.entity.users;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.domain.entity.users.enums.Role;
@@ -20,7 +17,7 @@ import ru.mudan.domain.entity.users.enums.Role;
 public class Admin implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "firstname")
     private String firstname;
@@ -33,11 +30,12 @@ public class Admin implements UserDetails {
     @Column(name = "hashed_password")
     private String hashedPassword;
 
-    public Admin(String firstname, String lastname, String patronymic, String email) {
+    public Admin(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;
         this.email = email;
+        this.hashedPassword = hashedPassword;
     }
 
     @Override

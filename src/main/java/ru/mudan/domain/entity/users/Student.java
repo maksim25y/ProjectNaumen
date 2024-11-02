@@ -20,7 +20,7 @@ import ru.mudan.domain.entity.users.enums.Role;
 public class Student implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "firstname")
     private String firstname;
@@ -36,11 +36,12 @@ public class Student implements UserDetails {
     @JoinColumn(name = "parent_id")
     private Parent parent;
 
-    public Student(String firstname, String lastname, String patronymic, String email) {
+    public Student(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;
         this.email = email;
+        this.hashedPassword = hashedPassword;
     }
 
     @Override
