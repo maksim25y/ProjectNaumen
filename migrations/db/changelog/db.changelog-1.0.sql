@@ -135,5 +135,5 @@ INSERT INTO classes (letter, number, description) VALUES ('Д', 10, 'Introductio
 INSERT INTO classes (letter, number, description) VALUES ('Г', 2, 'Calculus II');
 INSERT INTO classes (letter, number, description) VALUES ('В', 1, 'Composition I');
 INSERT INTO classes (letter, number, description) VALUES ('Б', 6, 'US History II');
-INSERT INTO classes (letter, number, description) VALUES ('А', 4, 'General Biology');
+INSERT INTO classes (letter, number) VALUES ('А', 4);
 

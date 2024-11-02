@@ -1,11 +1,10 @@
 package ru.mudan.services.classes;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.dto.ClassResponseDTO;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

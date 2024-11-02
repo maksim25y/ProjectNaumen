@@ -22,15 +22,6 @@
         </form>
     </header>
     <hr>
-<!--    <h2>Классы в школе:</h2>-->
-<!--    <ul th:each="cl: ${classes}" class="list-group mb-2">-->
-<!--        <li class="list-group-item" aria-current="true">-->
-<!--            <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"-->
-<!--               th:text="${cl.number() +'' +cl.letter()}" th:href="@{/classes/{id}(id=${cl.id()})}"></a>-->
-<!--            <hr>-->
-<!--            <p  th:text="${cl.description()}"></p>-->
-<!--        </li>-->
-<!--    </ul>-->
     <table class="table">
         <thead>
         <tr>
@@ -44,7 +35,7 @@
                 <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                    th:text="${cl.number() +'' +cl.letter()}" th:href="@{/classes/{id}(id=${cl.id()})}"></a>
             </td>
-            <td class="table-light" th:text="${cl.description}"></td>
+            <td class="table-light" th:text="${cl.description != null} ? ${cl.description} : 'Нет описания'"></td>
         </tr>
         </tbody>
     </table>
