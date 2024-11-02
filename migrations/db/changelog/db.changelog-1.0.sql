@@ -11,7 +11,9 @@ CREATE TABLE parents
     id        BIGSERIAL PRIMARY KEY,
     firstname VARCHAR NOT NULL,
     lastname  VARCHAR NOT NULL,
-    email     VARCHAR NOT NULL
+    email     VARCHAR NOT NULL,
+    patronymic VARCHAR NOT NULL,
+    hashed_password VARCHAR NOT NULL
 );
 -- Ready
 CREATE TABLE students
@@ -21,6 +23,7 @@ CREATE TABLE students
     lastname   VARCHAR(255),
     patronymic VARCHAR(255),
     email      varchar(255),
+    hashed_password VARCHAR NOT NULL,
     class_id   BIGINT,
     parent_id  BIGINT,
     FOREIGN KEY (class_id) REFERENCES classes (id) ON DELETE SET NULL,
@@ -32,7 +35,8 @@ CREATE TABLE teachers
     firstname  VARCHAR(255) NOT NULL,
     lastname   VARCHAR(255) NOT NULL,
     patronymic VARCHAR(255) NOT NULL,
-    email      VARCHAR      NOT NULL
+    email      VARCHAR      NOT NULL,
+    hashed_password VARCHAR NOT NULL
 );
 -- Ready
 CREATE TABLE subjects
@@ -96,8 +100,12 @@ CREATE TABLE admins
     id        BIGSERIAL PRIMARY KEY,
     firstname VARCHAR NOT NULL,
     lastname  VARCHAR NOT NULL,
-    email     VARCHAR NOT NULL
+    patronymic VARCHAR NOT NULL,
+    email     VARCHAR NOT NULL,
+    hashed_password VARCHAR NOT NULL
 );
+
+
 
 CREATE TABLE class_to_teacher
 (
@@ -107,5 +115,19 @@ CREATE TABLE class_to_teacher
     FOREIGN KEY (teacher_id) REFERENCES teachers (id) ON DELETE CASCADE
 );
 
+
+INSERT INTO admins(firstname, lastname, patronymic, email, hashed_password)
+VALUES ('asdds','sdsdsd','asdds','admin@mail.ru','$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+INSERT INTO teachers(firstname, lastname, patronymic, email, hashed_password)
+VALUES ('asdds','sdsdsd','asdds','techer@mail.ru','$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+INSERT INTO parents(firstname, lastname, patronymic, email, hashed_password)
+VALUES ('asdds','sdsdsd','asdds','parent@mail.ru','$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+INSERT INTO students(firstname, lastname, patronymic, email, hashed_password)
+VALUES ('asdds','sdsdsd','asdds','student@mail.ru','$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+
+INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_ADMIN','admin@mail.ru');
+INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_TEACHER','techer@mail.ru');
+INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_PARENT','parent@mail.ru');
+INSERT INTO app_users(user_id, role_name, email) VALUES (1,'ROLE_STUDENT','student@mail.ru');
 
 

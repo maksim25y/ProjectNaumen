@@ -20,16 +20,14 @@ public class AppUser {
     private Long id;
     @Column(name = "user_id")
     private Long userId;
-    @Column(name = "lastname")
-    private String lastname;
-    @Column(name = "role_name", columnDefinition = "VARCHAR")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_name")
     private Role roleName;
     @Column(name = "email")
     private String email;
 
-    public AppUser(Long userId, String lastname, Role roleName, String email) {
+    public AppUser(Long userId, Role roleName, String email) {
         this.userId = userId;
-        this.lastname = lastname;
         this.roleName = roleName;
         this.email = email;
     }

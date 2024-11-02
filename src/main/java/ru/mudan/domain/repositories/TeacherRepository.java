@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.mudan.domain.entity.users.Teacher;
 
 @Repository
-public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 }
