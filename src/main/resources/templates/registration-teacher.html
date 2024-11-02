@@ -5,7 +5,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Регистрация администратора</title>
+    <title>Регистрация учителя</title>
 </head>
 <body>
 <div class="container">
@@ -23,29 +23,29 @@
         </form>
     </header>
     <hr>
-    <form class="mb-2 w-25" th:method="POST" th:action="@{/registration/admin}">
+    <form class="mb-2 w-25" th:method="POST" th:action="@{/registration/teacher}">
         <div class="form-group mb-2">
-            <label for="firstname">Введите имя администратора: </label>
+            <label for="firstname">Введите имя учителя: </label>
             <input class="form-control" type="text" name="firstname" id="firstname" required/>
         </div>
         <div class="form-group mb-2">
             <div class="form-group mb-2">
-                <label for="lastname">Введите фамилию администратора: </label>
+                <label for="lastname">Введите фамилию учителя: </label>
                 <input class="form-control" type="text" name="lastname" id="lastname" required/>
             </div>
         </div>
         <div class="form-group mb-2">
             <div class="form-group mb-2">
-                <label for="patronymic">Введите отчество администратора: </label>
+                <label for="patronymic">Введите отчество учителя: </label>
                 <input class="form-control" type="text" name="patronymic" id="patronymic" required/>
             </div>
         </div>
         <div class="form-group mb-2">
-            <label for="email">Введите почтовый ящик администратора: </label>
+            <label for="email">Введите почтовый ящик учителя: </label>
             <input class="form-control" type="email" name="email" id="email" required/>
         </div>
         <div class="form-group mb-2">
-            <label for="password">Введите пароль администратора: </label>
+            <label for="password">Введите пароль учителя: </label>
             <input class="form-control" type="password" name="password" id="password" required/>
         </div>
         <input type="submit" class="btn btn-info" value="Регистрация"/>

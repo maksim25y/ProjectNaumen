@@ -19,9 +19,30 @@ public class AuthController {
         return "redirect:/registration/admin";
     }
 
+    @PostMapping("/teacher")
+    public String registerTeacher(RegisterUserDTO registerUserDTO) {
+        registrationService.registerTeacher(registerUserDTO);
+        return "redirect:/registration/teacher";
+    }
+
     @GetMapping("/admin")
     public String registerAdmin() {
         return "registration-admin";
+    }
+
+    @GetMapping("/teacher")
+    public String registerTeacher() {
+        return "registration-teacher";
+    }
+
+    @GetMapping("/parent")
+    public String registerParent() {
+        return "registration-parent";
+    }
+
+    @GetMapping("/student")
+    public String registerStudent() {
+        return "registration-student";
     }
 
 }

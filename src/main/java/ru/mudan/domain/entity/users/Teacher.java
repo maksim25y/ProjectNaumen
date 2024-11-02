@@ -33,11 +33,12 @@ public class Teacher implements UserDetails {
     @Column(name = "hashed_password")
     private String hashedPassword;
 
-    public Teacher(String firstname, String lastname, String patronymic, String email) {
+    public Teacher(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;
         this.email = email;
+        this.hashedPassword = hashedPassword;
     }
 
     @Override

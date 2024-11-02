@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.Admin;
 import ru.mudan.domain.entity.users.AppUser;
+import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.RegisterUserDTO;
@@ -37,6 +38,27 @@ public class RegistrationService {
                 savedAdmin.getId(),
                 Role.ROLE_ADMIN,
                 savedAdmin.getEmail()
+        );
+
+        appUserRepository.save(appUser);
+    }
+
+    public void registerTeacher(RegisterUserDTO registerUserDTO) {
+        checkUserExists(registerUserDTO.email());
+
+        var teacher = new Teacher(
+                registerUserDTO.firstname(),
+                registerUserDTO.lastname(),
+                registerUserDTO.patronymic(),
+                registerUserDTO.email(),
+                encodePassword(registerUserDTO.password()));
+
+        var savedTeacher = teacherRepository.save(teacher);
+
+        var appUser = new AppUser(
+                savedTeacher.getId(),
+                Role.ROLE_ADMIN,
+                savedTeacher.getEmail()
         );
 
         appUserRepository.save(appUser);
