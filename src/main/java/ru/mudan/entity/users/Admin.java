@@ -1,4 +1,4 @@
-package ru.mudan.entity;
+package ru.mudan.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "parents")
-public class Parent {
+@Table(name = "admins")
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +26,7 @@ public class Parent {
     @Column(name = "email")
     private String email;
 
-    public Parent(String firstname, String lastname, String patronymic, String email) {
+    public Admin(String firstname, String lastname, String patronymic, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;

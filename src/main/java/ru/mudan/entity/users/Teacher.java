@@ -1,4 +1,4 @@
-package ru.mudan.entity;
+package ru.mudan.entity.users;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "students")
-public class Student {
+@Table(name = "teachers")
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,11 +25,8 @@ public class Student {
     private String patronymic;
     @Column(name = "email")
     private String email;
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Parent parent;
 
-    public Student(String firstname, String lastname, String patronymic, String email) {
+    public Teacher(String firstname, String lastname, String patronymic, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;
