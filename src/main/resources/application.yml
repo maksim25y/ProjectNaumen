@@ -13,3 +13,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         enable_lazy_load_no_trans: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
