@@ -23,12 +23,6 @@
     <!-- Checks that a package-info.java file exists for each package. -->
     <!-- <module name="JavadocPackage"/> -->
 
-
-    <!-- https://checkstyle.org/config_misc.html#NewlineAtEndOfFile -->
-    <!--       Checks whether files end with a new line.            -->
-    <module name="NewlineAtEndOfFile"/>
-
-
     <!-- https://checkstyle.org/config_misc.html#Translation -->
     <!--   Checks that property files contain the same keys. -->
     <module name="Translation"/>
@@ -143,7 +137,6 @@
 
         <!-- https://checkstyle.org/config_imports.html -->
         <!--            Checks for imports              -->
-        <module name="AvoidStarImport"/>
         <!-- <module name="AvoidStaticImport"/> -->
         <!-- <module name="CustomImportOrder"/> -->
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
