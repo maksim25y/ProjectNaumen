@@ -25,6 +25,18 @@ public class AuthController {
         return "redirect:/registration/teacher";
     }
 
+    @PostMapping("/parent")
+    public String registerParent(RegisterUserDTO registerUserDTO) {
+        registrationService.registerParent(registerUserDTO);
+        return "redirect:/registration/parent";
+    }
+
+    @PostMapping("/student")
+    public String registerStudent(RegisterUserDTO registerUserDTO) {
+        registrationService.registerStudent(registerUserDTO);
+        return "redirect:/registration/student";
+    }
+
     @GetMapping("/admin")
     public String registerAdmin() {
         return "registration-admin";

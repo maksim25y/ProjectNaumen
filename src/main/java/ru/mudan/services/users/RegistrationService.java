@@ -3,9 +3,7 @@ package ru.mudan.services.users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.mudan.domain.entity.users.Admin;
-import ru.mudan.domain.entity.users.AppUser;
-import ru.mudan.domain.entity.users.Teacher;
+import ru.mudan.domain.entity.users.*;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.RegisterUserDTO;
@@ -59,6 +57,48 @@ public class RegistrationService {
                 savedTeacher.getId(),
                 Role.ROLE_ADMIN,
                 savedTeacher.getEmail()
+        );
+
+        appUserRepository.save(appUser);
+    }
+
+    public void registerParent(RegisterUserDTO registerUserDTO) {
+        checkUserExists(registerUserDTO.email());
+
+        var parent = new Parent(
+                registerUserDTO.firstname(),
+                registerUserDTO.lastname(),
+                registerUserDTO.patronymic(),
+                registerUserDTO.email(),
+                encodePassword(registerUserDTO.password()));
+
+        var savedParent = parentRepository.save(parent);
+
+        var appUser = new AppUser(
+                savedParent.getId(),
+                Role.ROLE_ADMIN,
+                savedParent.getEmail()
+        );
+
+        appUserRepository.save(appUser);
+    }
+
+    public void registerStudent(RegisterUserDTO registerUserDTO) {
+        checkUserExists(registerUserDTO.email());
+
+        var student = new Student(
+                registerUserDTO.firstname(),
+                registerUserDTO.lastname(),
+                registerUserDTO.patronymic(),
+                registerUserDTO.email(),
+                encodePassword(registerUserDTO.password()));
+
+        var savedStudent = studentRepository.save(student);
+
+        var appUser = new AppUser(
+                savedStudent.getId(),
+                Role.ROLE_ADMIN,
+                savedStudent.getEmail()
         );
 
         appUserRepository.save(appUser);
