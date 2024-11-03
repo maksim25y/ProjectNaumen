@@ -36,11 +36,11 @@
         <tr class="table-light" th:each="subject : ${subjects}">
             <td class="table-light">
                 <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                   th:text="${subject.name}" th:href="@{/subjects/{id}(id=${subject.id()})}"></a>
+                   th:text="${subject.name()}" th:href="@{/subjects/{id}(id=${subject.id()})}"></a>
             </td>
-            <td class="table-light" th:text="${subject.code}"></td>
-            <td class="table-light" th:text="${subject.type}"></td>
-            <td class="table-light" th:text="${subject.description}"></td>
+            <td class="table-light" th:text="${subject.code()}"></td>
+            <td class="table-light" th:text="${subject.type()}"></td>
+            <td class="table-light" th:text="${subject.description()}"></td>
         </tr>
         </tbody>
     </table>

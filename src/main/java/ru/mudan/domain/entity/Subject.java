@@ -33,9 +33,10 @@ public class Subject {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    public Subject(String name, String type, String description) {
+    public Subject(String name, String type, String code, String description) {
         this.name = name;
         this.type = type;
+        this.code = code;
         this.description = description;
     }
 }

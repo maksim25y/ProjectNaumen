@@ -24,7 +24,7 @@ public class SecurityConfig {
 
                         matcherRegistry
                                 .requestMatchers("/login").permitAll()
-                                .requestMatchers("/registration/**").hasRole("ADMIN")
+                                .requestMatchers("/registration/**", "/subjects/**", "classes/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);
