@@ -120,8 +120,6 @@ INSERT INTO teachers(firstname, lastname, patronymic, email, hashed_password)
 VALUES ('asdds', 'sdsdsd', 'asdds', 'techer@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
 INSERT INTO parents(firstname, lastname, patronymic, email, hashed_password)
 VALUES ('asdds', 'sdsdsd', 'asdds', 'parent@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
-INSERT INTO students(firstname, lastname, patronymic, email, hashed_password)
-VALUES ('asdds', 'sdsdsd', 'asdds', 'student@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
 
 INSERT INTO app_users(user_id, role_name, email)
 VALUES (1, 'ROLE_ADMIN', 'admin@mail.ru');
@@ -129,8 +127,6 @@ INSERT INTO app_users(user_id, role_name, email)
 VALUES (1, 'ROLE_TEACHER', 'techer@mail.ru');
 INSERT INTO app_users(user_id, role_name, email)
 VALUES (1, 'ROLE_PARENT', 'parent@mail.ru');
-INSERT INTO app_users(user_id, role_name, email)
-VALUES (1, 'ROLE_STUDENT', 'student@mail.ru');
 
 -- Test classes
 INSERT INTO classes (letter, number, description)
@@ -143,6 +139,11 @@ INSERT INTO classes (letter, number, description)
 VALUES ('Б', 6, 'US History II');
 INSERT INTO classes (letter, number)
 VALUES ('А', 4);
+
+INSERT INTO students(firstname, lastname, patronymic, email, hashed_password, class_id)
+VALUES ('asdds', 'sdsdsd', 'asdds', 'student@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe',1);
+INSERT INTO app_users(user_id, role_name, email)
+VALUES (1, 'ROLE_STUDENT', 'student@mail.ru');
 
 INSERT INTO subjects (name, type, code, description, class_id, teacher_id)
 VALUES ('Математика', 'Базовый', 'MATH6A', 'Введение в алгебру и геометрию', 1, 1),

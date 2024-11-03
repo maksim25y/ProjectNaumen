@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.mudan.domain.entity.users.Student;
 
 @Getter
 @Setter
@@ -24,8 +25,10 @@ public class ClassEntity {
     private Integer number;
     @Column(name = "description")
     private String description;
-    @OneToMany
+    @OneToMany(mappedBy = "classEntity")
     private List<Subject> subjects;
+    @OneToMany(mappedBy = "classEntity")
+    private List<Student> students;
 
     public ClassEntity(Character letter, Integer number, String description) {
         this.letter = letter;

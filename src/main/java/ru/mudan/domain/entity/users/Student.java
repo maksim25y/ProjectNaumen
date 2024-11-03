@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.entity.users.enums.Role;
 
 @Getter
@@ -35,6 +36,9 @@ public class Student implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Parent parent;
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private ClassEntity classEntity;
 
     public Student(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;

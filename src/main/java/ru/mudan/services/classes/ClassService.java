@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.dto.classes.ClassDTO;
+import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.exceptions.ClassAlreadyExistsException;
 import ru.mudan.services.CrudService;
 
@@ -81,6 +82,22 @@ public class ClassService implements CrudService<ClassDTO> {
         }
 
         classRepository.deleteById(id);
+    }
+
+    public List<StudentDTO> findAllStudentsForClass(ClassDTO request) {
+        var foundClass = classRepository.findById(request.id())
+                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+
+        return foundClass.getStudents()
+                .stream()
+                .map(st -> StudentDTO
+                        .builder()
+                        .firstname(st.getFirstname())
+                        .lastname(st.getLastname())
+                        .patronymic(st.getPatronymic())
+                        .email(st.getEmail())
+                        .build())
+                .toList();
     }
 
     private void checkClassAlreadyExists(ClassDTO request) {

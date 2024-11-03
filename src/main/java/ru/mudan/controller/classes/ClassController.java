@@ -17,14 +17,16 @@ public class ClassController {
     private final ClassService classService;
 
     @GetMapping("/all")
-    public String all(Model model) {
+    public String getAllClasses(Model model) {
         model.addAttribute("classes", classService.findAll());
         return "admin/classes/classes-index";
     }
 
     @GetMapping("/{id}")
     public String getClassInfo(Model model, @PathVariable Long id) {
+        var classDTO = classService.findById(id);
         model.addAttribute("cl", classService.findById(id));
+        model.addAttribute("students", classService.findAllStudentsForClass(classDTO));
         return "admin/classes/classes-show";
     }
 

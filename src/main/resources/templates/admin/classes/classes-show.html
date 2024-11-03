@@ -33,6 +33,27 @@
             Описание класса: <span class="text-danger" th:text="${cl.description != null} ? ${cl.description} : 'Нет описания'"></span>
         </li>
     </ul>
+    <hr>
+    <h3 th:text="${'Список учеников ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Адрес электроннй почты</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light" th:each="st : ${students}">
+            <td class="table-light" th:text="${st.lastname()}"></td>
+            <td class="table-light" th:text="${st.firstname()}"></td>
+            <td class="table-light" th:text="${st.patronymic()}"></td>
+            <td class="table-light" th:text="${st.email()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
     <form th:method="DELETE" class="me-2 mb-2" th:action="@{/classes/{id}(id=${cl.id})}">
         <button class="btn btn-outline-danger active" type="submit">
             Удалить класс
