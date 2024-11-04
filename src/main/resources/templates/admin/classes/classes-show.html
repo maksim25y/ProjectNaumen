@@ -49,6 +49,7 @@
             <th scope="col">Тип</th>
             <th scope="col">Код</th>
             <th scope="col">Описание</th>
+            <th scope="col">ДЗ</th>
         </tr>
         </thead>
         <tbody>
@@ -57,6 +58,10 @@
             <td class="table-light" th:text="${subject.type()}"></td>
             <td class="table-light" th:text="${subject.code()}"></td>
             <td class="table-light" th:text="${subject.description()}"></td>
+            <td class="table-light">
+                <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                   th:href="@{/homeworks/all/{classId}(classId=${cl.id()},subjectId=${subject.id()})}">ДЗ</a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -66,9 +71,14 @@
             Удалить класс
         </button>
     </form>
-    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2">
+    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2 mb-2">
         <button class="btn btn-outline-warning active" type="submit">
             Редактировать информацию о классе
+        </button>
+    </a>
+    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2">
+        <button class="btn btn-outline-warning active" type="submit">
+            Просмотреть ДЗ класса
         </button>
     </a>
     <hr>

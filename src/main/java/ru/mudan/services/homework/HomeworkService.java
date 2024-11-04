@@ -19,10 +19,10 @@ public class HomeworkService {
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
 
-    public List<HomeworkDTO> findAllByClassAndSubjectCode(Long classId, String subjectCode) {
+    public List<HomeworkDTO> findAllByClassAndSubject(Long classId, Long subjectId) {
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new NoSuchElementException("Class not found"));
-        var foundSubject = subjectsRepository.findByCode(subjectCode)
+        var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new NoSuchElementException("Subject not found"));
 
         var listOfHomework = homeworkRepository.findByClassEntityAndSubject(foundClass, foundSubject);
