@@ -13,7 +13,39 @@
             <span class="fs-4">Электронный дневник</span>
         </a>
         <ul class="nav nav-pills me-2">
-            <li class="nav-item"><a href="/registration/admin" class="nav-link active" aria-current="page">Регистрация</a></li>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Регистрация
+            </button>
+            <div class="btn-group">
+                <ul class="dropdown-menu">
+                    <li><a href="/registration/admin" class="dropdown-item">Регистрация аккаунта админа</a></li>
+                    <li><a href="/registration/teacher" class="dropdown-item">Регистрация аккаунта учителя</a></li>
+                    <li><a href="/registration/student" class="dropdown-item">Регистрация аккаунта школьника</a></li>
+                    <li><a href="/registration/parent" class="dropdown-item">Регистрация аккаунта родителя</a></li>
+                </ul>
+            </div>
+        </ul>
+        <ul class="nav nav-pills me-2">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Предметы
+            </button>
+            <div class="btn-group">
+                <ul class="dropdown-menu">
+                    <li><a href="/subjects/all" class="dropdown-item">Список всех предметов</a></li>
+                    <li><a href="/subjects/add" class="dropdown-item">Добавить предмет</a></li>
+                </ul>
+            </div>
+        </ul>
+        <ul class="nav nav-pills me-2">
+            <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Классы
+            </button>
+            <div class="btn-group">
+                <ul class="dropdown-menu">
+                    <li><a href="/classes/all" class="dropdown-item">Список всех классов</a></li>
+                    <li><a href="/classes/add" class="dropdown-item">Добавить класс</a></li>
+                </ul>
+            </div>
         </ul>
         <form th:action="@{/logout}" th:method="POST" class="me-2">
             <button class="btn btn-outline-danger active" type="submit">
