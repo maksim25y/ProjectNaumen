@@ -40,8 +40,15 @@
         <div class="form-check" th:each="student : ${students}">
                 <input class="form-check-input" type="checkbox" th:name="studentsIds" th:value="${student.id()}">
                 <label class="form-select mb-2"
-                       th:text="${student.lastname+' '+student.firstname()+' '+student.patronymic()+' '+student.email()}">
+                       th:text="${student.lastname()+' '+student.firstname()+' '+student.patronymic()+' '+student.email()}">
                 </label>
+        </div>
+        <h4>Добавить предметы классу:</h4>
+        <div class="form-check" th:each="subject : ${subjects}">
+            <input class="form-check-input" type="checkbox" th:name="subjectsIds" th:value="${subject.id()}">
+            <label class="form-select mb-2"
+                   th:text="${subject.name()+' '+subject.type()+' '+subject.code()}">
+            </label>
         </div>
 
         <input type="submit" class="btn btn-success" value="Создать класс"/>

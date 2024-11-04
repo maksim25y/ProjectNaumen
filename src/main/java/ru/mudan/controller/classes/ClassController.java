@@ -33,6 +33,7 @@ public class ClassController {
     @GetMapping("/add")
     public String createClass(Model model) {
         model.addAttribute("students", classService.findStudentsWithNotClass());
+        model.addAttribute("subjects", classService.findSubjectsWithNotClass());
         return "admin/classes/classes-add";
     }
 

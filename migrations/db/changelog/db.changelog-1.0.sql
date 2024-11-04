@@ -157,6 +157,8 @@ VALUES ('Математика', 'Базовый', 'MATH6A', 'Введение в
        ('Химия', 'Базовый', 'CHEM6A', 'Введение в химические принципы', 1, 1),
        ('Биология', 'Базовый', 'BIOL6A', 'Введение в науки о жизни', 1, 1),
        ('Английская литература', 'Факультативный', 'ENGL6A', 'Исследование классической литературы', 1, 1);
+INSERT INTO subjects (name, type, code, description, teacher_id)
+VALUES ('Математика', 'Базовый', 'MATH2A', 'Введение в алгебру и геометрию',1);
 
 
 -- INSERT INTO subjects (name, type, code, description, class_id, teacher_id)

@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.StudentRepository;
+import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.student.StudentDTO;
+import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.exceptions.ClassAlreadyExistsException;
 import ru.mudan.services.CrudService;
 
@@ -24,6 +26,7 @@ public class ClassService implements CrudService<ClassDTO> {
 
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
+    private final SubjectsRepository subjectsRepository;
 
     @Override
     public List<ClassDTO> findAll() {
@@ -70,6 +73,15 @@ public class ClassService implements CrudService<ClassDTO> {
                         var student = studentRepository.findById(id).get();
                         student.setClassEntity(savedClass);
                         studentRepository.save(student);
+                    });
+        }
+
+        if (request.subjectsIds() != null) {
+            request.subjectsIds()
+                    .forEach(id -> {
+                    var subject = subjectsRepository.findById(id).get();
+                    subject.setClassEntity(savedClass);
+                    subjectsRepository.save(subject);
                     });
         }
     }
@@ -127,6 +139,21 @@ public class ClassService implements CrudService<ClassDTO> {
                         .build())
                 .toList();
     }
+
+    public List<SubjectDTO> findSubjectsWithNotClass() {
+        return subjectsRepository.findAllByClassEntity(null)
+                .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
+    }
+
+
 
     private void checkClassAlreadyExists(ClassDTO request) {
         var foundClass = classRepository
