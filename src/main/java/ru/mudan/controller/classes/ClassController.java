@@ -9,7 +9,7 @@ import ru.mudan.services.classes.ClassService;
 
 @Controller
 @RequestMapping("/classes")
-@SuppressWarnings("MemberName")
+@SuppressWarnings({"MemberName", "MultipleStringLiterals"})
 @RequiredArgsConstructor
 public class ClassController {
 
@@ -17,23 +17,28 @@ public class ClassController {
     private final ClassService classService;
 
     @GetMapping("/all")
-    public String all(Model model) {
+    public String getAllClasses(Model model) {
         model.addAttribute("classes", classService.findAll());
         return "admin/classes/classes-index";
     }
 
     @GetMapping("/{id}")
     public String getClassInfo(Model model, @PathVariable Long id) {
+        var classDTO = classService.findById(id);
         model.addAttribute("cl", classService.findById(id));
+        model.addAttribute("students", classService.findAllStudentsForClass(classDTO));
+        model.addAttribute("subjects", classService.findAllSubjectsForClass(classDTO));
         return "admin/classes/classes-show";
     }
 
     @GetMapping("/add")
-    public String createClass() {
+    public String createClass(Model model) {
+        model.addAttribute("students", classService.findStudentsWithNotClass());
+        model.addAttribute("subjects", classService.findSubjectsWithNotClass());
         return "admin/classes/classes-add";
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public String createClass(ClassDTO classDTO) {
         classService.save(classDTO);
         return REDIRECT_CLASSES_ALL;
