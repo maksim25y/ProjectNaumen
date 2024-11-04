@@ -44,7 +44,7 @@ CREATE TABLE subjects
     id          BIGSERIAL PRIMARY KEY,
     name        VARCHAR(255),
     type        VARCHAR(50),
-    code        VARCHAR(50),
+    code        VARCHAR(50) UNIQUE,
     description VARCHAR(255),
     class_id    BIGINT,
     teacher_id  BIGINT,
@@ -159,6 +159,9 @@ VALUES ('Математика', 'Базовый', 'MATH6A', 'Введение в
        ('Английская литература', 'Факультативный', 'ENGL6A', 'Исследование классической литературы', 1, 1);
 INSERT INTO subjects (name, type, code, description, teacher_id)
 VALUES ('Математика', 'Базовый', 'MATH2A', 'Введение в алгебру и геометрию',1);
+
+INSERT INTO homeworks(title, description, deadline, class_id, subject_id)
+VALUES ('Тест 4','Пройти тест по теме 4','2024-09-20',1,1);
 
 
 -- INSERT INTO subjects (name, type, code, description, class_id, teacher_id)
