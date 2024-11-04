@@ -29,14 +29,22 @@
             <input class="form-control" type="number" name="number" id="number" max="11" min="1" required/>
         </div>
         <div class="form-group mb-2">
-            <label for="letter">Введите номер класса: </label>
+            <label for="letter">Введите букву класса: </label>
             <input class="form-control" type="text" name="letter" id="letter" required/>
         </div>
         <div class="form-group mb-2">
             <label for="description">Введите описание класса: </label>
             <input class="form-control" type="text" name="description" id="description"/>
         </div>
-        <input type="submit" class="btn btn-success" value="Создать"/>
+        <h4>Добавить школьников в класс:</h4>
+        <div class="form-check" th:each="student : ${students}">
+                <input class="form-check-input" type="checkbox" th:name="studentsIds" th:value="${student.id()}">
+                <label class="form-select mb-2"
+                       th:text="${student.lastname+' '+student.firstname()+' '+student.patronymic()+' '+student.email()}">
+                </label>
+        </div>
+
+        <input type="submit" class="btn btn-success" value="Создать класс"/>
     </form>
     <hr>
     <footer class="py-3 my-4">

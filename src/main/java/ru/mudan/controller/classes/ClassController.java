@@ -9,7 +9,7 @@ import ru.mudan.services.classes.ClassService;
 
 @Controller
 @RequestMapping("/classes")
-@SuppressWarnings("MemberName")
+@SuppressWarnings({"MemberName", "MultipleStringLiterals"})
 @RequiredArgsConstructor
 public class ClassController {
 
@@ -31,11 +31,12 @@ public class ClassController {
     }
 
     @GetMapping("/add")
-    public String createClass() {
+    public String createClass(Model model) {
+        model.addAttribute("students", classService.findStudentsWithNotClass());
         return "admin/classes/classes-add";
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public String createClass(ClassDTO classDTO) {
         classService.save(classDTO);
         return REDIRECT_CLASSES_ALL;

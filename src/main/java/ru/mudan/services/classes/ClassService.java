@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.repositories.ClassRepository;
+import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.exceptions.ClassAlreadyExistsException;
@@ -14,12 +16,14 @@ import ru.mudan.services.CrudService;
 @Service
 @SuppressWarnings("MemberName")
 @RequiredArgsConstructor
+@Transactional
 public class ClassService implements CrudService<ClassDTO> {
 
     private final String CLASS_ALREADY_EXIST = "Class already exists";
     private final String CLASS_NOT_FOUND = "Class not found";
 
     private final ClassRepository classRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public List<ClassDTO> findAll() {
@@ -50,6 +54,7 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public void save(ClassDTO request) {
+        //TODO - метод через транзакции, так как если id не верный у школьника, то надо откат
         checkClassAlreadyExists(request);
 
         var classEntity = new ClassEntity(
@@ -57,7 +62,16 @@ public class ClassService implements CrudService<ClassDTO> {
                 request.number(),
                 request.description());
 
-        classRepository.save(classEntity);
+        var savedClass = classRepository.save(classEntity);
+
+        if (request.studentsIds() != null) {
+            request.studentsIds()
+                    .forEach(id -> {
+                        var student = studentRepository.findById(id).get();
+                        student.setClassEntity(savedClass);
+                        studentRepository.save(student);
+                    });
+        }
     }
 
     @Override
@@ -92,6 +106,20 @@ public class ClassService implements CrudService<ClassDTO> {
                 .stream()
                 .map(st -> StudentDTO
                         .builder()
+                        .firstname(st.getFirstname())
+                        .lastname(st.getLastname())
+                        .patronymic(st.getPatronymic())
+                        .email(st.getEmail())
+                        .build())
+                .toList();
+    }
+
+    public List<StudentDTO> findStudentsWithNotClass() {
+        return studentRepository.findAllByClassEntity(null)
+                .stream()
+                .map(st -> StudentDTO
+                        .builder()
+                        .id(st.getId())
                         .firstname(st.getFirstname())
                         .lastname(st.getLastname())
                         .patronymic(st.getPatronymic())
