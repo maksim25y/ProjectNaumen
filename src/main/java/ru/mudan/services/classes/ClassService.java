@@ -126,6 +126,22 @@ public class ClassService implements CrudService<ClassDTO> {
                 .toList();
     }
 
+    public List<SubjectDTO> findAllSubjectsForClass(ClassDTO request) {
+        var foundClass = classRepository.findById(request.id())
+                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+
+        return foundClass.getSubjects()
+                .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
+    }
+
     public List<StudentDTO> findStudentsWithNotClass() {
         return studentRepository.findAllByClassEntity(null)
                 .stream()

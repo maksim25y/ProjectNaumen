@@ -27,6 +27,7 @@ public class ClassController {
         var classDTO = classService.findById(id);
         model.addAttribute("cl", classService.findById(id));
         model.addAttribute("students", classService.findAllStudentsForClass(classDTO));
+        model.addAttribute("subjects", classService.findAllSubjectsForClass(classDTO));
         return "admin/classes/classes-show";
     }
 

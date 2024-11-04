@@ -53,6 +53,25 @@
         </tr>
         </tbody>
     </table>
+    <h3 th:text="${'Список предметов в классе в ' + cl.number()+'-'+cl.letter()+' классе'}"></h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Код</th>
+            <th scope="col">Описание</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light" th:each="subject : ${subjects}">
+            <td class="table-light" th:text="${subject.name()}"></td>
+            <td class="table-light" th:text="${subject.type()}"></td>
+            <td class="table-light" th:text="${subject.code()}"></td>
+            <td class="table-light" th:text="${subject.description()}"></td>
+        </tr>
+        </tbody>
+    </table>
 
     <form th:method="DELETE" class="me-2 mb-2" th:action="@{/classes/{id}(id=${cl.id})}">
         <button class="btn btn-outline-danger active" type="submit">
