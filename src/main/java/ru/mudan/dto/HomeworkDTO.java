@@ -5,6 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record HomeworkDTO(
+        Long id,
         String title,
         String description,
         LocalDate deadline,
