@@ -28,7 +28,23 @@ public class ClassController {
         model.addAttribute("cl", classService.findById(id));
         model.addAttribute("students", classService.findAllStudentsForClass(classDTO));
         model.addAttribute("subjects", classService.findAllSubjectsForClass(classDTO));
+        model.addAttribute("studentsForAdding", classService.findStudentsWithNotClass());
+        model.addAttribute("subjectsForAdding", classService.findSubjectsWithNotClass());
         return "admin/classes/classes-show";
+    }
+
+    @PostMapping("/{classId}/students")
+    public String addStudent(@PathVariable Long classId,
+                             ClassDTO classDTO) {
+        classService.addStudentsToClass(classId, classDTO.studentsIds());
+        return "redirect:/classes/" + classId;
+    }
+
+    @PostMapping("/{classId}/subjects")
+    public String addSubject(@PathVariable Long classId,
+                             ClassDTO classDTO) {
+        classService.addSubjectsToClass(classId, classDTO.subjectsIds());
+        return "redirect:/classes/" + classId;
     }
 
     @GetMapping("/add")

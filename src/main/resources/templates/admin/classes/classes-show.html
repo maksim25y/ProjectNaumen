@@ -22,6 +22,7 @@
         </li>
     </ul>
     <hr>
+
     <div th:if="${!students.isEmpty()}" class="mb-2">
         <h3 th:text="${'Список учеников ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
         <table class="table">
@@ -43,9 +44,24 @@
             </tbody>
         </table>
     </div>
+
     <div th:if="${students.isEmpty()}" class="mb-2">
         <h3 style="color:red">На данный момент в классе нет учеников</h3>
     </div>
+
+    <div th:if="${!studentsForAdding.isEmpty()}" class="mb-2">
+        <form class="mb-2 w-25" th:method="POST" th:action="@{/classes/{classId}/students(classId=${cl.id()})}">
+            <h4>Добавить школьников в класс:</h4>
+            <div class="form-check" th:each="studentForAdding : ${studentsForAdding}">
+                <input class="form-check-input" type="checkbox" th:name="studentsIds" id="studentsIds" th:value="${studentForAdding.id()}">
+                <label class="form-select mb-2"
+                       th:text="${studentForAdding.lastname()+' '+studentForAdding.firstname()+' '+studentForAdding.patronymic()+' '+studentForAdding.email()}">
+                </label>
+            </div>
+            <input type="submit" class="btn btn-success" value="Добавить школьников в класс"/>
+        </form>
+    </div>
+
 
     <div th:if="${!subjects.isEmpty()}" class="mb-2">
         <h3 th:text="${'Список предметов ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
@@ -76,6 +92,21 @@
     <div th:if="${subjects.isEmpty()}" class="mb-2">
         <h3 style="color:red">На данный момент классу не назначены предметы</h3>
     </div>
+
+    <div th:if="${!subjectsForAdding.isEmpty()}" class="mb-2">
+        <form class="mb-2 w-25" th:method="POST" th:action="@{/classes/{classId}/subjects(classId=${cl.id()})}">
+            <h4>Добавить предметы классу:</h4>
+            <div class="form-check" th:each="subjectForAdding : ${subjectsForAdding}">
+                <input class="form-check-input" type="checkbox" th:name="subjectsIds" id="subjectIds" th:value="${subjectForAdding.id()}">
+                <label class="form-select mb-2"
+                       th:text="${subjectForAdding.name()+' '+subjectForAdding.code()+' '+subjectForAdding.type()}">
+                </label>
+            </div>
+            <input type="submit" class="btn btn-success" value="Добавить предметы классу"/>
+        </form>
+    </div>
+
+
 
     <form th:method="DELETE" class="me-2 mb-2" th:action="@{/classes/{id}(id=${cl.id})}">
         <button class="btn btn-outline-danger active" type="submit">

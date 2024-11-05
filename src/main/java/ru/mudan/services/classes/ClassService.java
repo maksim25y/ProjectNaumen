@@ -43,8 +43,7 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public ClassDTO findById(Long id) {
-        var foundClass = classRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+        var foundClass = getClassEntity(id);
 
         return ClassDTO
                 .builder()
@@ -88,8 +87,7 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public void update(ClassDTO request, Long id) {
-        var foundClass = classRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+        var foundClass = getClassEntity(id);
 
         checkClassAlreadyExistsAndIdNotEquals(request, id);
 
@@ -111,8 +109,7 @@ public class ClassService implements CrudService<ClassDTO> {
     }
 
     public List<StudentDTO> findAllStudentsForClass(ClassDTO request) {
-        var foundClass = classRepository.findById(request.id())
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+        var foundClass = getClassEntity(request.id());
 
         return foundClass.getStudents()
                 .stream()
@@ -127,8 +124,7 @@ public class ClassService implements CrudService<ClassDTO> {
     }
 
     public List<SubjectDTO> findAllSubjectsForClass(ClassDTO request) {
-        var foundClass = classRepository.findById(request.id())
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+        var foundClass = getClassEntity(request.id());
 
         return foundClass.getSubjects()
                 .stream()
@@ -193,5 +189,36 @@ public class ClassService implements CrudService<ClassDTO> {
                 throw new ClassAlreadyExistsException(CLASS_ALREADY_EXIST);
             }
         }
+    }
+
+    public void addStudentsToClass(Long classId, List<Long> studentsForAddingIds) {
+        var foundClass = getClassEntity(classId);
+
+        if (studentsForAddingIds != null) {
+            studentsForAddingIds
+                    .forEach(id -> {
+                        var student = studentRepository.findById(id).get();
+                        student.setClassEntity(foundClass);
+                        studentRepository.save(student);
+                    });
+        }
+    }
+
+    public void addSubjectsToClass(Long classId, List<Long> subjectsForAddingIds) {
+        var foundClass = getClassEntity(classId);
+
+        if (subjectsForAddingIds != null) {
+            subjectsForAddingIds
+                    .forEach(id -> {
+                        var subject = subjectsRepository.findById(id).get();
+                        subject.setClassEntity(foundClass);
+                        subjectsRepository.save(subject);
+                    });
+        }
+    }
+
+    private ClassEntity getClassEntity(Long classId) {
+        return classRepository.findById(classId)
+                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
     }
 }
