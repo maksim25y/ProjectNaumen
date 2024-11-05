@@ -56,7 +56,7 @@ CREATE TABLE schedules
 (
     id                  BIGSERIAL PRIMARY KEY,
     day_of_week         INTEGER,
-    start_time          TIMESTAMP,
+    start_time          TIME,
     number_of_classroom INTEGER,
     class_id            BIGINT,
     subject_id          BIGINT,
@@ -163,11 +163,22 @@ VALUES ('Математика', 'Базовый', 'MATH2A', 'Введение в
 INSERT INTO homeworks(title, description, deadline, class_id, subject_id)
 VALUES ('Тест 4','Пройти тест по теме 4','2024-09-20',1,1);
 
+-- Вставка расписания для понедельника (day_of_week = 1) с началом в 9:00 для класса с id = 1 по предмету с id = 2
+INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+VALUES (1, '2024-10-23 09:00:00', 101, 1, 1);
 
--- INSERT INTO subjects (name, type, code, description, class_id, teacher_id)
--- VALUES ('Математика', 'Тестовый без учителя', 'MATH8A', 'Введение в алгебру и геометрию',
---         null, (SELECT id FROM teachers WHERE email = 'techer@mail.ru')));
---
--- INSERT INTO subjects (name, type, code, description, teacher_id)
--- VALUES ('Математика', 'Тестовый без класса', 'MATH7A', 'Введение в алгебру и геометрию', 1));
+-- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+VALUES (5, '12:00:00', 202, 1, 1);
 
+-- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+VALUES (4, '12:00:00', 202, 1, 1);
+
+-- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+VALUES (3, '12:00:00', 202, 1, 1);
+
+-- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+VALUES (2, '12:00:00', 202, 1, 1);

@@ -106,8 +106,6 @@
         </form>
     </div>
 
-
-
     <form th:method="DELETE" class="me-2 mb-2" th:action="@{/classes/{id}(id=${cl.id})}">
         <button class="btn btn-outline-danger active" type="submit">
             Удалить класс
@@ -116,6 +114,12 @@
     <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2 mb-2">
         <button class="btn btn-outline-warning active" type="submit">
             Редактировать информацию о классе
+        </button>
+    </a>
+    <hr>
+    <a th:href="@{/schedules/all/{classId}(classId=${cl.id()})}" class="me-2 mb-2">
+        <button class="btn btn-outline-info active" type="submit">
+            Расписание класса
         </button>
     </a>
     <hr>
