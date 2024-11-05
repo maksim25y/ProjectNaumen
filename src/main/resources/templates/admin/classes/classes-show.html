@@ -22,55 +22,128 @@
         </li>
     </ul>
     <hr>
-    <h3 th:text="${'Список учеников ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Фамилия</th>
-            <th scope="col">Имя</th>
-            <th scope="col">Отчество</th>
-            <th scope="col">Адрес электроннй почты</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="table-light" th:each="st : ${students}">
-            <td class="table-light" th:text="${st.lastname()}"></td>
-            <td class="table-light" th:text="${st.firstname()}"></td>
-            <td class="table-light" th:text="${st.patronymic()}"></td>
-            <td class="table-light" th:text="${st.email()}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <h3 th:text="${'Список предметов ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Название</th>
-            <th scope="col">Тип</th>
-            <th scope="col">Код</th>
-            <th scope="col">Описание</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="table-light" th:each="subject : ${subjects}">
-            <td class="table-light" th:text="${subject.name()}"></td>
-            <td class="table-light" th:text="${subject.type()}"></td>
-            <td class="table-light" th:text="${subject.code()}"></td>
-            <td class="table-light" th:text="${subject.description()}"></td>
-        </tr>
-        </tbody>
-    </table>
+
+    <div th:if="${!students.isEmpty()}" class="mb-2">
+        <h3 th:text="${'Список учеников ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Отчество</th>
+                <th scope="col">Адрес электроннй почты</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-light" th:each="st : ${students}">
+                <td class="table-light" th:text="${st.lastname()}"></td>
+                <td class="table-light" th:text="${st.firstname()}"></td>
+                <td class="table-light" th:text="${st.patronymic()}"></td>
+                <td class="table-light" th:text="${st.email()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${students.isEmpty()}" class="mb-2">
+        <h3 style="color:red">На данный момент в классе нет учеников</h3>
+    </div>
+
+    <div th:if="${!studentsForAdding.isEmpty()}" class="mb-2">
+        <form class="mb-2 w-25" th:method="POST" th:action="@{/classes/{classId}/students(classId=${cl.id()})}">
+            <h4>Добавить школьников в класс:</h4>
+            <div class="form-check" th:each="studentForAdding : ${studentsForAdding}">
+                <input class="form-check-input" type="checkbox" th:name="studentsIds" id="studentsIds" th:value="${studentForAdding.id()}">
+                <label class="form-select mb-2"
+                       th:text="${studentForAdding.lastname()+' '+studentForAdding.firstname()+' '+studentForAdding.patronymic()+' '+studentForAdding.email()}">
+                </label>
+            </div>
+            <input type="submit" class="btn btn-success" value="Добавить школьников в класс"/>
+        </form>
+    </div>
+
+
+    <div th:if="${!subjects.isEmpty()}" class="mb-2">
+        <h3 th:text="${'Список предметов ' + cl.number()+'-'+cl.letter()+' класса'}"></h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Тип</th>
+                <th scope="col">Код</th>
+                <th scope="col">Описание</th>
+                <th scope="col">ДЗ</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-light" th:each="subject : ${subjects}">
+                <td class="table-light" th:text="${subject.name()}"></td>
+                <td class="table-light" th:text="${subject.type()}"></td>
+                <td class="table-light" th:text="${subject.code()}"></td>
+                <td class="table-light" th:text="${subject.description()}"></td>
+                <td class="table-light">
+                    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                       th:href="@{/homeworks/all/{classId}(classId=${cl.id()},subjectId=${subject.id()})}">ДЗ</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${subjects.isEmpty()}" class="mb-2">
+        <h3 style="color:red">На данный момент классу не назначены предметы</h3>
+    </div>
+
+    <div th:if="${!subjectsForAdding.isEmpty()}" class="mb-2">
+        <form class="mb-2 w-25" th:method="POST" th:action="@{/classes/{classId}/subjects(classId=${cl.id()})}">
+            <h4>Добавить предметы классу:</h4>
+            <div class="form-check" th:each="subjectForAdding : ${subjectsForAdding}">
+                <input class="form-check-input" type="checkbox" th:name="subjectsIds" id="subjectIds" th:value="${subjectForAdding.id()}">
+                <label class="form-select mb-2"
+                       th:text="${subjectForAdding.name()+' '+subjectForAdding.code()+' '+subjectForAdding.type()}">
+                </label>
+            </div>
+            <input type="submit" class="btn btn-success" value="Добавить предметы классу"/>
+        </form>
+    </div>
+
+
 
     <form th:method="DELETE" class="me-2 mb-2" th:action="@{/classes/{id}(id=${cl.id})}">
         <button class="btn btn-outline-danger active" type="submit">
             Удалить класс
         </button>
     </form>
-    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2">
+    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2 mb-2">
         <button class="btn btn-outline-warning active" type="submit">
             Редактировать информацию о классе
         </button>
     </a>
+    <hr>
+    <div th:if="${!subjects.isEmpty()}" class="mb-2">
+        <h2>Добавить ДЗ классу</h2>
+        <form class="mb-2 w-25" th:method="POST" th:action="@{/homeworks}">
+            <div class="form-group mb-2">
+                <label for="title">Введите название домашнего задания: </label>
+                <input class="form-control" type="text" name="title" id="title" max="11" min="1" required/>
+            </div>
+            <div class="form-group mb-2">
+                <label for="description">Введите описание ДЗ: </label>
+                <input class="form-control" type="text" name="description" id="description" required/>
+            </div>
+            <div class="form-group mb-2">
+                <label for="deadline">Дата ДЗ:</label>
+                <input type="date" id="deadline" name="deadline"/>
+            </div>
+            <input type="number" id="classId" th:name="classId" th:value="${cl.id()}" hidden>
+            <h4>Выберите предмет:</h4>
+            <label for="person">Выберите предмет: </label>
+            <select name="subjectId" id="person" class="form-select mb-2" aria-label="Disabled select example">
+                <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId" id="subjectId"
+                        th:text="${subject.name()}"></option>
+            </select>
+            <input type="submit" class="btn btn-success" value="Создать ДЗ"/>
+        </form>
+    </div>
     <hr>
     <div th:insert="~{footer :: footer}"></div>
 </div>

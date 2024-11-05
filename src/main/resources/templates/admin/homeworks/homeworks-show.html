@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о домашнем задании</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{header-admin :: admin-header}"></div>
+    <h1 th:text="${'ДЗ по предмету ' + subject.name()+' '+ class.number()+'-'+class.letter()+' классу'}"></h1>
+    <hr>
+    <ul class="list-group mb-2">
+        <li class="list-group-item" aria-current="true">
+            Название ДЗ: <span class="text-danger" th:text="${homework.title()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Описание ДЗ: <span class="text-danger" th:text="${homework.description()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Срок сдачи ДЗ: <span class="text-danger" th:text="${homework.deadline()}"></span>
+        </li>
+    </ul>
+    <hr>
+
+
+    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/homeworks/{id}(id=${homework.id()})}">
+        <button class="btn btn-outline-danger active" type="submit">
+            Удалить ДЗ
+        </button>
+    </form>
+    <a th:href="@{/homeworks/{id}/edit(id=${homework.id()})}" class="me-2 mb-2">
+        <button class="btn btn-outline-warning active" type="submit">
+            Редактировать информацию о ДЗ
+        </button>
+    </a>
+    <hr>
+
+    <hr>
+    <div th:insert="~{footer :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>
