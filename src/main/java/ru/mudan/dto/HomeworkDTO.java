@@ -7,6 +7,8 @@ import lombok.Builder;
 public record HomeworkDTO(
         String title,
         String description,
-        LocalDate deadline
+        LocalDate deadline,
+        Long classId,
+        Long subjectId
 ) {
 }

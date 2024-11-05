@@ -76,11 +76,30 @@
             Редактировать информацию о классе
         </button>
     </a>
-    <a th:href="@{/classes/{id}/edit(id=${cl.id()})}" class="me-2">
-        <button class="btn btn-outline-warning active" type="submit">
-            Просмотреть ДЗ класса
-        </button>
-    </a>
+    <hr>
+    <h2>Добавить ДЗ классу</h2>
+    <form class="mb-2 w-25" th:method="POST" th:action="@{/homeworks}">
+        <div class="form-group mb-2">
+            <label for="title">Введите название домашнего задания: </label>
+            <input class="form-control" type="text" name="title" id="title" max="11" min="1" required/>
+        </div>
+        <div class="form-group mb-2">
+            <label for="description">Введите описание ДЗ: </label>
+            <input class="form-control" type="text" name="description" id="description" required/>
+        </div>
+        <div class="form-group mb-2">
+            <label for="deadline">Дата ДЗ:</label>
+            <input type="date" id="deadline" name="deadline"/>
+        </div>
+        <input type="number" id="classId" th:name="classId" th:value="${cl.id()}" hidden>
+        <h4>Выберите предмет:</h4>
+        <label for="person">Выберите предмет: </label>
+        <select name="subjectId" id="person" class="form-select mb-2" aria-label="Disabled select example">
+            <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId" id="subjectId"
+                    th:text="${subject.name()}"></option>
+        </select>
+        <input type="submit" class="btn btn-success" value="Создать ДЗ"/>
+    </form>
     <hr>
     <div th:insert="~{footer :: footer}"></div>
 </div>

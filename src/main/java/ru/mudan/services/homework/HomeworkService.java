@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mudan.domain.entity.Homework;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.HomeworkRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
@@ -35,5 +36,16 @@ public class HomeworkService {
                         .deadline(hw.getDeadline())
                         .build())
                 .toList();
+    }
+
+    public void save(HomeworkDTO hwDTO) {
+        var foundClass = classRepository.findById(hwDTO.classId()).orElseThrow(() -> new NoSuchElementException("Class not found"));
+        var foundSubject = subjectsRepository.findById(hwDTO.subjectId()).orElseThrow(() -> new NoSuchElementException("Subject not found"));
+
+        var homework = new Homework(hwDTO.title(), hwDTO.description(), hwDTO.deadline());
+        homework.setClassEntity(foundClass);
+        homework.setSubject(foundSubject);
+
+        homeworkRepository.save(homework);
     }
 }
