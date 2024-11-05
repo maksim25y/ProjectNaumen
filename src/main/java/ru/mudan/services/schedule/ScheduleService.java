@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Schedule;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.ScheduleRepository;
-import ru.mudan.dto.schedule.ScheduleDTO;
+import ru.mudan.dto.schedule.ScheduleDTOResponse;
 import ru.mudan.util.ScheduleUtil;
 
 @Service
@@ -19,7 +19,7 @@ public class ScheduleService {
     private final ClassRepository classRepository;
 
 
-    public List<ScheduleDTO> findAllSchedulesForClass(Long classId) {
+    public List<ScheduleDTOResponse> findAllSchedulesForClass(Long classId) {
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new NoSuchElementException("Class not found"));
         var listOfSchedules = foundClass.getSchedules();
@@ -27,8 +27,9 @@ public class ScheduleService {
 
         return listOfSchedules
                 .stream()
-                .map(sch -> ScheduleDTO
+                .map(sch -> ScheduleDTOResponse
                         .builder()
+                        .id(sch.getId())
                         .numberOfClassRoom(sch.getNumberOfClassroom())
                         .dayOfWeek(ScheduleUtil.days.get(sch.getDayOfWeek()))
                         .subjectName(sch.getSubject().getName())
@@ -37,15 +38,25 @@ public class ScheduleService {
                 .toList();
     }
 
-    public ScheduleDTO findById(Long id) {
-        return null;
+    public ScheduleDTOResponse findById(Long id) {
+        var foundSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Schedule not found"));
+
+        return ScheduleDTOResponse
+                .builder()
+                .id(foundSchedule.getId())
+                .numberOfClassRoom(foundSchedule.getNumberOfClassroom())
+                .dayOfWeek(ScheduleUtil.days.get(foundSchedule.getDayOfWeek()))
+                .subjectName(foundSchedule.getSubject().getName())
+                .startTime(foundSchedule.getStartTime())
+                .build();
     }
 
-    public void save(ScheduleDTO request) {
+    public void save(ScheduleDTOResponse request) {
 
     }
 
-    public void update(ScheduleDTO request, Long id) {
+    public void update(ScheduleDTOResponse request, Long id) {
 
     }
 

@@ -16,8 +16,14 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/all/{classId}")
-    public String all(@PathVariable Long classId, Model model) {
+    public String all(@PathVariable("classId") Long classId, Model model) {
         model.addAttribute("schedules", scheduleService.findAllSchedulesForClass(classId));
         return "schedule-class-index";
+    }
+
+    @GetMapping("/{id}")
+    public String findById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("schedule", scheduleService.findById(id));
+        return "schedule-class-show";
     }
 }
