@@ -31,15 +31,9 @@ public class Schedule {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    public Schedule(Integer dayOfWeek,
-                    LocalTime startTime,
-                    Integer numberOfClassroom,
-                    ClassEntity classEntity,
-                    Subject subject) {
+    public Schedule(Integer dayOfWeek, LocalTime startTime, Integer numberOfClassroom) {
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.numberOfClassroom = numberOfClassroom;
-        this.classEntity = classEntity;
-        this.subject = subject;
     }
 }
