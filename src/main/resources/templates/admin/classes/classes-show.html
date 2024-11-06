@@ -65,9 +65,18 @@
                             <td class="table-light" th:text="${st.patronymic()}"></td>
                             <td class="table-light" th:text="${st.email()}"></td>
                             <td class="table-light">
-                                <a th:href="@{/grades/all/{id}(id=${st.id()})}" class="me-2 mb-2">
-                                    Оценки
-                                </a>
+                                <p>
+                                    <button class="btn btn-warning" type="button" data-bs-toggle="collapse" th:data-bs-target="${'#grades'+st.id()}"
+                                            aria-expanded="false" th:aria-controls="${'grades'+st.id()}">
+                                        Оценки
+                                    </button>
+                                </p>
+                                <div class="collapse border border-dark rounded mb-2 p-3" th:id="${'grades'+st.id()}">
+                                    <div th:each="sb : ${subjects}">
+                                        <a th:href="@{/grades/all/{id}(id=${st.id()}, subjectId=${sb.id()})}" class="me-2 mb-2" th:text="${sb.name()}">
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
@@ -285,7 +294,7 @@
                 <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId"
                         th:text="${subject.name()}"></option>
             </select>
-            <input type="submit" class="btn btn-success" value="Создать ДЗ"/>
+            <input type="submit" class="btn btn-success" value="Поставить оценку"/>
         </form>
     </div>
 

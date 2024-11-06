@@ -70,6 +70,7 @@ public class GradesService {
 
         return GradeDTO
                 .builder()
+                .id(foundGrade.getId())
                 .mark(foundGrade.getMark())
                 .dateOfMark(foundGrade.getDateOfMark())
                 .comment(foundGrade.getComment())
@@ -95,10 +96,19 @@ public class GradesService {
     }
 
     public void update(GradeDTO request, Long id) {
+        var foundGrade = gradeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Grade not found"));
 
+        foundGrade.setMark(request.mark());
+        foundGrade.setDateOfMark(request.dateOfMark());
+        foundGrade.setComment(request.comment());
+        gradeRepository.save(foundGrade);
     }
 
     public void deleteById(Long id) {
+        var foundGrade = gradeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Grade not found"));
 
+        gradeRepository.delete(foundGrade);
     }
 }

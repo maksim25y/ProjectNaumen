@@ -43,4 +43,22 @@ public class GradeController {
         gradesService.save(gradeDTO);
         return "redirect:/classes/all";
     }
+
+    @GetMapping("/{id}/edit")
+    public String editGrade(@PathVariable Long id, Model model) {
+        model.addAttribute("grade", gradesService.findById(id));
+        return "grades/grades-edit";
+    }
+
+    @PutMapping("/{id}")
+    public String updateGrade(@PathVariable Long id, GradeDTO gradeDTO) {
+        gradesService.update(gradeDTO, id);
+        return "redirect:/grades/" + id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteGrade(@PathVariable Long id) {
+        gradesService.deleteById(id);
+        return "redirect:/classes/all";
+    }
 }
