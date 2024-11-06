@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение информации о ячейке расписания</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{header-admin :: admin-header}"></div>
+
+    <form class="mb-2 w-25" th:method="PUT" th:action="@{/schedules/{id}(id=${schedule.id})}">
+        <label>Выберите день недели: </label>
+        <select name="dayOfWeek" class="form-select mb-2" aria-label="Disabled select example" th:value="${schedule.dayOfWeek()}">
+            <option value="1" name="dayOfWeek">Понедельник</option>
+            <option value="2" name="dayOfWeek">Вторник</option>
+            <option value="3" name="dayOfWeek">Среда</option>
+            <option value="4" name="dayOfWeek">Четверг</option>
+            <option value="5" name="dayOfWeek">Пятница</option>
+        </select>
+        <input type="time" id="startTime" name="startTime" th:value="${schedule.startTime()}">
+        <div class="form-group mb-2">
+            <label for="numberOfClassroom">Введите номер кабинета: </label>
+            <input class="form-control" type="number" name="numberOfClassroom" id="numberOfClassroom" th:value="${schedule.numberOfClassRoom()}"
+                   max="300" min="1"
+                   required/>
+        </div>
+        <input type="submit" class="btn btn-success" value="Изменить ячейку расписания"/>
+    </form>
+
+    <div th:insert="~{footer :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

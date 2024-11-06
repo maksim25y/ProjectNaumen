@@ -26,7 +26,6 @@
                     <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                        th:text="${sch.subjectName()}" th:href="@{/schedules/{id}(id=${sch.id()})}"></a>
                 </td>
-                <td class="table-light" th:text="${sch.subjectName()}"></td>
                 <td th:text="${#temporals.format(sch.startTime(), #locale)}"></td>
                 <td class="table-light" th:text="${sch.numberOfClassRoom()}"></td>
             </tr>

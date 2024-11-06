@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.Schedule;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.ScheduleRepository;
@@ -16,6 +17,7 @@ import ru.mudan.util.ScheduleUtil;
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("MemberName")
+@Transactional
 public class ScheduleService {
 
     private final String CLASS_NOT_FOUND = "Class not found";
@@ -77,10 +79,19 @@ public class ScheduleService {
     }
 
     public void update(ScheduleDTORequest request, Long id) {
+        var foundSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
 
+        foundSchedule.setDayOfWeek(request.dayOfWeek());
+        foundSchedule.setStartTime(request.startTime());
+        foundSchedule.setNumberOfClassroom(request.numberOfClassroom());
+        scheduleRepository.save(foundSchedule);
     }
 
     public void deleteById(Long id) {
+        var foundSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
 
+        scheduleRepository.delete(foundSchedule);
     }
 }
