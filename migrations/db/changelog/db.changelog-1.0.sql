@@ -182,3 +182,15 @@ VALUES (3, '12:00:00', 202, 1, 1);
 -- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
 INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
 VALUES (2, '12:00:00', 202, 1, 1);
+
+-- Вставка первой записи
+INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
+VALUES (4, '2023-10-26', 'Хорошо выполненная работа', 1, 1);
+
+-- Вставка второй записи
+INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
+VALUES (3, '2023-10-27', 'Нужно больше практики', 1, 1);
+
+-- Вставка второй записи
+INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
+VALUES (3, '2023-10-27', 'Нужно больше практики', 1, 2);

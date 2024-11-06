@@ -3,6 +3,7 @@ package ru.mudan.domain.entity.users;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.domain.entity.ClassEntity;
+import ru.mudan.domain.entity.Grade;
 import ru.mudan.domain.entity.users.enums.Role;
 
 @Getter
@@ -39,6 +41,8 @@ public class Student implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "class_id")
     private ClassEntity classEntity;
+    @OneToMany(mappedBy = "student")
+    private List<Grade> grades;
 
     public Student(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;

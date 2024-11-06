@@ -1,6 +1,7 @@
 package ru.mudan.domain.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,8 @@ public class Subject {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+    @OneToMany(mappedBy = "subject")
+    private List<Grade> grades;
 
     public Subject(String name, String type, String code, String description) {
         this.name = name;
