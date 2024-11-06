@@ -115,6 +115,7 @@ public class ClassService implements CrudService<ClassDTO> {
                 .stream()
                 .map(st -> StudentDTO
                         .builder()
+                        .id(st.getId())
                         .firstname(st.getFirstname())
                         .lastname(st.getLastname())
                         .patronymic(st.getPatronymic())
