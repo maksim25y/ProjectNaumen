@@ -16,7 +16,7 @@ import ru.mudan.domain.entity.users.Student;
 @Table(name = "grades")
 public class Grade {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "mark")
     private Integer mark;

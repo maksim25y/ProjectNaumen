@@ -3,10 +3,8 @@ package ru.mudan.controller.grades;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.services.grades.GradesService;
 import ru.mudan.services.students.StudentService;
 import ru.mudan.services.subjects.SubjectService;
@@ -32,5 +30,17 @@ public class GradeController {
         }
         model.addAttribute("student", studentService.findById(studentId));
         return "grades/grades-index";
+    }
+
+    @GetMapping("/{id}")
+    public String getGradeById(@PathVariable Long id, Model model) {
+        model.addAttribute("grade", gradesService.findById(id));
+        return "grades/grades-show";
+    }
+
+    @PostMapping
+    public String saveGrade(GradeDTO gradeDTO) {
+        gradesService.save(gradeDTO);
+        return "redirect:/classes/all";
     }
 }

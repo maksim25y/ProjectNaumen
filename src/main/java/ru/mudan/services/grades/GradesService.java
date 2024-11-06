@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.mudan.domain.entity.Grade;
 import ru.mudan.domain.repositories.GradeRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
@@ -30,6 +31,7 @@ public class GradesService {
                 .stream()
                 .map(grade -> GradeDTO
                         .builder()
+                        .id(grade.getId())
                         .mark(grade.getMark())
                         .dateOfMark(grade.getDateOfMark())
                         .comment(grade.getComment())
@@ -52,6 +54,7 @@ public class GradesService {
                 .stream()
                 .map(grade -> GradeDTO
                         .builder()
+                        .id(grade.getId())
                         .mark(grade.getMark())
                         .dateOfMark(grade.getDateOfMark())
                         .comment(grade.getComment())
@@ -62,11 +65,33 @@ public class GradesService {
     }
 
     public GradeDTO findById(Long id) {
-        return null;
+        var foundGrade = gradeRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Grade not found"));
+
+        return GradeDTO
+                .builder()
+                .mark(foundGrade.getMark())
+                .dateOfMark(foundGrade.getDateOfMark())
+                .comment(foundGrade.getComment())
+                .build();
     }
 
     public void save(GradeDTO request) {
+        var foundStudent = studentRepository.findById(request.studentId())
+                .orElseThrow(() -> new NoSuchElementException("Student not found"));
 
+        var foundSubject = subjectsRepository.findById(request.subjectId())
+                .orElseThrow(() -> new NoSuchElementException("Subject not found"));
+
+        var grade = new Grade(
+                request.mark(),
+                request.dateOfMark(),
+                request.comment());
+
+        grade.setStudent(foundStudent);
+        grade.setSubject(foundSubject);
+
+        gradeRepository.save(grade);
     }
 
     public void update(GradeDTO request, Long id) {
