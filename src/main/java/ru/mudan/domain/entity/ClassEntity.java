@@ -29,6 +29,8 @@ public class ClassEntity {
     private List<Subject> subjects;
     @OneToMany(mappedBy = "classEntity")
     private List<Student> students;
+    @OneToMany(mappedBy = "classEntity")
+    private List<Schedule> schedules;
 
     public ClassEntity(Character letter, Integer number, String description) {
         this.letter = letter;
