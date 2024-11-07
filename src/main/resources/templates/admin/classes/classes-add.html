@@ -24,20 +24,16 @@
             <label for="description">Введите описание класса: </label>
             <input class="form-control" type="text" name="description" id="description"/>
         </div>
-        <h4>Добавить школьников в класс:</h4>
-        <div class="form-check" th:each="student : ${students}">
+        <div th:if="${!students.isEmpty()}">
+            <h4>Добавить школьников в класс:</h4>
+            <div class="form-check" th:each="student : ${students}">
                 <input class="form-check-input" type="checkbox" th:name="studentsIds" th:value="${student.id()}">
                 <label class="form-select mb-2"
                        th:text="${student.lastname()+' '+student.firstname()+' '+student.patronymic()+' '+student.email()}">
                 </label>
+            </div>
         </div>
-        <h4>Добавить предметы классу:</h4>
-        <div class="form-check" th:each="subject : ${subjects}">
-            <input class="form-check-input" type="checkbox" th:name="subjectsIds" th:value="${subject.id()}">
-            <label class="form-select mb-2"
-                   th:text="${subject.name()+' '+subject.type()+' '+subject.code()}">
-            </label>
-        </div>
+
         <div th:each="error : ${errors}">
             <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
 

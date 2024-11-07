@@ -9,6 +9,7 @@ import ru.mudan.domain.entity.Homework;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.HomeworkRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
+import ru.mudan.dto.homework.HomeworkCreateDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
 
 @Service
@@ -44,7 +45,7 @@ public class HomeworkService {
                 .toList();
     }
 
-    public void save(HomeworkDTO hwDTO) {
+    public void save(HomeworkCreateDTO hwDTO) {
         var foundClass = classRepository.findById(hwDTO.classId())
                 .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
         var foundSubject = subjectsRepository.findById(hwDTO.subjectId())

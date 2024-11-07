@@ -132,7 +132,7 @@ public class ClassService implements CrudService<ClassDTO> {
                 .map(sb -> SubjectDTO
                         .builder()
                         .id(sb.getId())
-                        .code(sb.getCode())
+//                        .code(sb.getCode())
                         .type(sb.getType())
                         .name(sb.getName())
                         .build())
@@ -159,7 +159,7 @@ public class ClassService implements CrudService<ClassDTO> {
                 .map(sb -> SubjectDTO
                         .builder()
                         .id(sb.getId())
-                        .code(sb.getCode())
+//                        .code(sb.getCode())
                         .type(sb.getType())
                         .name(sb.getName())
                         .build())

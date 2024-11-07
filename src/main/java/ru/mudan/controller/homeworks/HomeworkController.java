@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.mudan.dto.homework.HomeworkCreateDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.homework.HomeworkService;
@@ -31,7 +32,7 @@ public class HomeworkController {
     }
 
     @PostMapping
-    public String addHomework(@Valid HomeworkDTO homeworkDTO) {
+    public String addHomework(@Valid HomeworkCreateDTO homeworkDTO) {
         homeworkService.save(homeworkDTO);
         return REDIRECT_CLASSES_ALL;
     }

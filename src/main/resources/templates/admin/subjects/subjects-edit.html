@@ -11,15 +11,8 @@
 <div class="container">
     <div th:insert="~{header-admin :: admin-header}"></div>
     <hr>
+    <h1 th:text="${'Редактирование информации о предмете '+subject.name() +' с кодом '+subject.code()}"></h1>
     <form class="mb-2 w-25" th:method="PUT" th:action="@{/subjects/{id}(id=${subject.id})}">
-        <div class="form-group mb-2">
-            <label for="name">Введите новое название предмета: </label>
-            <input class="form-control" type="text" name="name" id="name" th:value="${subject.name()}" required/>
-        </div>
-        <div class="form-group mb-2">
-            <label for="code">Введите новый код предмета: </label>
-            <input class="form-control" type="text" name="code" id="code" th:value="${subject.code()}" required/>
-        </div>
         <div class="form-group mb-2">
             <label for="type">Введите новый тип предмета: </label>
             <input class="form-control" type="text" name="type" id="type" th:value="${subject.type()}" required/>
@@ -27,6 +20,10 @@
         <div class="form-group mb-2">
             <label for="description">Введите новое описание предмета: </label>
             <input class="form-control" type="text" name="description" id="description" th:value="${subject.description()}"/>
+        </div>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
         </div>
         <input type="submit" class="btn btn-success" value="Изменить предмет"/>
     </form>

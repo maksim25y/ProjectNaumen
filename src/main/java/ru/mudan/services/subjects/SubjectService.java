@@ -2,25 +2,27 @@ package ru.mudan.services.subjects;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
+import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
+import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
+import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.exceptions.SubjectAlreadyExistsException;
-import ru.mudan.services.CrudService;
 
 @Service
 @SuppressWarnings("MemberName")
 @RequiredArgsConstructor
-public class SubjectService implements CrudService<SubjectDTO> {
+public class SubjectService {
 
+    private final String CLASS_NOT_FOUND = "Class not found";
     private final String SUBJECT_ALREADY_EXIST = "Subject already exists";
     private final String SUBJECT_NOT_FOUND = "Subject not found";
     private final SubjectsRepository subjectsRepository;
+    private final ClassRepository classRepository;
 
-    @Override
     public List<SubjectDTO> findAll() {
         return subjectsRepository.findAll()
                 .stream()
@@ -35,7 +37,6 @@ public class SubjectService implements CrudService<SubjectDTO> {
                 .toList();
     }
 
-    @Override
     public SubjectDTO findById(Long id) {
         var foundSubject = subjectsRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
@@ -50,35 +51,39 @@ public class SubjectService implements CrudService<SubjectDTO> {
                 .build();
     }
 
-    @Override
-    public void save(SubjectDTO request) {
-        checkSubjectAlreadyExists(request.code());
+    public void save(SubjectCreateDTO request) {
+        var classForSubject = classRepository.findById(request.classId())
+                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+
+        var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
+
+        checkSubjectAlreadyExists(codeForSb);
 
         var subjectForSaving = new Subject(
                 request.name(),
                 request.type(),
-                request.code(),
+                codeForSb,
                 request.description());
+
+        subjectForSaving.setClassEntity(classForSubject);
 
         subjectsRepository.save(subjectForSaving);
     }
 
-    @Override
-    public void update(SubjectDTO request, Long id) {
+    private String generateCode(String name, Integer classNumber, String letter) {
+        return name.substring(0, 3).toUpperCase()+classNumber+letter;
+    }
+
+    public void update(SubjectUpdateDTO request, Long id) {
         var foundSubject = subjectsRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
 
-        checkClassAlreadyExistsAndIdNotEquals(request.code(), id);
-
-        foundSubject.setName(request.name());
         foundSubject.setType(request.type());
-        foundSubject.setCode(request.code());
         foundSubject.setDescription(request.description());
 
         subjectsRepository.save(foundSubject);
     }
 
-    @Override
     public void deleteById(Long id) {
         var foundSubject = subjectsRepository
                 .findById(id).orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
@@ -90,16 +95,6 @@ public class SubjectService implements CrudService<SubjectDTO> {
 
         if (foundSubject.isPresent()) {
             throw new SubjectAlreadyExistsException(SUBJECT_ALREADY_EXIST);
-        }
-    }
-
-    private void checkClassAlreadyExistsAndIdNotEquals(String code, Long id) {
-        var foundSubject = subjectsRepository.findByCode(code);
-
-        if (foundSubject.isPresent()) {
-            if (!Objects.equals(foundSubject.get().getId(), id)) {
-                throw new SubjectAlreadyExistsException(SUBJECT_ALREADY_EXIST);
-            }
         }
     }
 }

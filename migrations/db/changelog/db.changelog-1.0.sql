@@ -117,80 +117,84 @@ CREATE TABLE class_to_teacher
 
 INSERT INTO admins(firstname, lastname, patronymic, email, hashed_password)
 VALUES ('Кирилл', 'Кириллов', 'Кириллович', 'admin@mail.ru','$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
-INSERT INTO teachers(firstname, lastname, patronymic, email, hashed_password)
-VALUES ('Сергей', 'Сергеев', 'Сергеевич', 'techer@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
-INSERT INTO parents(firstname, lastname, patronymic, email, hashed_password)
-VALUES ('Петр', 'Петров', 'Петрович', 'parent@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
-
 INSERT INTO app_users(user_id, role_name, email)
 VALUES (1, 'ROLE_ADMIN', 'admin@mail.ru');
-INSERT INTO app_users(user_id, role_name, email)
-VALUES (1, 'ROLE_TEACHER', 'techer@mail.ru');
-INSERT INTO app_users(user_id, role_name, email)
-VALUES (1, 'ROLE_PARENT', 'parent@mail.ru');
 
--- Test classes
-INSERT INTO classes (letter, number, description)
-VALUES ('Д', 10, 'Introduction to Computer Science');
-INSERT INTO classes (letter, number, description)
-VALUES ('Г', 2, 'Calculus II');
-INSERT INTO classes (letter, number, description)
-VALUES ('В', 1, 'Composition I');
-INSERT INTO classes (letter, number, description)
-VALUES ('Б', 6, 'US History II');
-INSERT INTO classes (letter, number)
-VALUES ('А', 4);
 
-INSERT INTO students(firstname, lastname, patronymic, email, hashed_password)
-VALUES ('Иван', 'Иванов', 'Иванович', 'student@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
-INSERT INTO app_users(user_id, role_name, email)
-VALUES (1, 'ROLE_STUDENT', 'student@mail.ru');
-
-INSERT INTO students(firstname, lastname, patronymic, email, hashed_password)
-VALUES ('Степан', 'Степанов', 'Степанович', 'student2@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
-INSERT INTO app_users(user_id, role_name, email)
-VALUES (2, 'ROLE_STUDENT', 'student2@mail.ru');
-
-INSERT INTO subjects (name, type, code, description, class_id, teacher_id)
-VALUES ('Математика', 'Базовый', 'MATH6A', 'Введение в алгебру и геометрию', 1, 1),
-       ('Физика', 'Базовый', 'PHYS6A', 'Основы механики и волн', 1, 1),
-       ('Химия', 'Базовый', 'CHEM6A', 'Введение в химические принципы', 1, 1),
-       ('Биология', 'Базовый', 'BIOL6A', 'Введение в науки о жизни', 1, 1),
-       ('Английская литература', 'Факультативный', 'ENGL6A', 'Исследование классической литературы', 1, 1);
-INSERT INTO subjects (name, type, code, description, teacher_id)
-VALUES ('Математика', 'Базовый', 'MATH2A', 'Введение в алгебру и геометрию',1);
-
-INSERT INTO homeworks(title, description, deadline, class_id, subject_id)
-VALUES ('Тест 4','Пройти тест по теме 4','2024-09-20',1,1);
-
--- Вставка расписания для понедельника (day_of_week = 1) с началом в 9:00 для класса с id = 1 по предмету с id = 2
-INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
-VALUES (1, '2024-10-23 09:00:00', 101, 1, 1);
-
--- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
-INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
-VALUES (5, '12:00:00', 202, 1, 1);
-
--- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
-INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
-VALUES (4, '12:00:00', 202, 1, 1);
-
--- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
-INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
-VALUES (3, '12:00:00', 202, 1, 1);
-
--- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
-INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
-VALUES (2, '12:00:00', 202, 1, 1);
-
--- Вставка первой записи
-INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
-VALUES (4, '2023-10-26', 'Хорошо выполненная работа', 1, 1);
-
--- Вставка второй записи
-INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
-VALUES (3, '2023-10-27', 'Нужно больше практики', 1, 1);
-
--- Вставка второй записи
-INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
-VALUES (3, '2023-10-27', 'Нужно больше практики', 1, 2);
+-- INSERT INTO teachers(firstname, lastname, patronymic, email, hashed_password)
+-- VALUES ('Сергей', 'Сергеев', 'Сергеевич', 'techer@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+-- INSERT INTO parents(firstname, lastname, patronymic, email, hashed_password)
+-- VALUES ('Петр', 'Петров', 'Петрович', 'parent@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+--
+-- INSERT INTO app_users(user_id, role_name, email)
+-- VALUES (1, 'ROLE_ADMIN', 'admin@mail.ru');
+-- INSERT INTO app_users(user_id, role_name, email)
+-- VALUES (1, 'ROLE_TEACHER', 'techer@mail.ru');
+-- INSERT INTO app_users(user_id, role_name, email)
+-- VALUES (1, 'ROLE_PARENT', 'parent@mail.ru');
+--
+-- -- Test classes
+-- INSERT INTO classes (letter, number, description)
+-- VALUES ('Д', 10, 'Introduction to Computer Science');
+-- INSERT INTO classes (letter, number, description)
+-- VALUES ('Г', 2, 'Calculus II');
+-- INSERT INTO classes (letter, number, description)
+-- VALUES ('В', 1, 'Composition I');
+-- INSERT INTO classes (letter, number, description)
+-- VALUES ('Б', 6, 'US History II');
+-- INSERT INTO classes (letter, number)
+-- VALUES ('А', 4);
+--
+-- INSERT INTO students(firstname, lastname, patronymic, email, hashed_password)
+-- VALUES ('Иван', 'Иванов', 'Иванович', 'student@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+-- INSERT INTO app_users(user_id, role_name, email)
+-- VALUES (1, 'ROLE_STUDENT', 'student@mail.ru');
+--
+-- INSERT INTO students(firstname, lastname, patronymic, email, hashed_password)
+-- VALUES ('Степан', 'Степанов', 'Степанович', 'student2@mail.ru', '$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');
+-- INSERT INTO app_users(user_id, role_name, email)
+-- VALUES (2, 'ROLE_STUDENT', 'student2@mail.ru');
+--
+-- INSERT INTO subjects (name, type, code, description, class_id, teacher_id)
+-- VALUES ('Математика', 'Базовый', 'MATH6A', 'Введение в алгебру и геометрию', 1, 1),
+--        ('Физика', 'Базовый', 'PHYS6A', 'Основы механики и волн', 1, 1),
+--        ('Химия', 'Базовый', 'CHEM6A', 'Введение в химические принципы', 1, 1),
+--        ('Биология', 'Базовый', 'BIOL6A', 'Введение в науки о жизни', 1, 1),
+--        ('Английская литература', 'Факультативный', 'ENGL6A', 'Исследование классической литературы', 1, 1);
+-- INSERT INTO subjects (name, type, code, description, teacher_id)
+-- VALUES ('Математика', 'Базовый', 'MATH2A', 'Введение в алгебру и геометрию',1);
+--
+-- INSERT INTO homeworks(title, description, deadline, class_id, subject_id)
+-- VALUES ('Тест 4','Пройти тест по теме 4','2024-09-20',1,1);
+--
+-- -- Вставка расписания для понедельника (day_of_week = 1) с началом в 9:00 для класса с id = 1 по предмету с id = 2
+-- INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+-- VALUES (1, '2024-10-23 09:00:00', 101, 1, 1);
+--
+-- -- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+-- INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+-- VALUES (5, '12:00:00', 202, 1, 1);
+--
+-- -- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+-- INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+-- VALUES (4, '12:00:00', 202, 1, 1);
+--
+-- -- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+-- INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+-- VALUES (3, '12:00:00', 202, 1, 1);
+--
+-- -- Вставка расписания для пятницы (day_of_week = 5) с началом в 14:00 для класса с id = 3 по предмету с id = 4
+-- INSERT INTO schedules (day_of_week, start_time, number_of_classroom, class_id, subject_id)
+-- VALUES (2, '12:00:00', 202, 1, 1);
+--
+-- -- Вставка первой записи
+-- INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
+-- VALUES (4, '2023-10-26', 'Хорошо выполненная работа', 1, 1);
+--
+-- -- Вставка второй записи
+-- INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
+-- VALUES (3, '2023-10-27', 'Нужно больше практики', 1, 1);
+--
+-- -- Вставка второй записи
+-- INSERT INTO grades (mark, date_of_mark, comment, student_id, subject_id)
+-- VALUES (3, '2023-10-27', 'Нужно больше практики', 1, 2);

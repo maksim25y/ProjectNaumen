@@ -30,7 +30,6 @@ public class ClassController {
         model.addAttribute("students", classService.findAllStudentsForClass(classDTO));
         model.addAttribute("subjects", classService.findAllSubjectsForClass(classDTO));
         model.addAttribute("studentsForAdding", classService.findStudentsWithNotClass());
-        model.addAttribute("subjectsForAdding", classService.findSubjectsWithNotClass());
         return "admin/classes/classes-show";
     }
 

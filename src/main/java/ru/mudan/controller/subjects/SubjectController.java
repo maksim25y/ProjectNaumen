@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.mudan.dto.subjects.SubjectDTO;
+import ru.mudan.dto.subjects.SubjectCreateDTO;
+import ru.mudan.dto.subjects.SubjectUpdateDTO;
+import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.subjects.SubjectService;
 
 @Controller
@@ -16,6 +18,7 @@ public class SubjectController {
 
     private final String REDIRECT_SUBJECTS_ALL = "redirect:/subjects/all";
     private final SubjectService subjectService;
+    private final ClassService classService;
 
     @GetMapping("/all")
     public String all(Model model) {
@@ -30,12 +33,13 @@ public class SubjectController {
     }
 
     @GetMapping("/add")
-    public String createSubject() {
+    public String createSubject(Model model) {
+        model.addAttribute("classes", classService.findAll());
         return "admin/subjects/subjects-add";
     }
 
     @PostMapping
-    public String save(@Valid SubjectDTO subjectDTO) {
+    public String save(@Valid SubjectCreateDTO subjectDTO) {
         subjectService.save(subjectDTO);
         return REDIRECT_SUBJECTS_ALL;
     }
@@ -47,7 +51,7 @@ public class SubjectController {
     }
 
     @PutMapping("/{id}")
-    public String update(@Valid SubjectDTO subjectDTO, @PathVariable Long id) {
+    public String update(@Valid SubjectUpdateDTO subjectDTO, @PathVariable Long id) {
         subjectService.update(subjectDTO, id);
         return "redirect:/subjects/" + id;
     }
