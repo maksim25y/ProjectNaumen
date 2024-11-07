@@ -11,6 +11,7 @@ import ru.mudan.domain.repositories.HomeworkRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.homework.HomeworkCreateDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
+import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 
 @Service
 @Transactional
@@ -19,7 +20,6 @@ import ru.mudan.dto.homework.HomeworkDTO;
 public class HomeworkService {
 
     private final String HOMEWORK_NOT_FOUND = "Homework not found";
-    private final String CLASS_NOT_FOUND = "Class not found";
     private final String SUBJECT_NOT_FOUND = "Subject not found";
 
     private final HomeworkRepository homeworkRepository;
@@ -28,7 +28,7 @@ public class HomeworkService {
 
     public List<HomeworkDTO> findAllByClassAndSubject(Long classId, Long subjectId) {
         var foundClass = classRepository.findById(classId)
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+                .orElseThrow(() -> new ClassEntityNotFoundException(classId));
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
 
@@ -47,7 +47,7 @@ public class HomeworkService {
 
     public void save(HomeworkCreateDTO hwDTO) {
         var foundClass = classRepository.findById(hwDTO.classId())
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+                .orElseThrow(() -> new ClassEntityNotFoundException(hwDTO.classId()));
         var foundSubject = subjectsRepository.findById(hwDTO.subjectId())
                 .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
 

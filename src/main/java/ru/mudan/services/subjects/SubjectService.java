@@ -10,14 +10,14 @@ import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.subjects.SubjectUpdateDTO;
-import ru.mudan.exceptions.SubjectAlreadyExistsException;
+import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
+import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 
 @Service
-@SuppressWarnings("MemberName")
+@SuppressWarnings({"MemberName", "MagicNumber"})
 @RequiredArgsConstructor
 public class SubjectService {
 
-    private final String CLASS_NOT_FOUND = "Class not found";
     private final String SUBJECT_ALREADY_EXIST = "Subject already exists";
     private final String SUBJECT_NOT_FOUND = "Subject not found";
     private final SubjectsRepository subjectsRepository;
@@ -53,7 +53,7 @@ public class SubjectService {
 
     public void save(SubjectCreateDTO request) {
         var classForSubject = classRepository.findById(request.classId())
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+                .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
 
         var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
 

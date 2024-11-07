@@ -13,6 +13,7 @@ import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.schedule.ScheduleCreateDTO;
 import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.dto.schedule.ScheduleUpdateDTO;
+import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.util.ScheduleUtil;
 
 @Service
@@ -21,7 +22,6 @@ import ru.mudan.util.ScheduleUtil;
 @Transactional
 public class ScheduleService {
 
-    private final String CLASS_NOT_FOUND = "Class not found";
     private final String SUBJECT_NOT_FOUND = "Subject not found";
     private final String SCHEDULE_NOT_FOUND = "Schedule not found";
     private final ScheduleRepository scheduleRepository;
@@ -31,7 +31,7 @@ public class ScheduleService {
 
     public List<ScheduleDTO> findAllSchedulesForClass(Long classId) {
         var foundClass = classRepository.findById(classId)
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+                .orElseThrow(() -> new ClassEntityNotFoundException(classId));
         var listOfSchedules = foundClass.getSchedules();
         listOfSchedules.sort(Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime));
 
@@ -66,7 +66,7 @@ public class ScheduleService {
         var subjectForSchedule = subjectsRepository.findById(request.subjectId())
                 .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
         var classForSchedule = classRepository.findById(request.classId())
-                .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
+                .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
 
         var schedule = new Schedule(
                 request.dayOfWeek(),

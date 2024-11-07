@@ -7,7 +7,7 @@ import ru.mudan.domain.entity.users.*;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
-import ru.mudan.exceptions.UserAlreadyExistsException;
+import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 
 @Service
 @RequiredArgsConstructor

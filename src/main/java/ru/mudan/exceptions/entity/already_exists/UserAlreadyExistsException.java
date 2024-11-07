@@ -1,4 +1,4 @@
-package ru.mudan.exceptions;
+package ru.mudan.exceptions.entity.already_exists;
 
 public class UserAlreadyExistsException extends RuntimeException {
 

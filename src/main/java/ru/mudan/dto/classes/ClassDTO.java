@@ -1,8 +1,8 @@
 package ru.mudan.dto.classes;
 
 import jakarta.validation.constraints.NotBlank;
-import java.util.List;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 
