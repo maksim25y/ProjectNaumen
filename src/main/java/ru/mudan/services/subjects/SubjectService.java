@@ -71,7 +71,7 @@ public class SubjectService {
     }
 
     private String generateCode(String name, Integer classNumber, String letter) {
-        return name.substring(0, 3).toUpperCase()+classNumber+letter;
+        return name.substring(0, 3).toUpperCase() + classNumber + letter;
     }
 
     public void update(SubjectUpdateDTO request, Long id) {

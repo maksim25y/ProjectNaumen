@@ -1,14 +1,12 @@
 package ru.mudan.dto.schedule;
 
-import java.time.LocalTime;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import java.time.LocalTime;
 import org.hibernate.validator.constraints.Range;
 
 @Builder
-public record ScheduleDTORequest(
-        Long id,
+public record ScheduleCreateDTO(
         @Range(min = 1, max = 5, message = "{schedule.day.of.week.range}")
         Integer dayOfWeek,
         @NotNull(message = "{schedule.start.time.is_null}")

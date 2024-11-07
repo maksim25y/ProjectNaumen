@@ -1,8 +1,7 @@
 package ru.mudan.dto.grades;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 

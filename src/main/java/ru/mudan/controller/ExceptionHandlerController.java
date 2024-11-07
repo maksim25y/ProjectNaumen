@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class ExceptionHandlerController {
 
+    private final String ERRORS = "errors";
     private final MessageSource messageSource;
 
     @ExceptionHandler(BindException.class)
@@ -29,8 +30,8 @@ public class ExceptionHandlerController {
                 .stream()
                 .map(fieldError -> messageSource.getMessage(fieldError, locale))
                 .collect(Collectors.toList());
-        model.addAttribute("errors", errors);
-        redirectAttributes.addFlashAttribute("errors", errors);
+        model.addAttribute(ERRORS, errors);
+        redirectAttributes.addFlashAttribute(ERRORS, errors);
 
 
         String referer = request.getHeader("Referer");

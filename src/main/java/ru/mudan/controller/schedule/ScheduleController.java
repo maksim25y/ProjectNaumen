@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.mudan.dto.schedule.ScheduleDTORequest;
+import ru.mudan.dto.schedule.ScheduleCreateDTO;
+import ru.mudan.dto.schedule.ScheduleUpdateDTO;
 import ru.mudan.services.schedule.ScheduleService;
 
 @Controller
@@ -34,7 +35,7 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public String addScheduleForClass(@Valid ScheduleDTORequest request) {
+    public String addScheduleForClass(@Valid ScheduleCreateDTO request) {
         scheduleService.save(request);
         return REDIRECT_CLASSES_ALL;
     }
@@ -47,7 +48,7 @@ public class ScheduleController {
     }
 
     @PutMapping("/{id}")
-    public String updateScheduleForClass(@Valid ScheduleDTORequest request,
+    public String updateScheduleForClass(@Valid ScheduleUpdateDTO request,
                                          @PathVariable("id") Long id) {
         scheduleService.update(request, id);
         return "redirect:/schedules/" + id;

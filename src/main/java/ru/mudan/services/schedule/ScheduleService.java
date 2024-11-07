@@ -10,8 +10,9 @@ import ru.mudan.domain.entity.Schedule;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.ScheduleRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
-import ru.mudan.dto.schedule.ScheduleDTORequest;
-import ru.mudan.dto.schedule.ScheduleDTOResponse;
+import ru.mudan.dto.schedule.ScheduleCreateDTO;
+import ru.mudan.dto.schedule.ScheduleDTO;
+import ru.mudan.dto.schedule.ScheduleUpdateDTO;
 import ru.mudan.util.ScheduleUtil;
 
 @Service
@@ -28,7 +29,7 @@ public class ScheduleService {
     private final SubjectsRepository subjectsRepository;
 
 
-    public List<ScheduleDTOResponse> findAllSchedulesForClass(Long classId) {
+    public List<ScheduleDTO> findAllSchedulesForClass(Long classId) {
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new NoSuchElementException(CLASS_NOT_FOUND));
         var listOfSchedules = foundClass.getSchedules();
@@ -36,7 +37,7 @@ public class ScheduleService {
 
         return listOfSchedules
                 .stream()
-                .map(sch -> ScheduleDTOResponse
+                .map(sch -> ScheduleDTO
                         .builder()
                         .id(sch.getId())
                         .numberOfClassRoom(sch.getNumberOfClassroom())
@@ -47,11 +48,11 @@ public class ScheduleService {
                 .toList();
     }
 
-    public ScheduleDTOResponse findById(Long id) {
+    public ScheduleDTO findById(Long id) {
         var foundSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
 
-        return ScheduleDTOResponse
+        return ScheduleDTO
                 .builder()
                 .id(foundSchedule.getId())
                 .numberOfClassRoom(foundSchedule.getNumberOfClassroom())
@@ -61,7 +62,7 @@ public class ScheduleService {
                 .build();
     }
 
-    public void save(ScheduleDTORequest request) {
+    public void save(ScheduleCreateDTO request) {
         var subjectForSchedule = subjectsRepository.findById(request.subjectId())
                 .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
         var classForSchedule = classRepository.findById(request.classId())
@@ -78,7 +79,7 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
     }
 
-    public void update(ScheduleDTORequest request, Long id) {
+    public void update(ScheduleUpdateDTO request, Long id) {
         var foundSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
 
