@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
+import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.subjects.SubjectUpdateDTO;
@@ -88,6 +89,35 @@ public class SubjectService {
         var foundSubject = subjectsRepository
                 .findById(id).orElseThrow(() -> new SubjectNotFoundException(id));
         subjectsRepository.delete(foundSubject);
+    }
+
+    public List<SubjectDTO> findSubjectsWithNotClass() {
+        return subjectsRepository.findAllByClassEntity(null)
+                .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
+    }
+
+    public List<SubjectDTO> findAllSubjectsForClass(Long id) {
+        var foundClass = classRepository.findById(id)
+                .orElseThrow(() -> new ClassEntityNotFoundException(id));
+
+        return foundClass.getSubjects()
+                .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
     }
 
     private void checkSubjectAlreadyExistsByCode(String code) {

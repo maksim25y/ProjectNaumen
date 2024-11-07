@@ -2,6 +2,7 @@ package ru.mudan.services.classes;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.ClassEntity;
@@ -20,6 +21,8 @@ import ru.mudan.services.CrudService;
 @Transactional
 public class ClassService implements CrudService<ClassDTO> {
 
+    @Value("${size.of.code}")
+    private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
@@ -53,7 +56,6 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public void save(ClassDTO request) {
-        //TODO - метод через транзакции, так как если id не верный у школьника, то надо откат
         checkClassAlreadyExists(request);
 
         var classEntity = new ClassEntity(
@@ -61,25 +63,7 @@ public class ClassService implements CrudService<ClassDTO> {
                 request.number(),
                 request.description());
 
-        var savedClass = classRepository.save(classEntity);
-
-        if (request.studentsIds() != null) {
-            request.studentsIds()
-                    .forEach(id -> {
-                        var student = studentRepository.findById(id).get();
-                        student.setClassEntity(savedClass);
-                        studentRepository.save(student);
-                    });
-        }
-
-        if (request.subjectsIds() != null) {
-            request.subjectsIds()
-                    .forEach(id -> {
-                    var subject = subjectsRepository.findById(id).get();
-                    subject.setClassEntity(savedClass);
-                    subjectsRepository.save(subject);
-                    });
-        }
+        classRepository.save(classEntity);
     }
 
     @Override
@@ -91,6 +75,18 @@ public class ClassService implements CrudService<ClassDTO> {
         foundClass.setLetter(request.letter());
         foundClass.setNumber(request.number());
         foundClass.setDescription(request.description());
+
+        var subjectsForClass = foundClass.getSubjects();
+
+        subjectsForClass.forEach(sb -> {
+            var code = sb.getCode().substring(0,
+                    sizeOfPartFromSubjectNameForSubjectCode)
+                    + foundClass.getNumber()
+                    + foundClass.getLetter();
+            sb.setCode(code);
+            subjectsRepository.save(sb);
+        });
+
         classRepository.save(foundClass);
     }
 
@@ -99,64 +95,6 @@ public class ClassService implements CrudService<ClassDTO> {
         findClassEntityById(id);
 
         classRepository.deleteById(id);
-    }
-
-    public List<StudentDTO> findAllStudentsForClass(ClassDTO request) {
-        var foundClass = findClassEntityById(request.id());
-
-        return foundClass.getStudents()
-                .stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .build())
-                .toList();
-    }
-
-    public List<SubjectDTO> findAllSubjectsForClass(ClassDTO request) {
-        var foundClass = findClassEntityById(request.id());
-
-        return foundClass.getSubjects()
-                .stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .name(sb.getName())
-                        .build())
-                .toList();
-    }
-
-    public List<StudentDTO> findStudentsWithNotClass() {
-        return studentRepository.findAllByClassEntity(null)
-                .stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .build())
-                .toList();
-    }
-
-    public List<SubjectDTO> findSubjectsWithNotClass() {
-        return subjectsRepository.findAllByClassEntity(null)
-                .stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .name(sb.getName())
-                        .build())
-                .toList();
     }
 
     private void checkClassAlreadyExists(ClassDTO request) {

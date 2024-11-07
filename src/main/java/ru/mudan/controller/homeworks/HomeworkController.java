@@ -24,7 +24,7 @@ public class HomeworkController {
     private final SubjectService subjectService;
 
     @GetMapping("/all/{classId}")
-    public String allHomeworks(Model model,
+    public String getPageWithInfoAboutAllHomeworksWithSubjectIdAndClassId(Model model,
                                @PathVariable Long classId,
                                @RequestParam Long subjectId) {
         model.addAttribute("homeworks", homeworkService.findAllByClassAndSubject(classId, subjectId));
@@ -32,13 +32,13 @@ public class HomeworkController {
     }
 
     @PostMapping
-    public String addHomework(@Valid HomeworkCreateDTO homeworkDTO) {
+    public String createNewHomework(@Valid HomeworkCreateDTO homeworkDTO) {
         homeworkService.save(homeworkDTO);
         return REDIRECT_CLASSES_ALL;
     }
 
     @GetMapping("/{id}")
-    public String getHomeworkById(@PathVariable("id") Long id, Model model) {
+    public String getPageWithInfoAboutHomeworkById(@PathVariable("id") Long id, Model model) {
         var foundHomework = homeworkService.findById(id);
         model.addAttribute(HOMEWORK, homeworkService.findById(id));
         model.addAttribute("class", classService.findById(foundHomework.classId()));
@@ -47,7 +47,7 @@ public class HomeworkController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editHomework(@PathVariable("id") Long id, Model model) {
+    public String getPageForEditingHomework(@PathVariable("id") Long id, Model model) {
         model.addAttribute(HOMEWORK, homeworkService.findById(id));
         return "admin/homeworks/homeworks-edit";
     }

@@ -27,8 +27,7 @@ public class GradesService {
 
         var grades = foundStudent.getGrades();
 
-        return grades
-                .stream()
+        return grades.stream()
                 .map(grade -> GradeDTO
                         .builder()
                         .id(grade.getId())
@@ -50,8 +49,7 @@ public class GradesService {
 
         var grades = gradeRepository.findAllByStudentAndSubject(foundStudent, foundSubject);
 
-        return grades
-                .stream()
+        return grades.stream()
                 .map(grade -> GradeDTO
                         .builder()
                         .id(grade.getId())

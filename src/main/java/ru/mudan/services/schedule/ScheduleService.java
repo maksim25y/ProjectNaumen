@@ -26,7 +26,6 @@ public class ScheduleService {
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
 
-
     public List<ScheduleDTO> findAllSchedulesForClass(Long classId) {
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));

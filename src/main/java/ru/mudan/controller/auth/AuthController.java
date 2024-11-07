@@ -39,22 +39,22 @@ public class AuthController {
     }
 
     @GetMapping("/admin")
-    public String registerAdmin() {
+    public String getPageForRegisteringAdmin() {
         return "registration/registration-admin";
     }
 
     @GetMapping("/teacher")
-    public String registerTeacher() {
+    public String  getPageForRegisteringTeacher() {
         return "registration/registration-teacher";
     }
 
     @GetMapping("/parent")
-    public String registerParent() {
+    public String  getPageForRegisteringAdminParent() {
         return "registration/registration-parent";
     }
 
     @GetMapping("/student")
-    public String registerStudent() {
+    public String  getPageForRegisteringAdminStudent() {
         return "registration/registration-student";
     }
 

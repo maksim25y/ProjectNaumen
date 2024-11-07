@@ -1,8 +1,12 @@
 package ru.mudan.exceptions.entity.already_exists;
 
-public class UserAlreadyExistsException extends RuntimeException {
+import lombok.EqualsAndHashCode;
+import ru.mudan.exceptions.base.ApplicationConflictException;
 
-    public UserAlreadyExistsException(String message) {
-        super(message);
+@EqualsAndHashCode(callSuper = true)
+public class UserAlreadyExistsException extends ApplicationConflictException {
+
+    public UserAlreadyExistsException(String email) {
+        super("user.already.exists", new Object[]{email});
     }
 }

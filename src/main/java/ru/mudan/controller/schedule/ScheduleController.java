@@ -19,7 +19,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/all/{classId}")
-    public String all(
+    public String getPageWithInfoAboutAllSchedulesForClass(
             @PathVariable("classId") Long classId,
             Model model) {
         model.addAttribute("schedules", scheduleService.findAllSchedulesForClass(classId));
@@ -27,7 +27,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/{id}")
-    public String findById(
+    public String getPageWithInfoAboutScheduleById(
             @PathVariable("id") Long id,
             Model model) {
         model.addAttribute("schedule", scheduleService.findById(id));
@@ -41,7 +41,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") Long id,
+    public String getPageForEditingSchedule(@PathVariable("id") Long id,
                        Model model) {
         model.addAttribute("schedule", scheduleService.findById(id));
         return "schedule/schedule-class-edit";
@@ -55,7 +55,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id) {
+    public String deleteSchedule(@PathVariable("id") Long id) {
         scheduleService.deleteById(id);
         return REDIRECT_CLASSES_ALL;
     }

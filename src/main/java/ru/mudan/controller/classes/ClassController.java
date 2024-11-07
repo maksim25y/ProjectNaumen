@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.services.classes.ClassService;
+import ru.mudan.services.students.StudentService;
+import ru.mudan.services.subjects.SubjectService;
 
 @Controller
 @RequestMapping("/classes")
@@ -16,52 +18,54 @@ public class ClassController {
 
     private final String REDIRECT_CLASSES_ALL = "redirect:/classes/all";
     private final ClassService classService;
+    private final SubjectService subjectService;
+    private final StudentService studentService;
 
     @GetMapping("/all")
-    public String getAllClasses(Model model) {
+    public String getPageWithInfoAboutAllClasses(Model model) {
         model.addAttribute("classes", classService.findAll());
         return "admin/classes/classes-index";
     }
 
     @GetMapping("/{id}")
-    public String getClassInfo(Model model, @PathVariable Long id) {
+    public String getPageWithInfoAboutClassById(Model model, @PathVariable Long id) {
         var classDTO = classService.findById(id);
         model.addAttribute("cl", classService.findById(id));
-        model.addAttribute("students", classService.findAllStudentsForClass(classDTO));
-        model.addAttribute("subjects", classService.findAllSubjectsForClass(classDTO));
-        model.addAttribute("studentsForAdding", classService.findStudentsWithNotClass());
+        model.addAttribute("students", studentService.findAllStudentsForClass(classDTO.id()));
+        model.addAttribute("subjects", subjectService.findAllSubjectsForClass(classDTO.id()));
+        model.addAttribute("studentsForAdding", studentService.findStudentsWithNotClass());
         return "admin/classes/classes-show";
     }
 
     @PostMapping("/{classId}/students")
-    public String addStudent(@PathVariable Long classId,
+    public String addStudentToClass(@PathVariable Long classId,
                              ClassDTO classDTO) {
         classService.addStudentsToClass(classId, classDTO.studentsIds());
         return "redirect:/classes/" + classId;
     }
 
     @PostMapping("/{classId}/subjects")
-    public String addSubject(@PathVariable Long classId,
+    public String addSubjectToClass(@PathVariable Long classId,
                              ClassDTO classDTO) {
         classService.addSubjectsToClass(classId, classDTO.subjectsIds());
         return "redirect:/classes/" + classId;
     }
 
     @GetMapping("/add")
-    public String createClass(Model model) {
-        model.addAttribute("students", classService.findStudentsWithNotClass());
-        model.addAttribute("subjects", classService.findSubjectsWithNotClass());
+    public String getPageForCreatingNewClass(Model model) {
+        model.addAttribute("students", studentService.findStudentsWithNotClass());
+        model.addAttribute("subjects", subjectService.findSubjectsWithNotClass());
         return "admin/classes/classes-add";
     }
 
     @PostMapping
-    public String createClass(@Valid ClassDTO classDTO) {
+    public String createNewClass(@Valid ClassDTO classDTO) {
         classService.save(classDTO);
         return REDIRECT_CLASSES_ALL;
     }
 
     @GetMapping("/{id}/edit")
-    public String editClass(@PathVariable Long id, Model model) {
+    public String getPageForEditingClass(@PathVariable Long id, Model model) {
         model.addAttribute("cl", classService.findById(id));
         return "admin/classes/classes-edit";
     }
