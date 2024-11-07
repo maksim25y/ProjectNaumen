@@ -105,6 +105,10 @@
                                th:text="${studentForAdding.lastname()+' '+studentForAdding.firstname()+' '+studentForAdding.patronymic()+' '+studentForAdding.email()}">
                         </label>
                     </div>
+                    <div th:each="error : ${errors}">
+                        <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                    </div>
                     <input type="submit" class="btn btn-success" value="Добавить школьников в класс"/>
                 </form>
             </div>
@@ -174,6 +178,10 @@
                                th:text="${subjectForAdding.name()+' '+subjectForAdding.code()+' '+subjectForAdding.type()}">
                         </label>
                     </div>
+                    <div th:each="error : ${errors}">
+                        <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                    </div>
                     <input type="submit" class="btn btn-success" value="Добавить предметы классу"/>
                 </form>
             </div>
@@ -215,6 +223,10 @@
                     <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId" id="subjectId"
                             th:text="${subject.name()}"></option>
                 </select>
+                <div th:each="error : ${errors}">
+                    <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                </div>
                 <input type="submit" class="btn btn-success" value="Создать ДЗ"/>
             </form>
         </div>
@@ -260,6 +272,14 @@
                             <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId"
                                     th:text="${subject.name()}"></option>
                         </select>
+                        <div th:each="error : ${errors}">
+                            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                        </div>
+                        <div th:each="error : ${errors}">
+                            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                        </div>
                         <input type="submit" class="btn btn-success" value="Создать ячейку расписания"/>
                     </form>
                 </div>
@@ -294,6 +314,10 @@
                 <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId"
                         th:text="${subject.name()}"></option>
             </select>
+            <div th:each="error : ${errors}">
+                <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+            </div>
             <input type="submit" class="btn btn-success" value="Поставить оценку"/>
         </form>
     </div>

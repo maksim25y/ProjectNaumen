@@ -1,5 +1,6 @@
 package ru.mudan.controller.auth;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,25 +15,25 @@ public class AuthController {
     private final RegistrationService registrationService;
 
     @PostMapping("/admin")
-    public String registerAdmin(RegisterUserDTO registerUserDTO) {
+    public String registerAdmin(@Valid RegisterUserDTO registerUserDTO) {
         registrationService.registerAdmin(registerUserDTO);
         return "redirect:/registration/admin";
     }
 
     @PostMapping("/teacher")
-    public String registerTeacher(RegisterUserDTO registerUserDTO) {
+    public String registerTeacher(@Valid RegisterUserDTO registerUserDTO) {
         registrationService.registerTeacher(registerUserDTO);
         return "redirect:/registration/teacher";
     }
 
     @PostMapping("/parent")
-    public String registerParent(RegisterUserDTO registerUserDTO) {
+    public String registerParent(@Valid RegisterUserDTO registerUserDTO) {
         registrationService.registerParent(registerUserDTO);
         return "redirect:/registration/parent";
     }
 
     @PostMapping("/student")
-    public String registerStudent(RegisterUserDTO registerUserDTO) {
+    public String registerStudent(@Valid RegisterUserDTO registerUserDTO) {
         registrationService.registerStudent(registerUserDTO);
         return "redirect:/registration/student";
     }

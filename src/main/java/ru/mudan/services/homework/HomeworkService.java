@@ -9,7 +9,7 @@ import ru.mudan.domain.entity.Homework;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.HomeworkRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
-import ru.mudan.dto.HomeworkDTO;
+import ru.mudan.dto.homework.HomeworkDTO;
 
 @Service
 @Transactional

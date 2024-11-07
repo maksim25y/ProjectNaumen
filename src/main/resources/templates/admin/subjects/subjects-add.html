@@ -28,6 +28,10 @@
             <label for="description">Введите описание предмета: </label>
             <input class="form-control" type="text" name="description" id="description"/>
         </div>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+        </div>
         <input type="submit" class="btn btn-success" value="Создать предмет"/>
     </form>
     <hr>

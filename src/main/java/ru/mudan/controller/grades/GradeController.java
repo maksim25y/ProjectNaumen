@@ -1,5 +1,6 @@
 package ru.mudan.controller.grades;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,7 @@ public class GradeController {
     }
 
     @PostMapping
-    public String saveGrade(GradeDTO gradeDTO) {
+    public String saveGrade(@Valid GradeDTO gradeDTO) {
         gradesService.save(gradeDTO);
         return "redirect:/classes/all";
     }
@@ -51,7 +52,7 @@ public class GradeController {
     }
 
     @PutMapping("/{id}")
-    public String updateGrade(@PathVariable Long id, GradeDTO gradeDTO) {
+    public String updateGrade(@PathVariable Long id, @Valid GradeDTO gradeDTO) {
         gradesService.update(gradeDTO, id);
         return "redirect:/grades/" + id;
     }

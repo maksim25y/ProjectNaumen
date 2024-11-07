@@ -26,10 +26,10 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/registration/**",
                                         "/subjects/**",
-                                        "classes/**",
-                                        "schedules/**",
-                                        "grades/**",
-                                        "homeworks/**").hasAnyRole("ADMIN")
+                                        "/classes/**",
+                                        "/schedules/**",
+                                        "/grades/**",
+                                        "/homeworks/**").hasAnyRole("ADMIN")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);

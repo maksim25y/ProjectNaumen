@@ -7,5 +7,5 @@ import ru.mudan.domain.entity.ClassEntity;
 
 @Repository
 public interface ClassRepository extends JpaRepository<ClassEntity, Long> {
-    Optional<ClassEntity> findByLetterAndNumber(Character letter, Integer number);
+    Optional<ClassEntity> findByLetterAndNumber(String letter, Integer number);
 }

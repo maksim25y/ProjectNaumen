@@ -1,10 +1,11 @@
 package ru.mudan.controller.homeworks;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.mudan.dto.HomeworkDTO;
+import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.subjects.SubjectService;
@@ -30,7 +31,7 @@ public class HomeworkController {
     }
 
     @PostMapping
-    public String addHomework(HomeworkDTO homeworkDTO) {
+    public String addHomework(@Valid HomeworkDTO homeworkDTO) {
         homeworkService.save(homeworkDTO);
         return REDIRECT_CLASSES_ALL;
     }
@@ -57,7 +58,7 @@ public class HomeworkController {
     }
 
     @PutMapping("/{id}")
-    public String updateHomework(HomeworkDTO homeworkDTO, @PathVariable("id") Long id) {
+    public String updateHomework(@Valid HomeworkDTO homeworkDTO, @PathVariable("id") Long id) {
         homeworkService.update(id, homeworkDTO);
         return "redirect:/homeworks/" + id;
     }

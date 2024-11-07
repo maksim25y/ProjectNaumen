@@ -55,7 +55,7 @@ public class RegistrationService {
 
         var appUser = new AppUser(
                 savedTeacher.getId(),
-                Role.ROLE_ADMIN,
+                Role.ROLE_TEACHER,
                 savedTeacher.getEmail()
         );
 
@@ -76,7 +76,7 @@ public class RegistrationService {
 
         var appUser = new AppUser(
                 savedParent.getId(),
-                Role.ROLE_ADMIN,
+                Role.ROLE_PARENT,
                 savedParent.getEmail()
         );
 
@@ -97,7 +97,7 @@ public class RegistrationService {
 
         var appUser = new AppUser(
                 savedStudent.getId(),
-                Role.ROLE_ADMIN,
+                Role.ROLE_STUDENT,
                 savedStudent.getEmail()
         );
 

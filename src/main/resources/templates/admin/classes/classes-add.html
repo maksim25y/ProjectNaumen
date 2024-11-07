@@ -38,6 +38,10 @@
                    th:text="${subject.name()+' '+subject.type()+' '+subject.code()}">
             </label>
         </div>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+        </div>
 
         <input type="submit" class="btn btn-success" value="Создать класс"/>
     </form>

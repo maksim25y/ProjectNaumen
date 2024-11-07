@@ -1,5 +1,6 @@
 package ru.mudan.controller.classes;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +56,7 @@ public class ClassController {
     }
 
     @PostMapping
-    public String createClass(ClassDTO classDTO) {
+    public String createClass(@Valid ClassDTO classDTO) {
         classService.save(classDTO);
         return REDIRECT_CLASSES_ALL;
     }
@@ -67,7 +68,7 @@ public class ClassController {
     }
 
     @PutMapping("/{id}")
-    public String updateClass(@PathVariable Long id, ClassDTO classDTO) {
+    public String updateClass(@PathVariable Long id, @Valid ClassDTO classDTO) {
         classService.update(classDTO, id);
         return "redirect:/classes/" + id;
     }

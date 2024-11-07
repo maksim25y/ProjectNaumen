@@ -20,7 +20,7 @@ public class ClassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "letter")
-    private Character letter;
+    private String letter;
     @Column(name = "number")
     private Integer number;
     @Column(name = "description")
@@ -32,7 +32,7 @@ public class ClassEntity {
     @OneToMany(mappedBy = "classEntity")
     private List<Schedule> schedules;
 
-    public ClassEntity(Character letter, Integer number, String description) {
+    public ClassEntity(String letter, Integer number, String description) {
         this.letter = letter;
         this.number = number;
         this.description = description;

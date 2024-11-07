@@ -1,5 +1,6 @@
 package ru.mudan.controller.subjects;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class SubjectController {
     }
 
     @PostMapping
-    public String save(SubjectDTO subjectDTO) {
+    public String save(@Valid SubjectDTO subjectDTO) {
         subjectService.save(subjectDTO);
         return REDIRECT_SUBJECTS_ALL;
     }
@@ -46,7 +47,7 @@ public class SubjectController {
     }
 
     @PutMapping("/{id}")
-    public String update(SubjectDTO subjectDTO, @PathVariable Long id) {
+    public String update(@Valid SubjectDTO subjectDTO, @PathVariable Long id) {
         subjectService.update(subjectDTO, id);
         return "redirect:/subjects/" + id;
     }
