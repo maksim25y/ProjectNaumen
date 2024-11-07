@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
@@ -18,7 +19,8 @@ import ru.mudan.exceptions.base.ApplicationRuntimeException;
 @SuppressWarnings({"MultipleStringLiterals", "MemberName"})
 public class ExceptionHandlerController {
 
-    private final String ERRORS = "errors";
+    @Value("${attribute.error}")
+    private String nameOfAttributeForErrors;
     private final MessageSource messageSource;
 
     @ExceptionHandler(BindException.class)
@@ -33,15 +35,15 @@ public class ExceptionHandlerController {
                 .map(fieldError -> messageSource.getMessage(fieldError, locale))
                 .collect(Collectors.toList());
 
-        model.addAttribute(ERRORS, errors);
-        redirectAttributes.addFlashAttribute(ERRORS, errors);
+        model.addAttribute(nameOfAttributeForErrors, errors);
+        redirectAttributes.addFlashAttribute(nameOfAttributeForErrors, errors);
 
         String referer = request.getHeader("Referer");
 
         if (referer != null) {
             return "redirect:" + referer;
         } else {
-            return "errors/test-400";
+            return "error/400";
         }
     }
 
@@ -56,7 +58,8 @@ public class ExceptionHandlerController {
         model.addAttribute("error", error);
         redirectAttributes.addFlashAttribute("error", error);
 
-        return "errors/error";
+        return "error/error-app";
     }
+
 
 }

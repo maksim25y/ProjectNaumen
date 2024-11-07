@@ -1,10 +1,10 @@
 package ru.mudan.services.students;
 
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.dto.student.StudentDTO;
+import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class StudentService {
 
     public StudentDTO findById(Long id) {
         var foundStudent =  studentRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Student not found"));
+                .orElseThrow(() -> new StudentNotFoundException(id));
 
         return StudentDTO
                 .builder()

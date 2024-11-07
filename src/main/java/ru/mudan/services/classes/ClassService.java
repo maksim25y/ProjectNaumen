@@ -16,7 +16,6 @@ import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.services.CrudService;
 
 @Service
-@SuppressWarnings("MemberName")
 @RequiredArgsConstructor
 @Transactional
 public class ClassService implements CrudService<ClassDTO> {

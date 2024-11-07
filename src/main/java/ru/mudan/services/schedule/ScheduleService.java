@@ -2,7 +2,6 @@ package ru.mudan.services.schedule;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +13,15 @@ import ru.mudan.dto.schedule.ScheduleCreateDTO;
 import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.dto.schedule.ScheduleUpdateDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
+import ru.mudan.exceptions.entity.not_found.ScheduleNotFoundException;
+import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.util.ScheduleUtil;
 
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings("MemberName")
 @Transactional
 public class ScheduleService {
 
-    private final String SUBJECT_NOT_FOUND = "Subject not found";
-    private final String SCHEDULE_NOT_FOUND = "Schedule not found";
     private final ScheduleRepository scheduleRepository;
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
@@ -50,7 +48,7 @@ public class ScheduleService {
 
     public ScheduleDTO findById(Long id) {
         var foundSchedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
+                .orElseThrow(() -> new ScheduleNotFoundException(id));
 
         return ScheduleDTO
                 .builder()
@@ -64,7 +62,7 @@ public class ScheduleService {
 
     public void save(ScheduleCreateDTO request) {
         var subjectForSchedule = subjectsRepository.findById(request.subjectId())
-                .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
+                .orElseThrow(() -> new SubjectNotFoundException(request.subjectId()));
         var classForSchedule = classRepository.findById(request.classId())
                 .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
 
@@ -81,7 +79,7 @@ public class ScheduleService {
 
     public void update(ScheduleUpdateDTO request, Long id) {
         var foundSchedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
+                .orElseThrow(() -> new ScheduleNotFoundException(id));
 
         foundSchedule.setDayOfWeek(request.dayOfWeek());
         foundSchedule.setStartTime(request.startTime());
@@ -91,7 +89,7 @@ public class ScheduleService {
 
     public void deleteById(Long id) {
         var foundSchedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(SCHEDULE_NOT_FOUND));
+                .orElseThrow(() -> new ScheduleNotFoundException(id));
 
         scheduleRepository.delete(foundSchedule);
     }

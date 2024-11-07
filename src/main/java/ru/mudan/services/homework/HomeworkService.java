@@ -1,7 +1,6 @@
 package ru.mudan.services.homework;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,15 +11,13 @@ import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.homework.HomeworkCreateDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
+import ru.mudan.exceptions.entity.not_found.HomeworkNotFoundException;
+import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@SuppressWarnings("MemberName")
 public class HomeworkService {
-
-    private final String HOMEWORK_NOT_FOUND = "Homework not found";
-    private final String SUBJECT_NOT_FOUND = "Subject not found";
 
     private final HomeworkRepository homeworkRepository;
     private final ClassRepository classRepository;
@@ -30,7 +27,7 @@ public class HomeworkService {
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));
         var foundSubject = subjectsRepository.findById(subjectId)
-                .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         var listOfHomework = homeworkRepository.findByClassEntityAndSubject(foundClass, foundSubject);
         return listOfHomework
@@ -49,7 +46,7 @@ public class HomeworkService {
         var foundClass = classRepository.findById(hwDTO.classId())
                 .orElseThrow(() -> new ClassEntityNotFoundException(hwDTO.classId()));
         var foundSubject = subjectsRepository.findById(hwDTO.subjectId())
-                .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
+                .orElseThrow(() -> new SubjectNotFoundException(hwDTO.subjectId()));
 
         var homework = new Homework(hwDTO.title(), hwDTO.description(), hwDTO.deadline());
         homework.setClassEntity(foundClass);
@@ -60,7 +57,7 @@ public class HomeworkService {
 
     public HomeworkDTO findById(Long id) {
         var foundHomework = homeworkRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(HOMEWORK_NOT_FOUND));
+                .orElseThrow(() -> new HomeworkNotFoundException(id));
 
         return HomeworkDTO
                 .builder()
@@ -75,13 +72,13 @@ public class HomeworkService {
 
     public void delete(Long id) {
         var foundHomework = homeworkRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(HOMEWORK_NOT_FOUND));
+                .orElseThrow(() -> new HomeworkNotFoundException(id));
         homeworkRepository.delete(foundHomework);
     }
 
     public void update(Long id, HomeworkDTO homeworkDTO) {
         var foundHomework = homeworkRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(HOMEWORK_NOT_FOUND));
+                .orElseThrow(() -> new HomeworkNotFoundException(id));
 
         foundHomework.setTitle(homeworkDTO.title());
         foundHomework.setDescription(homeworkDTO.description());

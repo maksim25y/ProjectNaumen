@@ -1,7 +1,6 @@
 package ru.mudan.services.grades;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Grade;
@@ -9,20 +8,21 @@ import ru.mudan.domain.repositories.GradeRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.grades.GradeDTO;
+import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
+import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
+import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings("MultipleStringLiterals")
 public class GradesService {
 
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
 
-
     public List<GradeDTO> findAllGradesForStudent(Long studentId) {
         var foundStudent = studentRepository.findById(studentId)
-                .orElseThrow(() -> new NoSuchElementException("Student not found"));
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
 
 
         var grades = foundStudent.getGrades();
@@ -43,10 +43,10 @@ public class GradesService {
 
     public List<GradeDTO> findAllGradesForStudentWithSubject(Long studentId, Long subjectId) {
         var foundStudent = studentRepository.findById(studentId)
-                .orElseThrow(() -> new NoSuchElementException("Student not found"));
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
 
         var foundSubject = subjectsRepository.findById(subjectId)
-                .orElseThrow(() -> new NoSuchElementException("Subject not found"));
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         var grades = gradeRepository.findAllByStudentAndSubject(foundStudent, foundSubject);
 
@@ -66,7 +66,7 @@ public class GradesService {
 
     public GradeDTO findById(Long id) {
         var foundGrade = gradeRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Grade not found"));
+                .orElseThrow(() -> new GradeNotFoundException(id));
 
         return GradeDTO
                 .builder()
@@ -79,10 +79,10 @@ public class GradesService {
 
     public void save(GradeDTO request) {
         var foundStudent = studentRepository.findById(request.studentId())
-                .orElseThrow(() -> new NoSuchElementException("Student not found"));
+                .orElseThrow(() -> new StudentNotFoundException(request.studentId()));
 
         var foundSubject = subjectsRepository.findById(request.subjectId())
-                .orElseThrow(() -> new NoSuchElementException("Subject not found"));
+                .orElseThrow(() -> new SubjectNotFoundException(request.subjectId()));
 
         var grade = new Grade(
                 request.mark(),
@@ -97,7 +97,7 @@ public class GradesService {
 
     public void update(GradeDTO request, Long id) {
         var foundGrade = gradeRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Grade not found"));
+                .orElseThrow(() -> new GradeNotFoundException(id));
 
         foundGrade.setMark(request.mark());
         foundGrade.setDateOfMark(request.dateOfMark());
@@ -107,7 +107,7 @@ public class GradesService {
 
     public void deleteById(Long id) {
         var foundGrade = gradeRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Grade not found"));
+                .orElseThrow(() -> new GradeNotFoundException(id));
 
         gradeRepository.delete(foundGrade);
     }
