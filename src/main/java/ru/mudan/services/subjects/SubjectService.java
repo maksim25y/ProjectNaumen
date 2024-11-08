@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
-import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.subjects.SubjectUpdateDTO;

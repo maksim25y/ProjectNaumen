@@ -10,8 +10,6 @@ import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.classes.ClassDTO;
-import ru.mudan.dto.student.StudentDTO;
-import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.exceptions.entity.already_exists.ClassAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.services.CrudService;

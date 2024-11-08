@@ -1,15 +1,13 @@
 package ru.mudan.services.students;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.StudentRepository;
-import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
