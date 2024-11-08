@@ -24,6 +24,10 @@
             <label for="deadline">Введите новый срок сдачи ДЗ: </label>
             <input type="date" id="deadline" name="deadline" th:value="${homework.deadline}"/>
         </div>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+        </div>
         <input type="submit" class="btn btn-info" value="Изменить ДЗ"/>
     </form>
     <hr>

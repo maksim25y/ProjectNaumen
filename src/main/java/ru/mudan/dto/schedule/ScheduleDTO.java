@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import lombok.Builder;
 
 @Builder
-public record ScheduleDTOResponse(
+public record ScheduleDTO(
         Long id,
         String dayOfWeek,
         LocalTime startTime,

@@ -17,3 +17,14 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+size:
+  of:
+    code: 3 #    Длина части названия предмета в коде для предмета
+attribute:
+  error: errors #    Название атрибута, в котором содержатся ошибки в Model

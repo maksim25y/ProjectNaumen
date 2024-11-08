@@ -8,6 +8,7 @@ public record SubjectDTO(
         String name,
         String code,
         String type,
-        String description
+        String description,
+        Long classId
 ) {
 }

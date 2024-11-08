@@ -1,5 +1,6 @@
 package ru.mudan.controller.grades;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,7 @@ public class GradeController {
     private final StudentService studentService;
 
     @GetMapping("/all/{studentId}")
-    public String all(Model model, @PathVariable Long studentId,
+    public String getPageWithInfoAboutAllGrades(Model model, @PathVariable Long studentId,
                       @RequestParam(value = "subjectId", required = false) Long subjectId) {
         if (subjectId != null) {
             model.addAttribute("subject", subjectService.findById(subjectId));
@@ -33,25 +34,25 @@ public class GradeController {
     }
 
     @GetMapping("/{id}")
-    public String getGradeById(@PathVariable Long id, Model model) {
+    public String getPageWithInfoAboutGradeById(@PathVariable Long id, Model model) {
         model.addAttribute("grade", gradesService.findById(id));
         return "grades/grades-show";
     }
 
     @PostMapping
-    public String saveGrade(GradeDTO gradeDTO) {
+    public String createNewGrade(@Valid GradeDTO gradeDTO) {
         gradesService.save(gradeDTO);
         return "redirect:/classes/all";
     }
 
     @GetMapping("/{id}/edit")
-    public String editGrade(@PathVariable Long id, Model model) {
+    public String getPageForEditingGrade(@PathVariable Long id, Model model) {
         model.addAttribute("grade", gradesService.findById(id));
         return "grades/grades-edit";
     }
 
     @PutMapping("/{id}")
-    public String updateGrade(@PathVariable Long id, GradeDTO gradeDTO) {
+    public String updateGrade(@PathVariable Long id, @Valid GradeDTO gradeDTO) {
         gradesService.update(gradeDTO, id);
         return "redirect:/grades/" + id;
     }

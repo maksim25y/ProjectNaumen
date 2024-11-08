@@ -10,6 +10,7 @@
 <body>
 <div class="container">
     <div th:insert="~{header-admin :: admin-header}"></div>
+    <h1>Регистрация нового аккаунта учителя</h1>
     <hr>
     <form class="mb-2 w-25" th:method="POST" th:action="@{/registration/teacher}">
         <div class="form-group mb-2">
@@ -36,7 +37,11 @@
             <label for="password">Введите пароль учителя: </label>
             <input class="form-control" type="password" name="password" id="password" required/>
         </div>
-        <input type="submit" class="btn btn-info" value="Регистрация"/>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+        </div>
+        <input type="submit" class="btn btn-info" value="Регистрация учителя"/>
     </form>
     <hr>
     <div th:insert="~{footer :: footer}"></div>

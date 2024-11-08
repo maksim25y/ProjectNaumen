@@ -7,7 +7,7 @@ import ru.mudan.domain.entity.users.*;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
-import ru.mudan.exceptions.UserAlreadyExistsException;
+import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class RegistrationService {
 
         var savedAdmin = adminRepository.save(admin);
 
-        var appUser = new AppUser(
+        var appUser = getAppUserByRoleUserIdAndEmail(
                 savedAdmin.getId(),
                 Role.ROLE_ADMIN,
                 savedAdmin.getEmail()
@@ -53,9 +53,9 @@ public class RegistrationService {
 
         var savedTeacher = teacherRepository.save(teacher);
 
-        var appUser = new AppUser(
+        var appUser = getAppUserByRoleUserIdAndEmail(
                 savedTeacher.getId(),
-                Role.ROLE_ADMIN,
+                Role.ROLE_TEACHER,
                 savedTeacher.getEmail()
         );
 
@@ -74,9 +74,9 @@ public class RegistrationService {
 
         var savedParent = parentRepository.save(parent);
 
-        var appUser = new AppUser(
+        var appUser = getAppUserByRoleUserIdAndEmail(
                 savedParent.getId(),
-                Role.ROLE_ADMIN,
+                Role.ROLE_PARENT,
                 savedParent.getEmail()
         );
 
@@ -95,9 +95,9 @@ public class RegistrationService {
 
         var savedStudent = studentRepository.save(student);
 
-        var appUser = new AppUser(
+        var appUser = getAppUserByRoleUserIdAndEmail(
                 savedStudent.getId(),
-                Role.ROLE_ADMIN,
+                Role.ROLE_STUDENT,
                 savedStudent.getEmail()
         );
 
@@ -107,8 +107,16 @@ public class RegistrationService {
     private void checkUserExists(String email) {
         var user = appUserRepository.findByEmail(email);
         if (user.isPresent()) {
-            throw new UserAlreadyExistsException("User already exists");
+            throw new UserAlreadyExistsException(email);
         }
+    }
+
+    private AppUser getAppUserByRoleUserIdAndEmail(Long userId, Role role, String email) {
+        return new AppUser(
+                userId,
+                role,
+                email
+        );
     }
 
     private String encodePassword(String password) {

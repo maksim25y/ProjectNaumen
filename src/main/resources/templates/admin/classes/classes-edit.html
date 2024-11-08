@@ -24,6 +24,10 @@
             <label for="letter">Введите новое описание класса: </label>
             <input class="form-control" type="text" name="description" id="description" th:value="${cl.description()}"/>
         </div>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+        </div>
         <input type="submit" class="btn btn-info" value="Изменить класс"/>
     </form>
     <hr>

@@ -1,26 +1,28 @@
 package ru.mudan.services.subjects;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
+import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
+import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
-import ru.mudan.exceptions.SubjectAlreadyExistsException;
-import ru.mudan.services.CrudService;
+import ru.mudan.dto.subjects.SubjectUpdateDTO;
+import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
+import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
+import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
 @Service
-@SuppressWarnings("MemberName")
 @RequiredArgsConstructor
-public class SubjectService implements CrudService<SubjectDTO> {
+public class SubjectService {
 
-    private final String SUBJECT_ALREADY_EXIST = "Subject already exists";
-    private final String SUBJECT_NOT_FOUND = "Subject not found";
+    @Value("${size.of.code}")
+    private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final SubjectsRepository subjectsRepository;
+    private final ClassRepository classRepository;
 
-    @Override
     public List<SubjectDTO> findAll() {
         return subjectsRepository.findAll()
                 .stream()
@@ -35,10 +37,9 @@ public class SubjectService implements CrudService<SubjectDTO> {
                 .toList();
     }
 
-    @Override
     public SubjectDTO findById(Long id) {
         var foundSubject = subjectsRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
+                .orElseThrow(() -> new SubjectNotFoundException(id));
 
         return SubjectDTO
                 .builder()
@@ -50,56 +51,83 @@ public class SubjectService implements CrudService<SubjectDTO> {
                 .build();
     }
 
-    @Override
-    public void save(SubjectDTO request) {
-        checkSubjectAlreadyExists(request.code());
+    public void save(SubjectCreateDTO request) {
+        var classForSubject = classRepository.findById(request.classId())
+                .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
+
+        var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
+
+        checkSubjectAlreadyExistsByCode(codeForSb);
 
         var subjectForSaving = new Subject(
                 request.name(),
                 request.type(),
-                request.code(),
+                codeForSb,
                 request.description());
+
+        subjectForSaving.setClassEntity(classForSubject);
 
         subjectsRepository.save(subjectForSaving);
     }
 
-    @Override
-    public void update(SubjectDTO request, Long id) {
+    private String generateCode(String name, Integer classNumber, String letter) {
+        return name.substring(0, sizeOfPartFromSubjectNameForSubjectCode).toUpperCase() + classNumber + letter;
+    }
+
+    public void update(SubjectUpdateDTO request, Long id) {
         var foundSubject = subjectsRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
+                .orElseThrow(() -> new SubjectNotFoundException(id));
 
-        checkClassAlreadyExistsAndIdNotEquals(request.code(), id);
-
-        foundSubject.setName(request.name());
         foundSubject.setType(request.type());
-        foundSubject.setCode(request.code());
         foundSubject.setDescription(request.description());
 
         subjectsRepository.save(foundSubject);
     }
 
-    @Override
     public void deleteById(Long id) {
         var foundSubject = subjectsRepository
-                .findById(id).orElseThrow(() -> new NoSuchElementException(SUBJECT_NOT_FOUND));
+                .findById(id).orElseThrow(() -> new SubjectNotFoundException(id));
         subjectsRepository.delete(foundSubject);
     }
 
-    private void checkSubjectAlreadyExists(String code) {
-        var foundSubject = subjectsRepository.findByCode(code);
-
-        if (foundSubject.isPresent()) {
-            throw new SubjectAlreadyExistsException(SUBJECT_ALREADY_EXIST);
-        }
+    public List<SubjectDTO> findSubjectsWithNotClass() {
+        return subjectsRepository.findAllByClassEntity(null)
+                .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
     }
 
-    private void checkClassAlreadyExistsAndIdNotEquals(String code, Long id) {
-        var foundSubject = subjectsRepository.findByCode(code);
+    public List<SubjectDTO> findAllSubjectsForClass(Long id) {
+        var foundClass = classRepository.findById(id)
+                .orElseThrow(() -> new ClassEntityNotFoundException(id));
 
-        if (foundSubject.isPresent()) {
-            if (!Objects.equals(foundSubject.get().getId(), id)) {
-                throw new SubjectAlreadyExistsException(SUBJECT_ALREADY_EXIST);
-            }
+        return foundClass.getSubjects()
+                .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
+    }
+
+    private void checkSubjectAlreadyExistsByCode(String code) {
+        var foundSubject = subjectsRepository.findByCode(code).orElse(null);
+
+        if (foundSubject != null) {
+            var classForSubject = foundSubject.getClassEntity();
+            throw new SubjectAlreadyExistsException(
+                    foundSubject.getName(),
+                    classForSubject.getNumber(),
+                    classForSubject.getLetter());
         }
     }
 }

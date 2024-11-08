@@ -105,6 +105,10 @@
                                th:text="${studentForAdding.lastname()+' '+studentForAdding.firstname()+' '+studentForAdding.patronymic()+' '+studentForAdding.email()}">
                         </label>
                     </div>
+                    <div th:each="error : ${errors}">
+                        <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                    </div>
                     <input type="submit" class="btn btn-success" value="Добавить школьников в класс"/>
                 </form>
             </div>
@@ -157,31 +161,6 @@
 
             </div>
         </div>
-        <p>
-            <button class="btn btn-danger" type="button" data-bs-toggle="collapse" data-bs-target="#addSubjects"
-                    aria-expanded="false" aria-controls="addSubjects">
-                Добавление предметов классу
-            </button>
-        </p>
-        <div class="collapse border border-dark rounded mb-2" id="addSubjects">
-            <div th:if="${!subjectsForAdding.isEmpty()}" class="p-3">
-                <form class="mb-2 w-25" th:method="POST" th:action="@{/classes/{classId}/subjects(classId=${cl.id()})}">
-                    <h4>Добавить предметы классу:</h4>
-                    <div class="form-check" th:each="subjectForAdding : ${subjectsForAdding}">
-                        <input class="form-check-input" type="checkbox" th:name="subjectsIds" id="subjectIds"
-                               th:value="${subjectForAdding.id()}">
-                        <label class="form-select mb-2"
-                               th:text="${subjectForAdding.name()+' '+subjectForAdding.code()+' '+subjectForAdding.type()}">
-                        </label>
-                    </div>
-                    <input type="submit" class="btn btn-success" value="Добавить предметы классу"/>
-                </form>
-            </div>
-
-            <div th:if="${subjectsForAdding.isEmpty()}" class="mb-2">
-                <h3 style="color:red">На данный момент неназначенных предметов нет</h3>
-            </div>
-        </div>
 
     </div>
     <hr>
@@ -215,6 +194,10 @@
                     <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId" id="subjectId"
                             th:text="${subject.name()}"></option>
                 </select>
+                <div th:each="error : ${errors}">
+                    <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                </div>
                 <input type="submit" class="btn btn-success" value="Создать ДЗ"/>
             </form>
         </div>
@@ -260,6 +243,14 @@
                             <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId"
                                     th:text="${subject.name()}"></option>
                         </select>
+                        <div th:each="error : ${errors}">
+                            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                        </div>
+                        <div th:each="error : ${errors}">
+                            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+                        </div>
                         <input type="submit" class="btn btn-success" value="Создать ячейку расписания"/>
                     </form>
                 </div>
@@ -294,6 +285,10 @@
                 <option th:each="subject : ${subjects}" th:value="${subject.id()}" name="subjectId"
                         th:text="${subject.name()}"></option>
             </select>
+            <div th:each="error : ${errors}">
+                <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+            </div>
             <input type="submit" class="btn btn-success" value="Поставить оценку"/>
         </form>
     </div>
