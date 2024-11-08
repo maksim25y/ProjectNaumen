@@ -92,4 +92,19 @@ public class ScheduleService {
 
         scheduleRepository.delete(foundSchedule);
     }
+
+    public List<ScheduleDTO> findAllBySubjectId(Long subjectId) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        return foundSubject.getSchedules().stream().map(sch -> ScheduleDTO
+                        .builder()
+                        .id(sch.getId())
+                        .numberOfClassRoom(sch.getNumberOfClassroom())
+                        .dayOfWeek(ScheduleUtil.days.get(sch.getDayOfWeek()))
+                        .subjectName(sch.getSubject().getName())
+                        .startTime(sch.getStartTime())
+                        .build())
+                .toList();
+    }
 }

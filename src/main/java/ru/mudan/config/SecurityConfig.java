@@ -28,8 +28,8 @@ public class SecurityConfig {
                                         "/subjects/**",
                                         "/classes/**",
                                         "/schedules/**",
-                                        "/grades/**",
-                                        "/homeworks/**").hasAnyRole("ADMIN")
+                                        "/grades/**").hasRole("ADMIN")
+                                .requestMatchers("/teacher/**").hasRole("TEACHER")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);

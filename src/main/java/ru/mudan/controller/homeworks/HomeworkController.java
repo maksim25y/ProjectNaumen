@@ -25,8 +25,8 @@ public class HomeworkController {
 
     @GetMapping("/all/{classId}")
     public String getPageWithInfoAboutAllHomeworksWithSubjectIdAndClassId(Model model,
-                               @PathVariable Long classId,
-                               @RequestParam Long subjectId) {
+                                                                          @PathVariable Long classId,
+                                                                          @RequestParam Long subjectId) {
         model.addAttribute("homeworks", homeworkService.findAllByClassAndSubject(classId, subjectId));
         return "admin/homeworks/homeworks-index";
     }

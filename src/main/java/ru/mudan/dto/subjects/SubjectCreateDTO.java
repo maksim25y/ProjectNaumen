@@ -14,6 +14,7 @@ public record SubjectCreateDTO(
         @NotBlank(message = "{subject.type.is_blank}")
         String type,
         String description,
-        Long classId
+        Long classId,
+        Long teacherId
 ) {
 }

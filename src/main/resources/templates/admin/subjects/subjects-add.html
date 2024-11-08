@@ -25,20 +25,24 @@
                 <label for="description">Введите описание предмета: </label>
                 <input class="form-control" type="text" name="description" id="description"/>
             </div>
-            <label for="sub">Выберите какому классу добавить предмет: </label>
+            <label>Выберите какому классу добавить предмет: </label>
             <select name="classId" id="sub" class="form-select mb-2" aria-label="Disabled select example">
                 <option th:each="cl : ${classes}" th:value="${cl.id()}" name="classId" id="classId"
                         th:text="${cl.number()+cl.letter()}"></option>
             </select>
             <div th:each="error : ${errors}">
                 <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
-
             </div>
+            <label for="sub">Выберите учителя по предмету: </label>
+            <select name="teacherId" class="form-select mb-2" aria-label="Disabled select example">
+                <option th:each="teacher : ${teachers}" th:value="${teacher.id()}" name="teacherId" id="teacherId"
+                        th:text="${teacher.firstname()}"></option>
+            </select>
             <input type="submit" class="btn btn-success" value="Создать предмет"/>
         </form>
     </div>
-    <div th:if="${classes.isEmpty()}">
-        <h3 style="color:red">К сожалению нет возможности добавить предмет, так как классы в системе отсутствуют</h3>
+    <div th:if="${classes.isEmpty()||teachers.isEmpty()}">
+        <h3 style="color:red">К сожалению нет возможности добавить предмет, так как классы или учителя в системе отсутствуют</h3>
     </div>
 
     <hr>

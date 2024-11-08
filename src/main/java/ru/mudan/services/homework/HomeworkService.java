@@ -76,6 +76,23 @@ public class HomeworkService {
         homeworkRepository.delete(foundHomework);
     }
 
+    public List<HomeworkDTO> findAllBySubject(Long subjectId) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        return foundSubject.getHomeworks().stream()
+                .map(hw -> HomeworkDTO
+                        .builder()
+                        .id(hw.getId())
+                        .title(hw.getTitle())
+                        .description(hw.getDescription())
+                        .deadline(hw.getDeadline())
+                        .build())
+                .toList();
+
+
+    }
+
     public void update(Long id, HomeworkDTO homeworkDTO) {
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));

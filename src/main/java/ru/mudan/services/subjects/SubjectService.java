@@ -3,25 +3,31 @@ package ru.mudan.services.subjects;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
+import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
+import ru.mudan.domain.repositories.TeacherRepository;
 import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.services.auth.MyUserDetailsService;
 
 @Service
 @RequiredArgsConstructor
 public class SubjectService {
 
+    private final TeacherRepository teacherRepository;
     @Value("${size.of.code}")
     private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final SubjectsRepository subjectsRepository;
     private final ClassRepository classRepository;
+    private final MyUserDetailsService myUserDetailsService;
 
     public List<SubjectDTO> findAll() {
         return subjectsRepository.findAll()
@@ -55,6 +61,8 @@ public class SubjectService {
         var classForSubject = classRepository.findById(request.classId())
                 .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
 
+        var teacherForSubject = teacherRepository.findById(request.teacherId()).orElseThrow();
+
         var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
 
         checkSubjectAlreadyExistsByCode(codeForSb);
@@ -66,8 +74,21 @@ public class SubjectService {
                 request.description());
 
         subjectForSaving.setClassEntity(classForSubject);
+        subjectForSaving.setTeacher(teacherForSubject);
 
         subjectsRepository.save(subjectForSaving);
+    }
+
+    public void teacherContainSubject(Long subjectId, Authentication authentication) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        if (!teacher.getSubjects().contains(foundSubject)) {
+            //TODO - поправить на спец исключение
+            throw new SubjectNotFoundException(subjectId);
+        }
     }
 
     private String generateCode(String name, Integer classNumber, String letter) {
@@ -109,6 +130,20 @@ public class SubjectService {
 
         return foundClass.getSubjects()
                 .stream()
+                .map(sb -> SubjectDTO
+                        .builder()
+                        .id(sb.getId())
+                        .code(sb.getCode())
+                        .type(sb.getType())
+                        .name(sb.getName())
+                        .build())
+                .toList();
+    }
+
+    public List<SubjectDTO> getSubjectsForTeacher(Long teacherId) {
+        var foundTeacher = teacherRepository.findById(teacherId).orElseThrow();
+
+        return foundTeacher.getSubjects().stream()
                 .map(sb -> SubjectDTO
                         .builder()
                         .id(sb.getId())
