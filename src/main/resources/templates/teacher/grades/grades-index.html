@@ -28,6 +28,37 @@
       </tr>
       </tbody>
     </table>
+  <hr>
+  <div th:if="${!students.isEmpty()}" class="card p-3">
+    <h2>Поставить оценку ученику</h2>
+    <form class="mb-2 w-25" th:method="POST" th:action="@{/grades}">
+      <div class="form-group mb-2">
+        <label>Укажите оценку: </label>
+        <input class="form-control" type="number" name="mark" max="5" min="2" required/>
+      </div>
+      <div class="form-group mb-2">
+        <label >Введите комментарий к оценке: </label>
+        <input class="form-control" type="text" name="comment" required/>
+      </div>
+      <div class="form-group mb-2">
+        <label>Введите дату оценки:</label>
+        <input type="date" id="dateOfMark" name="dateOfMark"/>
+      </div>
+      <input type="number" id="classId" th:name="subjectId" th:value="${subjectId}">
+      <h4>Выберите ученика:</h4>
+      <label>Выберите ученика: </label>
+      <select name="studentId" class="form-select mb-2" aria-label="Disabled select example">
+        <option th:each="student : ${students}" th:value="${student.id()}" name="studentId"
+                th:text="${student.lastname()+' '+student.firstname()}"></option>
+      </select>
+      <div th:each="error : ${errors}">
+        <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+      </div>
+      <input type="submit" class="btn btn-success" value="Поставить оценку"/>
+    </form>
+  </div>
+
 
   <form th:action="@{/logout}" th:method="POST" class="me-2">
     <button class="btn btn-outline-danger active" type="submit">

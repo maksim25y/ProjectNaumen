@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.mudan.services.grades.GradesService;
 import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.schedule.ScheduleService;
+import ru.mudan.services.students.StudentService;
 import ru.mudan.services.subjects.SubjectService;
 import ru.mudan.services.teachers.TeacherService;
 
@@ -23,6 +24,7 @@ public class TeacherController {
     private final HomeworkService homeworkService;
     private final ScheduleService scheduleService;
     private final GradesService gradesService;
+    private final StudentService studentService;
 
     @GetMapping("/account")
     public String getTeacherMainPage(Authentication authentication, Model model) {
@@ -58,7 +60,9 @@ public class TeacherController {
                                   Authentication authentication) {
         subjectService.teacherContainSubject(subjectId, authentication);
 
+        model.addAttribute("subjectId", subjectId);
         model.addAttribute("grades", gradesService.findAllBySubjectId(subjectId));
+        model.addAttribute("students", studentService.findAllStudentsBySubjectId(subjectId));
         return "teacher/grades/grades-index";
     }
 }
