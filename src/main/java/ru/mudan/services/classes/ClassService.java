@@ -31,12 +31,12 @@ public class ClassService implements CrudService<ClassDTO> {
 
         return allClasses.stream()
                 .map(cl -> ClassDTO
-                .builder()
-                .id(cl.getId())
-                .number(cl.getNumber())
-                .letter(cl.getLetter())
-                .description(cl.getDescription())
-                .build()).toList();
+                        .builder()
+                        .id(cl.getId())
+                        .number(cl.getNumber())
+                        .letter(cl.getLetter())
+                        .description(cl.getDescription())
+                        .build()).toList();
     }
 
     @Override
@@ -61,7 +61,16 @@ public class ClassService implements CrudService<ClassDTO> {
                 request.number(),
                 request.description());
 
-        classRepository.save(classEntity);
+
+        var savedClassEntity = classRepository.save(classEntity);
+
+        request.studentsIds().forEach(id -> {
+            studentRepository.findById(id).ifPresent(st -> {
+                        st.setClassEntity(savedClassEntity);
+                        studentRepository.save(st);
+                    }
+            );
+        });
     }
 
     @Override

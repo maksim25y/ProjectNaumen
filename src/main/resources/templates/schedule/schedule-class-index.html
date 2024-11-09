@@ -8,7 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <div th:insert="~{header-admin :: admin-header}"></div>
+    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="mb-2">
+        <div th:insert="~{header-admin :: admin-header}"></div>
+    </div>
+    <div th:if="${#authorization.expression('hasRole(''STUDENT'')')}" class="mb-2">
+        <div th:insert="~{header-student :: student-header}"></div>
+    </div>
     <div th:if="${!schedules.isEmpty()}" class="mb-2">
         <table class="table">
             <thead>

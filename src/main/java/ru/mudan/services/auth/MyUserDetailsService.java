@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.repositories.*;
+import ru.mudan.exceptions.entity.not_found.UserNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //TODO  - создать спец исключение для общего юзера
         var appUser = appUserRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new UserNotFoundException(username));
 
         switch (appUser.getRoleName()) {
             case ROLE_ADMIN -> {

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.students.StudentService;
 import ru.mudan.services.subjects.SubjectService;
 
@@ -17,7 +16,6 @@ public class StudentController {
 
     private final StudentService studentService;
     private final SubjectService subjectService;
-    private final HomeworkService homeworkService;
 
     @GetMapping("/account")
     public String account(Model model, Authentication authentication) {

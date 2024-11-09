@@ -31,6 +31,7 @@ public class SecurityConfig {
                                         "/grades/**",
                                         "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
                                 .requestMatchers("/student/**").hasAnyRole("STUDENT")
+                                .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);
