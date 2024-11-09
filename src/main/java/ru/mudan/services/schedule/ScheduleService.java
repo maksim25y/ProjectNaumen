@@ -97,7 +97,10 @@ public class ScheduleService {
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
-        return foundSubject.getSchedules().stream().map(sch -> ScheduleDTO
+        var teacherSchedule = foundSubject.getSchedules();
+        teacherSchedule.sort((Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime)));
+
+        return teacherSchedule.stream().map(sch -> ScheduleDTO
                         .builder()
                         .id(sch.getId())
                         .numberOfClassRoom(sch.getNumberOfClassroom())

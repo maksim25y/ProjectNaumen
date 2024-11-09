@@ -8,6 +8,7 @@ import ru.mudan.domain.repositories.GradeRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.grades.GradeDTO;
+import ru.mudan.dto.grades.GradeDTOResponse;
 import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
@@ -93,19 +94,19 @@ public class GradesService {
         gradeRepository.save(grade);
     }
 
-    public List<GradeDTO> findAllBySubjectId(Long subjectId) {
+    public List<GradeDTOResponse> findAllBySubjectId(Long subjectId) {
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         return foundSubject.getGrades().stream()
-                .map(grade -> GradeDTO
+                .map(grade -> GradeDTOResponse
                         .builder()
                         .id(grade.getId())
                         .mark(grade.getMark())
                         .dateOfMark(grade.getDateOfMark())
                         .comment(grade.getComment())
-                        .studentId(grade.getStudent().getId())
-                        .subjectId(grade.getSubject().getId())
+                        .studentFirstname(grade.getStudent().getFirstname())
+                        .studentLastname(grade.getStudent().getLastname())
                         .build())
                 .toList();
     }

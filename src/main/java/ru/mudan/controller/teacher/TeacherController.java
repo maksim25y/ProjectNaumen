@@ -60,7 +60,7 @@ public class TeacherController {
                                   Authentication authentication) {
         subjectService.teacherContainSubject(subjectId, authentication);
 
-        model.addAttribute("subjectId", subjectId);
+        model.addAttribute("subject", subjectService.findById(subjectId));
         model.addAttribute("grades", gradesService.findAllBySubjectId(subjectId));
         model.addAttribute("students", studentService.findAllStudentsBySubjectId(subjectId));
         return "teacher/grades/grades-index";
