@@ -105,15 +105,6 @@ CREATE TABLE admins
     hashed_password VARCHAR NOT NULL
 );
 
-CREATE TABLE class_to_teacher
-(
-    teacher_id BIGINT,
-    class_id   BIGINT,
-    FOREIGN KEY (class_id) REFERENCES classes (id) ON DELETE CASCADE,
-    FOREIGN KEY (teacher_id) REFERENCES teachers (id) ON DELETE CASCADE
-);
-
-
 -- Создание аккаунта админа
 INSERT INTO admins(firstname, lastname, patronymic, email, hashed_password)
 VALUES ('Кирилл', 'Кириллов', 'Кириллович', 'admin@mail.ru','$2a$10$WFRQhlz7Ul85HsRjMg3XNutiB//3HLloe3vTuW6GDPD9eeXeYXiJe');

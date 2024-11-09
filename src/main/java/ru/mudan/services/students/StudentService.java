@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.StudentRepository;
+import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
+import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +17,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final ClassRepository classRepository;
+    private final SubjectsRepository subjectsRepository;
 
     public StudentDTO findById(Long id) {
         var foundStudent =  studentRepository.findById(id)
@@ -50,6 +53,24 @@ public class StudentService {
 
         return foundClass.getStudents()
                 .stream()
+                .map(st -> StudentDTO
+                        .builder()
+                        .id(st.getId())
+                        .firstname(st.getFirstname())
+                        .lastname(st.getLastname())
+                        .patronymic(st.getPatronymic())
+                        .email(st.getEmail())
+                        .build())
+                .toList();
+    }
+
+    public List<StudentDTO> findAllStudentsBySubjectId(Long subjectId) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        var classEntity = foundSubject.getClassEntity();
+
+        return classEntity.getStudents().stream()
                 .map(st -> StudentDTO
                         .builder()
                         .id(st.getId())

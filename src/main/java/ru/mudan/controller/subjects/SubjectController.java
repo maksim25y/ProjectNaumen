@@ -9,6 +9,7 @@ import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.subjects.SubjectService;
+import ru.mudan.services.teachers.TeacherService;
 
 @Controller
 @SuppressWarnings({"MultipleStringLiterals", "MemberName"})
@@ -19,6 +20,7 @@ public class SubjectController {
     private final String REDIRECT_SUBJECTS_ALL = "redirect:/subjects/all";
     private final SubjectService subjectService;
     private final ClassService classService;
+    private final TeacherService teacherService;
 
     @GetMapping("/all")
     public String getPageWithInfoAboutAllSubjects(Model model) {
@@ -35,6 +37,7 @@ public class SubjectController {
     @GetMapping("/add")
     public String getPageForCreatingSubject(Model model) {
         model.addAttribute("classes", classService.findAll());
+        model.addAttribute("teachers", teacherService.findAll());
         return "admin/subjects/subjects-add";
     }
 

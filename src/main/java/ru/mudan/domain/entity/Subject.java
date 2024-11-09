@@ -35,6 +35,10 @@ public class Subject {
     private Teacher teacher;
     @OneToMany(mappedBy = "subject")
     private List<Grade> grades;
+    @OneToMany(mappedBy = "subject")
+    private List<Homework> homeworks;
+    @OneToMany(mappedBy = "subject")
+    private List<Schedule> schedules;
 
     public Subject(String name, String type, String code, String description) {
         this.name = name;

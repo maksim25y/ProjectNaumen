@@ -43,10 +43,10 @@ public class HomeworkService {
     }
 
     public void save(HomeworkCreateDTO hwDTO) {
-        var foundClass = classRepository.findById(hwDTO.classId())
-                .orElseThrow(() -> new ClassEntityNotFoundException(hwDTO.classId()));
         var foundSubject = subjectsRepository.findById(hwDTO.subjectId())
                 .orElseThrow(() -> new SubjectNotFoundException(hwDTO.subjectId()));
+
+        var foundClass = foundSubject.getClassEntity();
 
         var homework = new Homework(hwDTO.title(), hwDTO.description(), hwDTO.deadline());
         homework.setClassEntity(foundClass);
@@ -74,6 +74,23 @@ public class HomeworkService {
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));
         homeworkRepository.delete(foundHomework);
+    }
+
+    public List<HomeworkDTO> findAllBySubject(Long subjectId) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        return foundSubject.getHomeworks().stream()
+                .map(hw -> HomeworkDTO
+                        .builder()
+                        .id(hw.getId())
+                        .title(hw.getTitle())
+                        .description(hw.getDescription())
+                        .deadline(hw.getDeadline())
+                        .build())
+                .toList();
+
+
     }
 
     public void update(Long id, HomeworkDTO homeworkDTO) {
