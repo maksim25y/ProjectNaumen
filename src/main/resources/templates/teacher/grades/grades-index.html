@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Оценки ученика</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+  <hr>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Оценка</th>
+        <th scope="col">Дата</th>
+        <th scope="col">Комментарий</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="table-light" th:each="grade : ${grades}">
+        <td class="table-light" th:text="${grade.mark()}"></td>
+        <td class="table-light">
+          <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+             th:text="${grade.dateOfMark()}" th:href="@{/teacher/grades/{id}(id=${grade.id()})}"></a>
+        </td>
+        <td class="table-light" th:text="${grade.comment()}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+  <form th:action="@{/logout}" th:method="POST" class="me-2">
+    <button class="btn btn-outline-danger active" type="submit">
+      Выйти
+    </button>
+  </form>
+  <hr>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

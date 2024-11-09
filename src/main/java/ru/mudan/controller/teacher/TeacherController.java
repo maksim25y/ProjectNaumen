@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.mudan.services.grades.GradesService;
 import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.schedule.ScheduleService;
 import ru.mudan.services.subjects.SubjectService;
@@ -21,6 +22,7 @@ public class TeacherController {
     private final SubjectService subjectService;
     private final HomeworkService homeworkService;
     private final ScheduleService scheduleService;
+    private final GradesService gradesService;
 
     @GetMapping("/account")
     public String getTeacherMainPage(Authentication authentication, Model model) {
@@ -48,5 +50,15 @@ public class TeacherController {
 
         model.addAttribute("schedules", scheduleService.findAllBySubjectId(subjectId));
         return "teacher/schedule/schedule-teacher-index";
+    }
+
+    @GetMapping("/grades/subject/{subjectId}")
+    public String gradesTeacher(Model model,
+                                  @PathVariable Long subjectId,
+                                  Authentication authentication) {
+        subjectService.teacherContainSubject(subjectId, authentication);
+
+        model.addAttribute("grades", gradesService.findAllBySubjectId(subjectId));
+        return "teacher/grades/grades-index";
     }
 }
