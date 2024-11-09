@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="container">
+  <div th:insert="~{header-teacher :: teacher-header}"></div>
   <hr>
     <table class="table">
       <thead>
@@ -22,7 +23,7 @@
         <td class="table-light" th:text="${grade.mark()}"></td>
         <td class="table-light">
           <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-             th:text="${grade.dateOfMark()}" th:href="@{/teacher/grades/{id}(id=${grade.id()})}"></a>
+             th:text="${grade.dateOfMark()}" th:href="@{/grades/{id}(id=${grade.id()})}"></a>
         </td>
         <td class="table-light" th:text="${grade.comment()}"></td>
       </tr>

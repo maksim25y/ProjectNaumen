@@ -9,7 +9,12 @@
 </head>
 <body>
 <div class="container">
-    <div th:insert="~{header-admin :: admin-header}"></div>
+    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="mb-2">
+        <div th:insert="~{header-admin :: admin-header}"></div>
+    </div>
+    <div th:if="${#authorization.expression('hasRole(''TEACHER'')')}" class="mb-2">
+        <div th:insert="~{header-teacher :: teacher-header}"></div>
+    </div>
     <hr>
     <form class="mb-2 w-25" th:method="PUT" th:action="@{/grades/{id}(id=${grade.id()})}">
         <div class="form-group mb-2">

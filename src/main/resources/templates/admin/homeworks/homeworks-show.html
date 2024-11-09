@@ -8,7 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <div th:insert="~{header-admin :: admin-header}"></div>
+    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="mb-2">
+        <div th:insert="~{header-admin :: admin-header}"></div>
+    </div>
+    <div th:if="${#authorization.expression('hasRole(''TEACHER'')')}" class="mb-2">
+        <div th:insert="~{header-teacher :: teacher-header}"></div>
+    </div>
     <h1 th:text="${'ДЗ по предмету ' + subject.name()+' '+ class.number()+'-'+class.letter()+' классу'}"></h1>
     <hr>
     <ul class="list-group mb-2">
@@ -35,7 +40,6 @@
             Редактировать информацию о ДЗ
         </button>
     </a>
-    <hr>
 
     <hr>
     <div th:insert="~{footer :: footer}"></div>

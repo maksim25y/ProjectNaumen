@@ -8,7 +8,12 @@
 </head>
 <body>
 <div class="container">
-  <div th:insert="~{header-admin :: admin-header}"></div>
+  <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="mb-2">
+    <div th:insert="~{header-admin :: admin-header}"></div>
+  </div>
+  <div th:if="${#authorization.expression('hasRole(''TEACHER'')')}" class="mb-2">
+    <div th:insert="~{header-teacher :: teacher-header}"></div>
+  </div>
   <hr>
   <ul class="list-group mb-2">
     <li class="list-group-item" aria-current="true">

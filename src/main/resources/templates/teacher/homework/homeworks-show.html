@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="container">
+    <div th:insert="~{header-teacher :: teacher-header}"></div>
     <div th:if="${!homeworks.isEmpty()}" class="mb-2">
         <h1>Домашние задания: </h1>
         <table class="table">
