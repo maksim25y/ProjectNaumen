@@ -2,7 +2,9 @@ package ru.mudan.services.students;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import ru.mudan.domain.entity.users.Student;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
@@ -10,6 +12,7 @@ import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.services.auth.MyUserDetailsService;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
+    private final MyUserDetailsService myUserDetailsService;
 
     public StudentDTO findById(Long id) {
         var foundStudent =  studentRepository.findById(id)
@@ -80,5 +84,26 @@ public class StudentService {
                         .email(st.getEmail())
                         .build())
                 .toList();
+    }
+
+    public StudentDTO findStudentByAuth(Authentication authentication) {
+        var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        Long classId = null;
+        var classEntity = student.getClassEntity();
+
+        if (classEntity != null) {
+            classId = classEntity.getId();
+        }
+
+        return StudentDTO
+                .builder()
+                .id(student.getId())
+                .firstname(student.getFirstname())
+                .lastname(student.getLastname())
+                .patronymic(student.getPatronymic())
+                .email(student.getEmail())
+                .classId(classId)
+                .build();
     }
 }

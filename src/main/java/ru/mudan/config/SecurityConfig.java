@@ -26,9 +26,11 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/registration/**",
                                         "/subjects/**",
-                                        "/classes/**",
-                                        "/schedules/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/grades/**", "/homeworks/**").hasAnyRole("ADMIN", "TEACHER")
+                                        "/classes/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/schedules/**",
+                                        "/grades/**",
+                                        "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+                                .requestMatchers("/student/**").hasAnyRole("STUDENT")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);

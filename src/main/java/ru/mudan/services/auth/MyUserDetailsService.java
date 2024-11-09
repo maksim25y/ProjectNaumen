@@ -19,7 +19,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var appUser = appUserRepository.findByEmail(username).orElseThrow();
+        //TODO  - создать спец исключение для общего юзера
+        var appUser = appUserRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
         switch (appUser.getRoleName()) {
             case ROLE_ADMIN -> {
                 return adminRepository.findById(appUser.getUserId())
