@@ -8,6 +8,7 @@ public record StudentDTO(
         String firstname,
         String lastname,
         String patronymic,
-        String email
+        String email,
+        Long classId
 ) {
 }
