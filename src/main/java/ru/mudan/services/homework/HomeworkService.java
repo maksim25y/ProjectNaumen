@@ -43,10 +43,10 @@ public class HomeworkService {
     }
 
     public void save(HomeworkCreateDTO hwDTO) {
-        var foundClass = classRepository.findById(hwDTO.classId())
-                .orElseThrow(() -> new ClassEntityNotFoundException(hwDTO.classId()));
         var foundSubject = subjectsRepository.findById(hwDTO.subjectId())
                 .orElseThrow(() -> new SubjectNotFoundException(hwDTO.subjectId()));
+
+        var foundClass = foundSubject.getClassEntity();
 
         var homework = new Homework(hwDTO.title(), hwDTO.description(), hwDTO.deadline());
         homework.setClassEntity(foundClass);

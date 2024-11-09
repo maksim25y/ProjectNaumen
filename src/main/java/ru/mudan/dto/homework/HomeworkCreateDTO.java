@@ -13,8 +13,6 @@ public record HomeworkCreateDTO(
         @NotNull(message = "{homework.deadline.is_null}")
         LocalDate deadline,
         @NotNull(message = "{homework.subject.id.is_null}")
-        Long classId,
-        @NotNull(message = "{homework.subject.id.is_null}")
         Long subjectId
 ) {
 }

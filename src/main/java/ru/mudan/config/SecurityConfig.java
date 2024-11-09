@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
-
+@SuppressWarnings("MultipleStringLiterals")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -28,8 +28,7 @@ public class SecurityConfig {
                                         "/subjects/**",
                                         "/classes/**",
                                         "/schedules/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/grades/**").hasAnyRole("ADMIN","TEACHER")
-                                .requestMatchers("/teacher/**").hasRole("TEACHER")
+                                .requestMatchers("/grades/**", "/homeworks/**").hasAnyRole("ADMIN", "TEACHER")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);

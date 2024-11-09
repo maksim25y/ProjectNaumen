@@ -2,10 +2,8 @@ package ru.mudan.services.grades;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Grade;
-import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.GradeRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
@@ -13,7 +11,6 @@ import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
-import ru.mudan.services.auth.MyUserDetailsService;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +19,6 @@ public class GradesService {
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
-    private final MyUserDetailsService myUserDetailsService;
 
     public List<GradeDTO> findAllGradesForStudent(Long studentId) {
         var foundStudent = studentRepository.findById(studentId)
