@@ -7,6 +7,7 @@ import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.GradeRepository;
 import ru.mudan.domain.repositories.HomeworkRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
+import ru.mudan.exceptions.base.ApplicationForbiddenException;
 import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
 import ru.mudan.exceptions.entity.not_found.HomeworkNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
@@ -37,12 +38,10 @@ public class AuthService {
             var subjectForGrade = grade.getSubject();
 
             if (!teacher.getSubjects().contains(subjectForGrade)) {
-                //TODO - поправить на спец исключение
-                throw new GradeNotFoundException(id);
+                throw new ApplicationForbiddenException();
             }
         } else {
-            //TODO - поправить на спец исключение
-            throw new GradeNotFoundException(id);
+            throw new ApplicationForbiddenException();
         }
     }
 
@@ -60,12 +59,10 @@ public class AuthService {
                     .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
             if (!teacher.getSubjects().contains(subject)) {
-                //TODO - поправить на спец исключение
-                throw new SubjectNotFoundException(subjectId);
+                throw new ApplicationForbiddenException();
             }
         } else {
-            //TODO - поправить на спец исключение
-            throw new SubjectNotFoundException(subjectId);
+            throw new ApplicationForbiddenException();
         }
     }
 
@@ -85,12 +82,10 @@ public class AuthService {
             var subjectForHW = hw.getSubject();
 
             if (!teacher.getSubjects().contains(subjectForHW)) {
-                //TODO - поправить на спец исключение
-                throw new HomeworkNotFoundException(hwId);
+                throw new ApplicationForbiddenException();
             }
         } else {
-            //TODO - поправить на спец исключение
-            throw new HomeworkNotFoundException(hwId);
+            throw new ApplicationForbiddenException();
         }
     }
 
@@ -103,8 +98,7 @@ public class AuthService {
         var role = getAuthority(authentication);
 
         if (!role.equals("ROLE_ADMIN")) {
-            //TODO - поправить на спец исключение
-            throw new RuntimeException();
+            throw new ApplicationForbiddenException();
         }
     }
 }

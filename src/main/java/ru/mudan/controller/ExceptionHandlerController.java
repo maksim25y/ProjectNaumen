@@ -12,6 +12,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.mudan.exceptions.base.ApplicationForbiddenException;
 import ru.mudan.exceptions.base.ApplicationRuntimeException;
 
 @ControllerAdvice
@@ -61,5 +62,8 @@ public class ExceptionHandlerController {
         return "error/error-app";
     }
 
-
+    @ExceptionHandler(ApplicationForbiddenException.class)
+    public String handleForbiddenException() {
+        return "error/403";
+    }
 }
