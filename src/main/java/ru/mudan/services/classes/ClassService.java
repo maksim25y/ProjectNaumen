@@ -64,13 +64,15 @@ public class ClassService implements CrudService<ClassDTO> {
 
         var savedClassEntity = classRepository.save(classEntity);
 
-        request.studentsIds().forEach(id -> {
-            studentRepository.findById(id).ifPresent(st -> {
-                        st.setClassEntity(savedClassEntity);
-                        studentRepository.save(st);
-                    }
-            );
-        });
+        if (request.studentsIds() != null) {
+            request.studentsIds().forEach(id -> {
+                studentRepository.findById(id).ifPresent(st -> {
+                            st.setClassEntity(savedClassEntity);
+                            studentRepository.save(st);
+                        }
+                );
+            });
+        }
     }
 
     @Override

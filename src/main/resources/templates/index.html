@@ -16,6 +16,9 @@
     <div th:if="${#authorization.expression('hasRole(''STUDENT'')')}" class="mb-2">
         <div th:insert="~{header-student :: student-header}"></div>
     </div>
+    <div th:if="${#authorization.expression('hasRole(''PARENT'')')}" class="mb-2">
+        <div th:insert="~{header-parent :: parent-header}"></div>
+    </div>
 
     <div>
         <h1 class="display-5 fw-bold">Электронный дневник МБОУ СОШ</h1>

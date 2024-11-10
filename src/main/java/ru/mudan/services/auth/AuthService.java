@@ -1,8 +1,10 @@
 package ru.mudan.services.auth;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import ru.mudan.domain.entity.users.Parent;
 import ru.mudan.domain.entity.users.Student;
 import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.*;
@@ -90,7 +92,9 @@ public class AuthService {
         }
     }
 
-    public void hasRoleAdminOrStudentFromClass(Long classId, Authentication authentication) {
+    public void hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(
+            Long classId,
+            Authentication authentication) {
         var role = getAuthority(authentication);
 
         if (role.equals("ROLE_ADMIN")) {
@@ -106,6 +110,28 @@ public class AuthService {
             var studentsForClass = foundClass.getStudents();
 
             if (!studentsForClass.contains(student)) {
+                throw new ApplicationForbiddenException();
+            }
+        } else if (role.equals("ROLE_PARENT")) {
+            var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+            var foundClass = classRepository.findById(classId)
+                    .orElseThrow(() -> new ClassEntityNotFoundException(classId));
+
+            var studentsForParent = parent.getStudents();
+
+            AtomicBoolean has = new AtomicBoolean(false);
+
+            studentsForParent.forEach(st -> {
+                var classEntity = st.getClassEntity();
+                if (classEntity != null) {
+                    if (classEntity.getId().equals(foundClass.getId())) {
+                        has.set(true);
+                    }
+                }
+            });
+
+            if (!has.get()) {
                 throw new ApplicationForbiddenException();
             }
         } else {
@@ -133,13 +159,30 @@ public class AuthService {
 
             var classForStudent = studentById.getClassEntity();
 
-            var subjectForStudent = subjectsRepository.findById(subjectId)
-                    .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+            if (subjectId != null && classForStudent != null) {
+                var subjectForStudent = subjectsRepository.findById(subjectId)
+                        .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
-            var subjectsFromClass = classForStudent.getSubjects();
+                var subjectsFromClass = classForStudent.getSubjects();
 
-            if (!subjectsFromClass.contains(subjectForStudent)) {
+                if (!subjectsFromClass.contains(subjectForStudent)) {
+                    throw new ApplicationForbiddenException();
+                }
+            }
+        } else if (role.equals("ROLE_PARENT")) {
+            var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+            var foundStudent = studentRepository.findById(studentId)
+                    .orElseThrow(() -> new StudentNotFoundException(studentId));
+
+            var studentsForParent = parent.getStudents();
+
+            if (!studentsForParent.contains(foundStudent)) {
                 throw new ApplicationForbiddenException();
+            }
+
+            if (subjectId != null) {
+               checkClassContainsSubject(subjectId, foundStudent);
             }
         } else {
             throw new ApplicationForbiddenException();
@@ -147,6 +190,19 @@ public class AuthService {
 
     }
 
+    private void checkClassContainsSubject(Long subjectId, Student foundStudent) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        var classForStudent = foundStudent.getClassEntity();
+
+        if (classForStudent != null) {
+            var subjectsForClass = classForStudent.getSubjects();
+            if (!subjectsForClass.contains(foundSubject)) {
+                throw new ApplicationForbiddenException();
+            }
+        }
+    }
 
     private String getAuthority(Authentication authentication) {
         return authentication.getAuthorities().stream().findFirst().get().getAuthority();

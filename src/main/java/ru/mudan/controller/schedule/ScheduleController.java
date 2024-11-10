@@ -26,7 +26,7 @@ public class ScheduleController {
             @PathVariable("classId") Long classId,
             Model model,
             Authentication authentication) {
-        authService.hasRoleAdminOrStudentFromClass(classId, authentication);
+        authService.hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(classId, authentication);
         model.addAttribute("schedules", scheduleService.findAllSchedulesForClass(classId));
         return "schedule/schedule-class-index";
     }

@@ -11,7 +11,7 @@
 <div class="container">
     <div th:insert="~{header-admin :: admin-header}"></div>
     <hr>
-    <div th:if="${!classes.isEmpty()}">
+    <div th:if="${!classes.isEmpty() && !teachers.isEmpty()}">
         <form class="mb-2 w-25" th:method="POST" th:action="@{/subjects}">
             <div class="form-group mb-2">
                 <label for="name">Введите название предмета: </label>

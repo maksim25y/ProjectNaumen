@@ -55,6 +55,21 @@ public class HomeworkService {
         homeworkRepository.save(homework);
     }
 
+    public List<HomeworkDTO> findAllByClass(Long classId) {
+        var foundClass = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassEntityNotFoundException(classId));
+
+        return foundClass.getHomeworks().stream()
+                .map(hw -> HomeworkDTO
+                        .builder()
+                        .id(hw.getId())
+                        .title(hw.getTitle())
+                        .description(hw.getDescription())
+                        .deadline(hw.getDeadline())
+                        .build())
+                .toList();
+    }
+
     public HomeworkDTO findById(Long id) {
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));

@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.Student;
 import ru.mudan.domain.repositories.ClassRepository;
+import ru.mudan.domain.repositories.ParentRepository;
 import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.student.StudentDTO;
@@ -22,6 +23,7 @@ public class StudentService {
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
     private final MyUserDetailsService myUserDetailsService;
+    private final ParentRepository parentRepository;
 
     public StudentDTO findById(Long id) {
         var foundStudent =  studentRepository.findById(id)
@@ -64,6 +66,24 @@ public class StudentService {
                         .lastname(st.getLastname())
                         .patronymic(st.getPatronymic())
                         .email(st.getEmail())
+                        .build())
+                .toList();
+    }
+
+    public List<StudentDTO> getAllStudentsForParent(Long parentId) {
+        //TODO - Поправить на спец исключение
+        var parent = parentRepository.findById(parentId)
+                .orElseThrow();
+
+        return parent.getStudents().stream()
+                .map(st -> StudentDTO
+                        .builder()
+                        .id(st.getId())
+                        .firstname(st.getFirstname())
+                        .lastname(st.getLastname())
+                        .patronymic(st.getPatronymic())
+                        .email(st.getEmail())
+                        .classId(st.getClassEntity() != null ? st.getClassEntity().getId() : null)
                         .build())
                 .toList();
     }
