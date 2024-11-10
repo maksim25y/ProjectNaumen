@@ -3,6 +3,7 @@ package ru.mudan.domain.entity.users;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,8 @@ public class Parent implements UserDetails {
     private String email;
     @Column(name = "hashed_password")
     private String hashedPassword;
+    @OneToMany(mappedBy = "parent")
+    private List<Student> students;
 
     public Parent(String firstname, String lastname, String patronymic, String email, String hashedPassword) {
         this.firstname = firstname;

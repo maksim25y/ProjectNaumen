@@ -31,6 +31,8 @@ public class ClassEntity {
     private List<Student> students;
     @OneToMany(mappedBy = "classEntity")
     private List<Schedule> schedules;
+    @OneToMany(mappedBy = "classEntity")
+    private List<Homework> homeworks;
 
     public ClassEntity(String letter, Integer number, String description) {
         this.letter = letter;

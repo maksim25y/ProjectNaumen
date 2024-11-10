@@ -29,9 +29,10 @@ public class SecurityConfig {
                                         "/classes/**").hasAnyRole("ADMIN")
                                 .requestMatchers("/schedules/**",
                                         "/grades/**",
-                                        "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+                                        "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT", "PARENT")
                                 .requestMatchers("/student/**").hasAnyRole("STUDENT")
                                 .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
+                                .requestMatchers("/parent/**").hasAnyRole("PARENT")
                                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(authProvider);
