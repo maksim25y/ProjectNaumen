@@ -36,10 +36,12 @@ public class HomeworkController {
                 classId,
                 authentication);
         if (subjectId != null) {
+            model.addAttribute("subject", subjectService.findById(subjectId));
             model.addAttribute("homeworks", homeworkService.findAllByClassAndSubject(classId, subjectId));
         } else {
             model.addAttribute("homeworks", homeworkService.findAllByClass(classId));
         }
+        model.addAttribute("class", classService.findById(classId));
         return "admin/homeworks/homeworks-index";
     }
 
