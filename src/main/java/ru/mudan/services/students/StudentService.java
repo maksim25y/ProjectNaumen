@@ -11,6 +11,7 @@ import ru.mudan.domain.repositories.StudentRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
+import ru.mudan.exceptions.entity.not_found.ParentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.services.auth.MyUserDetailsService;
@@ -71,9 +72,8 @@ public class StudentService {
     }
 
     public List<StudentDTO> getAllStudentsForParent(Long parentId) {
-        //TODO - Поправить на спец исключение
         var parent = parentRepository.findById(parentId)
-                .orElseThrow();
+                .orElseThrow(() -> new ParentNotFoundException(parentId));
 
         return parent.getStudents().stream()
                 .map(st -> StudentDTO
