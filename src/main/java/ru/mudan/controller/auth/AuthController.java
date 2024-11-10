@@ -3,8 +3,10 @@ package ru.mudan.controller.auth;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
+import ru.mudan.services.students.StudentService;
 import ru.mudan.services.users.RegistrationService;
 
 @Controller
@@ -13,6 +15,7 @@ import ru.mudan.services.users.RegistrationService;
 public class AuthController {
 
     private final RegistrationService registrationService;
+    private final StudentService studentService;
 
     @PostMapping("/admin")
     public String registerAdmin(@Valid RegisterUserDTO registerUserDTO) {
@@ -49,7 +52,8 @@ public class AuthController {
     }
 
     @GetMapping("/parent")
-    public String  getPageForRegisteringAdminParent() {
+    public String  getPageForRegisteringAdminParent(Model model) {
+        model.addAttribute("students", studentService.findAllStudentsWithNotParent());
         return "registration/registration-parent";
     }
 

@@ -74,6 +74,15 @@ public class RegistrationService {
 
         var savedParent = parentRepository.save(parent);
 
+        if (registerUserDTO.studentsIds() != null) {
+            registerUserDTO.studentsIds().forEach(studentId -> {
+               studentRepository.findById(studentId).ifPresent(student -> {
+                   student.setParent(parent);
+                   studentRepository.save(student);
+               });
+            });
+        }
+
         var appUser = getAppUserByRoleUserIdAndEmail(
                 savedParent.getId(),
                 Role.ROLE_PARENT,

@@ -71,6 +71,22 @@ public class StudentService {
                 .toList();
     }
 
+    public List<StudentDTO> findAllStudentsWithNotParent() {
+        var students = studentRepository.findAllByParent(null);
+
+        return students.stream()
+                .map(st -> StudentDTO
+                        .builder()
+                        .id(st.getId())
+                        .firstname(st.getFirstname())
+                        .lastname(st.getLastname())
+                        .patronymic(st.getPatronymic())
+                        .email(st.getEmail())
+                        .classId(st.getClassEntity() != null ? st.getClassEntity().getId() : null)
+                        .build())
+                .toList();
+    }
+
     public List<StudentDTO> getAllStudentsForParent(Long parentId) {
         var parent = parentRepository.findById(parentId)
                 .orElseThrow(() -> new ParentNotFoundException(parentId));

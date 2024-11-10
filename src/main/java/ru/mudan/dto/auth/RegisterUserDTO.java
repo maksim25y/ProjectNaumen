@@ -3,6 +3,7 @@ package ru.mudan.dto.auth;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.Builder;
 
 @Builder
@@ -24,6 +25,7 @@ public record RegisterUserDTO(
         @NotBlank(message = "{email.is_blank}")
         String email,
         @Size(min = 8, max = 32, message = "{password.invalid_size}")
-        String password
+        String password,
+        List<Long> studentsIds
 ) {
 }
