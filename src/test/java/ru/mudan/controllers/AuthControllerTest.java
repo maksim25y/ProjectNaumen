@@ -380,7 +380,8 @@ public class AuthControllerTest extends BaseControllerTest {
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
     }
 
-    private void checkPostRegisteringInvalid(String path, RegisterUserDTO registerUserDTO) throws Exception {
+    @SneakyThrows
+    private void checkPostRegisteringInvalid(String path, RegisterUserDTO registerUserDTO) {
         mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URL + path)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("lastname", registerUserDTO.lastname())
@@ -393,7 +394,8 @@ public class AuthControllerTest extends BaseControllerTest {
                 .andExpect(model().attributeExists("errors"));
     }
 
-    private void postRegisterUserValid(String x, HttpStatus forbidden) throws Exception {
+    @SneakyThrows
+    private void postRegisterUserValid(String x, HttpStatus forbidden) {
         var payload = getDefaultRegisterUserDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URL + x)

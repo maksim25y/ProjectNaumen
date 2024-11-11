@@ -4,5 +4,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class UtilConstants {
-    public final String AUTH_URL ="/registration";
+    public static final String AUTH_URL ="/registration";
+    public static final String SUBJECTS_URL ="/subjects";
 }
