@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.mudan.controllers.UtilConstants.SUBJECTS_URL;
 
 @WithMockUser(roles = "ADMIN")
-public class SubjectControllerTests extends BaseControllerTest {
+public class SubjectControllerTest extends BaseControllerTest {
 
     private static final Supplier<Stream<Arguments>> invalidSubjectCreateDTOs = () -> Stream.of(
             Arguments.of(new SubjectCreateDTO(null, "Базовый", "Предмет про числа", 1L, 1L)),

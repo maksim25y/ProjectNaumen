@@ -30,6 +30,7 @@
         <java.version>21</java.version>
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <checkstyle.version>10.12.7</checkstyle.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -111,6 +112,61 @@
                     <failsOnError>true</failsOnError>
                 </configuration>
             </plugin>
+<!--            Jacoco-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>ru/mudan/dto/**/*.class</exclude>
+                                <exclude>ru/mudan/config/**/*.class</exclude>
+                                <exclude>ru/mudan/exceptions/**/*.class</exclude>
+                                <exclude>ru/mudan/domain/**/*.class</exclude>
+                                <exclude>ru/mudan/util/**/*.class</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>ru/mudan/dto/**/*.class</exclude>
+                                <exclude>ru/mudan/config/**/*.class</exclude>
+                                <exclude>ru/mudan/exceptions/**/*.class</exclude>
+                                <exclude>ru/mudan/domain/**/*.class</exclude>
+                                <exclude>ru/mudan/util/**/*.class</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
