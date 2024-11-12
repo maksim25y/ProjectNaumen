@@ -294,6 +294,36 @@ public class ClassesControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(roles = "PARENT")
+    @DisplayName("Should return status 200 and error")
+    public void getPageForAddingNewClassForRoleParent() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "TEACHER")
+    @DisplayName("Should return status 200 and error")
+    public void getPageForAddingNewClassForRoleTeacher() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "STUDENT")
+    @DisplayName("Should return status 200 and error")
+    public void getPageForAddingNewClassForRoleStudent() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
     @DisplayName("Should return status 302 and delete class")
     public void deleteExistedClassForRoleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.delete(CLASSES_URL + "/1")
@@ -313,6 +343,36 @@ public class ClassesControllerTest extends BaseControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(view().name("error/error-app"))
                 .andExpect(model().attributeExists("error"));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "TEACHER")
+    @DisplayName("Should return status 200 and error")
+    public void deleteClassForRoleTeacher() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "PARENT")
+    @DisplayName("Should return status 200 and error")
+    public void deleteClassForRoleParent() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "STUDENT")
+    @DisplayName("Should return status 200 and error")
+    public void deleteClassForRoleStudent() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
     }
 
     @Test
@@ -341,6 +401,56 @@ public class ClassesControllerTest extends BaseControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(model().attributeExists("error"));
     }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "TEACHER")
+    @DisplayName("Should return status 200 and error")
+    public void putUpdateClassValidForRoleTeacher() {
+        var payload = getDefaultClassDTO();
+
+        mockMvc.perform(MockMvcRequestBuilders.put(CLASSES_URL + "/1")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("letter", payload.letter())
+                        .param("number", String.valueOf(payload.number()))
+                        .param("description", payload.description())
+                        .with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "PARENT")
+    @DisplayName("Should return status 200 and error")
+    public void putUpdateClassValidForRoleParent() {
+        var payload = getDefaultClassDTO();
+
+        mockMvc.perform(MockMvcRequestBuilders.put(CLASSES_URL + "/1")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("letter", payload.letter())
+                        .param("number", String.valueOf(payload.number()))
+                        .param("description", payload.description())
+                        .with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "STUDENT")
+    @DisplayName("Should return status 200 and error")
+    public void putUpdateClassValidForRoleStudent() {
+        var payload = getDefaultClassDTO();
+
+        mockMvc.perform(MockMvcRequestBuilders.put(CLASSES_URL + "/1")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("letter", payload.letter())
+                        .param("number", String.valueOf(payload.number()))
+                        .param("description", payload.description())
+                        .with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+
 
     @SneakyThrows
     @ParameterizedTest
