@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.mudan.dto.subjects.SubjectCreateDTO;
-import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.services.classes.ClassService;
@@ -30,6 +29,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.mudan.controllers.UtilConstants.SUBJECTS_URL;
+import static ru.mudan.controllers.UtilConstants.getDefaultSubjectDTO;
 
 @WithMockUser(roles = "ADMIN")
 public class SubjectControllerTest extends BaseControllerTest {
@@ -72,7 +72,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and all subjects")
     public void getAllSubjectsWithRoleAdmin() {
-        when(subjectService.findAll()).thenReturn(List.of(getSubjectDTO()));
+        when(subjectService.findAll()).thenReturn(List.of(getDefaultSubjectDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECTS_URL + "/all")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -108,7 +108,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and subject")
     public void getSubjectByIdWithRoleAdminAndSubjectExists() {
-        when(subjectService.findById(any())).thenReturn((getSubjectDTO()));
+        when(subjectService.findById(any())).thenReturn((getDefaultSubjectDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECTS_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -221,7 +221,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and page for editing existed subject")
     public void getPageForEditingExistingSubjectForRoleAdmin() {
-        when(subjectService.findById(any())).thenReturn(getSubjectDTO());
+        when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECTS_URL + "/1/edit")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -365,16 +365,5 @@ public class SubjectControllerTest extends BaseControllerTest {
                         .param("description", subjectUpdateDTO.description())
                         .with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
-    }
-
-    private SubjectDTO getSubjectDTO() {
-        return SubjectDTO
-                .builder()
-                .id(1L)
-                .name("Математика")
-                .type("Базовый")
-                .description("Тестовое описание")
-                .classId(1L)
-                .build();
     }
 }

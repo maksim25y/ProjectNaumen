@@ -32,6 +32,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.mudan.controllers.UtilConstants.CLASSES_URL;
+import static ru.mudan.controllers.UtilConstants.*;
 
 @WithMockUser(roles = "ADMIN")
 public class ClassesControllerTest extends BaseControllerTest {
@@ -63,7 +64,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and all classes")
     public void getAllClassesWithRoleAdmin() {
-        when(classService.findAll()).thenReturn(List.of(getClassDTO()));
+        when(classService.findAll()).thenReturn(List.of(getDefaultClassDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/all")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -75,7 +76,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and existed class")
     public void getClassByIdWithRoleAdminAndClassExist() {
-        when(classService.findById(any())).thenReturn(getClassDTO());
+        when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(studentService.findAllStudentsForClass(any())).thenReturn(List.of());
         when(subjectService.findAllSubjectsForClass(any())).thenReturn(List.of());
         when(studentService.findStudentsWithNotClass()).thenReturn(List.of());
@@ -110,7 +111,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
     public void postAddStudentsToClassWithRoleAdminAndClassDoesNotExist() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         List<String> studentIdsAsString = payload.studentsIds().stream()
@@ -138,7 +139,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
     public void postAddStudentsToClassWithRoleAdminAndStudentDoesNotExist() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         List<String> studentIdsAsString = payload.studentsIds().stream()
@@ -161,7 +162,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 302 and add student to class")
     public void postAddStudentsToClassWithRoleAdminAndStudentsExist() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         List<String> studentIdsAsString = payload.studentsIds().stream()
@@ -181,7 +182,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
     public void postAddSubjectsToClassWithRoleAdminAndSubjectDoesNotExist() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         List<String> subjectsIdsAsString = payload.subjectsIds().stream()
@@ -205,7 +206,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
     public void postAddSubjectsToClassWithRoleAdminAndClassDoesNotExist() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         List<String> subjectsIdsAsString = payload.subjectsIds().stream()
@@ -233,7 +234,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 302 and add subject to class")
     public void postAddSubjectToClassWithRoleAdminAndSubjectExist() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         List<String> subjectsIdsAsString = payload.subjectsIds().stream()
@@ -253,7 +254,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and page for editing existed class")
     public void getPageForEditingExistingClassForRoleAdmin() {
-        when(classService.findById(any())).thenReturn(getClassDTO());
+        when(classService.findById(any())).thenReturn(getDefaultClassDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1/edit")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -318,7 +319,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 302 and update class")
     public void putUpdateClassValidForRoleAdmin() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
 
         putUpdateClassValid(payload);
     }
@@ -327,7 +328,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
     public void putUpdateClassWithNotExistedIdValidForRoleAdmin() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
         doThrow(ClassEntityNotFoundException.class).when(classService).update(any(), any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Класс с id=1 не найден");
 
@@ -353,7 +354,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 302 and create new class")
     public void putCreateClassValidForRoleAdmin() {
-        var payload = getClassDTO();
+        var payload = getDefaultClassDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.post(CLASSES_URL)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -405,17 +406,5 @@ public class ClassesControllerTest extends BaseControllerTest {
                         .param("description", classDTO.description())
                         .with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
-    }
-
-
-    private ClassDTO getClassDTO() {
-        return ClassDTO
-                .builder()
-                .number(6)
-                .letter("А")
-                .studentsIds(List.of(1L, 2L, 3L))
-                .subjectsIds(List.of(1L))
-                .description("Тестовое описание класса")
-                .build();
     }
 }

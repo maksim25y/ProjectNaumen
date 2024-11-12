@@ -20,7 +20,6 @@ import ru.mudan.services.subjects.SubjectService;
 public class HomeworkController {
 
     private final String HOMEWORK = "homework";
-    private final String REDIRECT_CLASSES_ALL = "redirect:/classes/all";
     private final HomeworkService homeworkService;
     private final ClassService classService;
     private final SubjectService subjectService;
