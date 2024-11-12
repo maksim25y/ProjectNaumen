@@ -109,6 +109,36 @@ public class ClassesControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(roles = "TEACHER")
+    @DisplayName("Should return status 403")
+    public void getClassByIdWithRoleTeacher() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "PARENT")
+    @DisplayName("Should return status 403")
+    public void getClassByIdWithRoleParent() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "PARENT")
+    @DisplayName("Should return status 403")
+    public void getClassByIdWithRoleStudent() {
+        mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
+                        .accept(MediaType.TEXT_HTML).with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
     @DisplayName("Should return status 200 and error")
     public void postAddStudentsToClassWithRoleAdminAndClassDoesNotExist() {
         var payload = getDefaultClassDTO();
@@ -279,7 +309,7 @@ public class ClassesControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("Should return status 200 and return page for adding")
+    @DisplayName("Should return status 403")
     public void getPageForAddingNewClassForRoleAdmin() {
         when(studentService.findStudentsWithNotClass()).thenReturn(List.of());
         when(subjectService.findSubjectsWithNotClass()).thenReturn(List.of());
@@ -295,7 +325,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void getPageForAddingNewClassForRoleParent() {
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -305,7 +335,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void getPageForAddingNewClassForRoleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -315,7 +345,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void getPageForAddingNewClassForRoleStudent() {
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -348,7 +378,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void deleteClassForRoleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -358,7 +388,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void deleteClassForRoleParent() {
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -368,7 +398,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void deleteClassForRoleStudent() {
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -405,7 +435,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void putUpdateClassValidForRoleTeacher() {
         var payload = getDefaultClassDTO();
 
@@ -421,7 +451,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void putUpdateClassValidForRoleParent() {
         var payload = getDefaultClassDTO();
 
@@ -437,7 +467,7 @@ public class ClassesControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    @DisplayName("Should return status 200 and error")
+    @DisplayName("Should return status 403")
     public void putUpdateClassValidForRoleStudent() {
         var payload = getDefaultClassDTO();
 
@@ -473,6 +503,54 @@ public class ClassesControllerTest extends BaseControllerTest {
                         .param("description", payload.description())
                         .with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "STUDENT")
+    @DisplayName("Should return status 403")
+    public void postCreateClassValidForRoleStudent() {
+        var payload = getDefaultClassDTO();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(CLASSES_URL)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("letter", payload.letter())
+                        .param("number", String.valueOf(payload.number()))
+                        .param("description", payload.description())
+                        .with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "PARENT")
+    @DisplayName("Should return status 403")
+    public void postCreateClassValidForRoleParent() {
+        var payload = getDefaultClassDTO();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(CLASSES_URL)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("letter", payload.letter())
+                        .param("number", String.valueOf(payload.number()))
+                        .param("description", payload.description())
+                        .with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+    }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(roles = "TEACHER")
+    @DisplayName("Should return status 403")
+    public void postCreateClassValidForRoleTeacher() {
+        var payload = getDefaultClassDTO();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(CLASSES_URL)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("letter", payload.letter())
+                        .param("number", String.valueOf(payload.number()))
+                        .param("description", payload.description())
+                        .with(csrf()))
+                .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
     }
 
     @SneakyThrows
