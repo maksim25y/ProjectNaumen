@@ -60,7 +60,7 @@ public class RegistrationServiceIT extends IntegrationTest {
 
         registrationService.registerParent(payload);
 
-        assertAll("Grouped assertion for registered admin",
+        assertAll("Grouped assertion for registered parent",
                 () -> assertTrue(appUserRepository.findByEmail(payload.email()).isPresent()),
                 () -> assertEquals(1, parentRepository.count()));
     }
@@ -71,7 +71,7 @@ public class RegistrationServiceIT extends IntegrationTest {
 
         registrationService.registerStudent(payload);
 
-        assertAll("Grouped assertion for registered admin",
+        assertAll("Grouped assertion for registered student",
                 () -> assertTrue(appUserRepository.findByEmail(payload.email()).isPresent()),
                 () -> assertEquals(1, studentRepository.count()));
     }
@@ -106,7 +106,7 @@ public class RegistrationServiceIT extends IntegrationTest {
 
         registrationService.registerParent(payload);
 
-        assertAll("Grouped assertion for registered admin",
+        assertAll("Grouped assertion for registered parent",
                 () -> assertTrue(appUserRepository.findByEmail(payload.email()).isPresent()),
                 () -> assertEquals(1, parentRepository.count()),
                 () -> assertThrows(UserAlreadyExistsException.class, () -> registrationService.registerParent(payload)));
@@ -118,7 +118,7 @@ public class RegistrationServiceIT extends IntegrationTest {
 
         registrationService.registerStudent(payload);
 
-        assertAll("Grouped assertion for registered admin",
+        assertAll("Grouped assertion for registered student",
                 () -> assertTrue(appUserRepository.findByEmail(payload.email()).isPresent()),
                 () -> assertEquals(1, studentRepository.count()),
                 () -> assertThrows(UserAlreadyExistsException.class, () -> registrationService.registerStudent(payload)));
@@ -142,7 +142,7 @@ public class RegistrationServiceIT extends IntegrationTest {
 
         registrationService.registerParent(payload);
 
-        assertAll("Grouped assertion for registered admin",
+        assertAll("Grouped assertion for registered parent",
                 () -> assertTrue(appUserRepository.findByEmail(payload.email()).isPresent()),
                 () -> assertEquals(1, parentRepository.count()),
                 () -> assertNotNull(studentRepository.findById(idOfCreatedStudent).get().getParent()));

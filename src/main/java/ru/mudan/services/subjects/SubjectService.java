@@ -14,6 +14,7 @@ import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
 import ru.mudan.services.auth.MyUserDetailsService;
 
 @Service
@@ -59,7 +60,8 @@ public class SubjectService {
         var classForSubject = classRepository.findById(request.classId())
                 .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
 
-        var teacherForSubject = teacherRepository.findById(request.teacherId()).orElseThrow();
+        var teacherForSubject = teacherRepository.findById(request.teacherId())
+                .orElseThrow(() -> new TeacherNotFoundException(request.teacherId()));
 
         var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
 
