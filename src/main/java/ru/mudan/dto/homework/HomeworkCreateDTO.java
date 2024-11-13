@@ -2,9 +2,8 @@ package ru.mudan.dto.homework;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-
 import java.time.LocalDate;
+import lombok.Builder;
 
 @Builder
 public record HomeworkCreateDTO(
