@@ -39,7 +39,7 @@ jobs:
 
       - run: mvn checkstyle:check
 
-  integration-test:
+  tests:
     name: Tests
     runs-on: ubuntu-latest
 

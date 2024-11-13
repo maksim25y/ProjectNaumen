@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.mudan.controllers.UtilConstants.*;
+import static ru.mudan.UtilConstants.*;
 
 public class ParentControllerTest extends BaseControllerTest {
 

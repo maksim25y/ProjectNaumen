@@ -29,7 +29,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.mudan.controllers.UtilConstants.*;
+import static ru.mudan.UtilConstants.*;
 
 @WithMockUser(roles = "ADMIN")
 public class ScheduleControllerTest extends BaseControllerTest {

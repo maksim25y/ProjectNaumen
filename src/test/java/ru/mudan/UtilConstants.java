@@ -1,8 +1,9 @@
-package ru.mudan.controllers;
+package ru.mudan;
 
 import java.time.LocalTime;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.dto.grades.GradeDTOResponse;
@@ -139,6 +140,17 @@ public class UtilConstants {
                 .studentLastname("Иванов")
                 .comment("Хорошая работа")
                 .dateOfMark(now())
+                .build();
+    }
+
+    public RegisterUserDTO getDefaultRegisterUserDTO() {
+        return RegisterUserDTO
+                .builder()
+                .firstname("Максим")
+                .lastname("Максимов")
+                .patronymic("Максимович")
+                .password("test1234")
+                .email("email@mail.com")
                 .build();
     }
 
