@@ -79,18 +79,6 @@ public class SubjectService {
         subjectsRepository.save(subjectForSaving);
     }
 
-    public void teacherContainSubject(Long subjectId, Authentication authentication) {
-        var foundSubject = subjectsRepository.findById(subjectId)
-                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
-
-        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-        if (!teacher.getSubjects().contains(foundSubject)) {
-            //TODO - поправить на спец исключение
-            throw new SubjectNotFoundException(subjectId);
-        }
-    }
-
     private String generateCode(String name, Integer classNumber, String letter) {
         return name.substring(0, sizeOfPartFromSubjectNameForSubjectCode).toUpperCase() + classNumber + letter;
     }

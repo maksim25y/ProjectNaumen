@@ -1,16 +1,18 @@
 package ru.mudan.controllers;
 
+import java.time.LocalTime;
+import java.util.List;
 import lombok.experimental.UtilityClass;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.grades.GradeDTO;
+import ru.mudan.dto.grades.GradeDTOResponse;
 import ru.mudan.dto.homework.HomeworkDTO;
+import ru.mudan.dto.parent.ParentDTO;
 import ru.mudan.dto.schedule.ScheduleCreateDTO;
 import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
-
-import java.time.LocalTime;
-import java.util.List;
+import ru.mudan.dto.teacher.TeacherDTO;
 
 import static java.time.LocalDate.now;
 
@@ -22,6 +24,9 @@ public class UtilConstants {
     public static final String HOMEWORKS_URL ="/homeworks";
     public static final String SCHEDULES_URL ="/schedules";
     public static final String GRADES_URL ="/grades";
+    public static final String PARENT_URL ="/parent";
+    public static final String STUDENT_URL = "/student";
+    public static final String TEACHER_URL = "/teacher";
 
     public static HomeworkDTO getDefaultHomeworkDTO() {
         return HomeworkDTO
@@ -101,6 +106,39 @@ public class UtilConstants {
                 .patronymic("Иванович")
                 .email("test@mail.ru")
                 .classId(1L)
+                .build();
+    }
+
+    public static TeacherDTO getDefaultTeacherDTO() {
+        return TeacherDTO
+                .builder()
+                .id(1L)
+                .email("test@mail.ru")
+                .firstname("Иван")
+                .lastname("Иванов")
+                .patronymic("Иванович")
+                .build();
+    }
+
+    public static ParentDTO getDefaultParent() {
+        return ParentDTO
+                .builder()
+                .id(1L)
+                .email("test@mail.ru")
+                .firstname("Иван")
+                .lastname("Иванов")
+                .patronymic("Иванович")
+                .build();
+    }
+
+    public static GradeDTOResponse getDefaultGradeDTOResponse() {
+        return GradeDTOResponse.builder()
+                .id(1L)
+                .mark(4)
+                .studentFirstname("Иван")
+                .studentLastname("Иванов")
+                .comment("Хорошая работа")
+                .dateOfMark(now())
                 .build();
     }
 

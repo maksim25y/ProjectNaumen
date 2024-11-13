@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.mudan.services.auth.AuthService;
 import ru.mudan.services.grades.GradesService;
 import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.schedule.ScheduleService;
@@ -25,6 +26,7 @@ public class TeacherController {
     private final ScheduleService scheduleService;
     private final GradesService gradesService;
     private final StudentService studentService;
+    private final AuthService authService;
 
     @GetMapping("/account")
     public String getTeacherMainPage(Authentication authentication, Model model) {
@@ -38,7 +40,7 @@ public class TeacherController {
     public String hwTeacherSubject(Model model,
                                    @PathVariable Long subjectId,
                                    Authentication authentication) {
-        subjectService.teacherContainSubject(subjectId, authentication);
+        authService.teacherContainSubject(subjectId, authentication);
 
         model.addAttribute("homeworks", homeworkService.findAllBySubject(subjectId));
         return "teacher/homework/homeworks-show";
@@ -48,7 +50,7 @@ public class TeacherController {
     public String scheduleTeacher(Model model,
                                    @PathVariable Long subjectId,
                                    Authentication authentication) {
-        subjectService.teacherContainSubject(subjectId, authentication);
+        authService.teacherContainSubject(subjectId, authentication);
 
         model.addAttribute("schedules", scheduleService.findAllBySubjectId(subjectId));
         return "teacher/schedule/schedule-teacher-index";
@@ -58,7 +60,7 @@ public class TeacherController {
     public String gradesTeacher(Model model,
                                   @PathVariable Long subjectId,
                                   Authentication authentication) {
-        subjectService.teacherContainSubject(subjectId, authentication);
+        authService.teacherContainSubject(subjectId, authentication);
 
         model.addAttribute("subject", subjectService.findById(subjectId));
         model.addAttribute("grades", gradesService.findAllBySubjectId(subjectId));

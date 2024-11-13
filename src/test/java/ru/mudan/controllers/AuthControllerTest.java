@@ -395,10 +395,10 @@ public class AuthControllerTest extends BaseControllerTest {
     }
 
     @SneakyThrows
-    private void postRegisterUserValid(String x, HttpStatus forbidden) {
+    private void postRegisterUserValid(String path, HttpStatus forbidden) {
         var payload = getDefaultRegisterUserDTO();
 
-        mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URL + x)
+        mockMvc.perform(MockMvcRequestBuilders.post(AUTH_URL + path)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("lastname", payload.lastname())
                         .param("firstname", payload.firstname())

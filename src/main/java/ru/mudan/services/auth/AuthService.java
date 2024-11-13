@@ -215,4 +215,15 @@ public class AuthService {
             throw new ApplicationForbiddenException();
         }
     }
+
+    public void teacherContainSubject(Long subjectId, Authentication authentication) {
+        var foundSubject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        if (!teacher.getSubjects().contains(foundSubject)) {
+            throw new ApplicationForbiddenException();
+        }
+    }
 }
