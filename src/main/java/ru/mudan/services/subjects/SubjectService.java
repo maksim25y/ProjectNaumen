@@ -3,10 +3,8 @@ package ru.mudan.services.subjects;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
-import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.ClassRepository;
 import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.domain.repositories.TeacherRepository;
@@ -77,18 +75,6 @@ public class SubjectService {
         subjectForSaving.setTeacher(teacherForSubject);
 
         subjectsRepository.save(subjectForSaving);
-    }
-
-    public void teacherContainSubject(Long subjectId, Authentication authentication) {
-        var foundSubject = subjectsRepository.findById(subjectId)
-                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
-
-        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-        if (!teacher.getSubjects().contains(foundSubject)) {
-            //TODO - поправить на спец исключение
-            throw new SubjectNotFoundException(subjectId);
-        }
     }
 
     private String generateCode(String name, Integer classNumber, String letter) {

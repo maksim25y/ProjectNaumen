@@ -1,6 +1,7 @@
 package ru.mudan.dto.subjects;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -14,7 +15,9 @@ public record SubjectCreateDTO(
         @NotBlank(message = "{subject.type.is_blank}")
         String type,
         String description,
+        @NotNull(message = "{subject.class.id.is_blank}")
         Long classId,
+        @NotNull(message = "{subject.teacher.id.is_blank}")
         Long teacherId
 ) {
 }

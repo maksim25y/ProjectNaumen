@@ -38,14 +38,14 @@ public class ClassController {
     }
 
     @PostMapping("/{classId}/students")
-    public String addStudentToClass(@PathVariable Long classId,
+    public String addStudentsToClass(@PathVariable Long classId,
                              ClassDTO classDTO) {
         classService.addStudentsToClass(classId, classDTO.studentsIds());
         return "redirect:/classes/" + classId;
     }
 
     @PostMapping("/{classId}/subjects")
-    public String addSubjectToClass(@PathVariable Long classId,
+    public String addSubjectsToClass(@PathVariable Long classId,
                              ClassDTO classDTO) {
         classService.addSubjectsToClass(classId, classDTO.subjectsIds());
         return "redirect:/classes/" + classId;

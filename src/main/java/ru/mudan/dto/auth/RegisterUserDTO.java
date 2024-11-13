@@ -24,7 +24,8 @@ public record RegisterUserDTO(
                 regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
         @NotBlank(message = "{email.is_blank}")
         String email,
-        @Size(min = 8, max = 32, message = "{password.invalid_size}")
+        @Size(min = 8, max = 20, message = "{password.invalid_size}")
+        @NotBlank(message = "{password.is_blank}")
         String password,
         List<Long> studentsIds
 ) {

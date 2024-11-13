@@ -40,7 +40,7 @@ jobs:
       - run: mvn checkstyle:check
 
   integration-test:
-    name: Integration Tests
+    name: Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -51,4 +51,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn verify -Dskip.unit.tests=true
+      - run: mvn verify

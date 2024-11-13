@@ -12,6 +12,8 @@ import ru.mudan.domain.repositories.SubjectsRepository;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.exceptions.entity.already_exists.ClassAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
+import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
+import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.services.CrudService;
 
 @Service
@@ -136,7 +138,8 @@ public class ClassService implements CrudService<ClassDTO> {
         if (studentsForAddingIds != null) {
             studentsForAddingIds
                     .forEach(id -> {
-                        var student = studentRepository.findById(id).get();
+                        var student = studentRepository.findById(id)
+                                .orElseThrow(() -> new StudentNotFoundException(id));
                         student.setClassEntity(foundClass);
                         studentRepository.save(student);
                     });
@@ -149,7 +152,8 @@ public class ClassService implements CrudService<ClassDTO> {
         if (subjectsForAddingIds != null) {
             subjectsForAddingIds
                     .forEach(id -> {
-                        var subject = subjectsRepository.findById(id).get();
+                        var subject = subjectsRepository.findById(id)
+                                .orElseThrow(() -> new SubjectNotFoundException(id));
                         subject.setClassEntity(foundClass);
                         subjectsRepository.save(subject);
                     });

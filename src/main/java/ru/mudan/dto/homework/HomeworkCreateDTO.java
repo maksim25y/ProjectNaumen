@@ -3,9 +3,10 @@ package ru.mudan.dto.homework;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import lombok.Builder;
 
+@Builder
 public record HomeworkCreateDTO(
-        Long id,
         @NotBlank(message = "{homework.title.is_blank}")
         String title,
         @NotBlank(message = "{homework.description.is_blank}")
