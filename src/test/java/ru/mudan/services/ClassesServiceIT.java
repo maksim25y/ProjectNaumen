@@ -1,7 +1,9 @@
 package ru.mudan.services;
 
 import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mudan.domain.repositories.*;
@@ -44,6 +46,7 @@ public class ClassesServiceIT extends IntegrationTest {
         appUserRepository.deleteAll();
         subjectsRepository.deleteAll();
         teacherRepository.deleteAll();
+        classRepository.deleteAll();
     }
 
     @Test

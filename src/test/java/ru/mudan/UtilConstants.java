@@ -7,11 +7,13 @@ import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.dto.grades.GradeDTOResponse;
+import ru.mudan.dto.homework.HomeworkCreateDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.dto.parent.ParentDTO;
 import ru.mudan.dto.schedule.ScheduleCreateDTO;
 import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.dto.student.StudentDTO;
+import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.teacher.TeacherDTO;
 
@@ -151,6 +153,27 @@ public class UtilConstants {
                 .patronymic("Максимович")
                 .password("test1234")
                 .email("email@mail.com")
+                .build();
+    }
+
+    public SubjectCreateDTO createSubjectDTOByClassIdAndTeacherId(Long classId, Long teacherId) {
+        return SubjectCreateDTO
+                .builder()
+                .name("Математика")
+                .type("Базовый")
+                .description("Тестовое описание")
+                .teacherId(teacherId)
+                .classId(classId)
+                .build();
+    }
+
+    public HomeworkCreateDTO createHomeworkCreateDTOBySubjectId(Long subjectId) {
+        return HomeworkCreateDTO
+                .builder()
+                .title("Тест пройти")
+                .description("На странице 5")
+                .deadline(now())
+                .subjectId(subjectId)
                 .build();
     }
 
