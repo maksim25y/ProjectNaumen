@@ -194,7 +194,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    @DisplayName("Should return status 200 and all homeworks for class")
+    @DisplayName("Should return status 200 and error page")
     public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleStudentNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(),any());
 

@@ -2,9 +2,11 @@ package ru.mudan.controllers;
 
 import lombok.experimental.UtilityClass;
 import ru.mudan.dto.classes.ClassDTO;
+import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.dto.schedule.ScheduleCreateDTO;
 import ru.mudan.dto.schedule.ScheduleDTO;
+import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 
 import java.time.LocalTime;
@@ -19,6 +21,7 @@ public class UtilConstants {
     public static final String CLASSES_URL ="/classes";
     public static final String HOMEWORKS_URL ="/homeworks";
     public static final String SCHEDULES_URL ="/schedules";
+    public static final String GRADES_URL ="/grades";
 
     public static HomeworkDTO getDefaultHomeworkDTO() {
         return HomeworkDTO
@@ -76,4 +79,29 @@ public class UtilConstants {
                 .subjectName("Математика")
                 .build();
     }
+
+    public static GradeDTO getDefaultGradeDTO() {
+        return GradeDTO
+                .builder()
+                .id(1L)
+                .mark(4)
+                .subjectId(1L)
+                .comment("Хорошая работа")
+                .dateOfMark(now())
+                .studentId(1L)
+                .build();
+    }
+
+    public static StudentDTO getDefaultStudentDTO() {
+        return StudentDTO
+                .builder()
+                .id(1L)
+                .firstname("Иван")
+                .lastname("Иванов")
+                .patronymic("Иванович")
+                .email("test@mail.ru")
+                .classId(1L)
+                .build();
+    }
+
 }
