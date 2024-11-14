@@ -77,6 +77,17 @@ public class UtilConstants {
                 .build();
     }
 
+    public static ScheduleCreateDTO createScheduleCreateDTOBySubjectIdAndClassId(Long subjectId, Long classId) {
+        return ScheduleCreateDTO
+                .builder()
+                .dayOfWeek(1)
+                .numberOfClassroom(1)
+                .startTime(LocalTime.now())
+                .classId(classId)
+                .subjectId(subjectId)
+                .build();
+    }
+
     public static ScheduleDTO getDefaultScheduleDTO() {
         return ScheduleDTO
                 .builder()
