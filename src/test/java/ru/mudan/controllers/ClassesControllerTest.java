@@ -312,13 +312,11 @@ public class ClassesControllerTest extends BaseControllerTest {
     @DisplayName("Should return status 403")
     public void getPageForAddingNewClassForRoleAdmin() {
         when(studentService.findStudentsWithNotClass()).thenReturn(List.of());
-        when(subjectService.findSubjectsWithNotClass()).thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(view().name("admin/classes/classes-add"))
-                .andExpect(model().attributeExists("subjects"))
                 .andExpect(model().attributeExists("students"));
     }
 

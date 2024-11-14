@@ -54,7 +54,6 @@ public class ClassController {
     @GetMapping("/add")
     public String getPageForCreatingNewClass(Model model) {
         model.addAttribute("students", studentService.findStudentsWithNotClass());
-        model.addAttribute("subjects", subjectService.findSubjectsWithNotClass());
         return "admin/classes/classes-add";
     }
 
