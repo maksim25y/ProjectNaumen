@@ -25,9 +25,10 @@ public class GradeController {
 
     @GetMapping("/all/{studentId}")
     public String getPageWithInfoAboutAllGrades(Model model, @PathVariable Long studentId,
-                      @RequestParam(value = "subjectId", required = false) Long subjectId,
-                        Authentication auth) {
-        authService.hasRoleAdminOrStudentThatInClassThatContainsSubject(studentId, subjectId, auth);
+                                                @RequestParam(value = "subjectId", required = false) Long subjectId,
+                                                Authentication auth) {
+        authService.hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(
+                studentId, subjectId, auth);
         if (subjectId != null) {
             model.addAttribute("subject", subjectService.findById(subjectId));
             model.addAttribute("grades", gradesService.findAllGradesForStudentWithSubject(studentId, subjectId));

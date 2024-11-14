@@ -167,6 +167,17 @@ public class UtilConstants {
                 .build();
     }
 
+    public RegisterUserDTO getDefaultRegisterUserDTOByEmail(String email) {
+        return RegisterUserDTO
+                .builder()
+                .firstname("Максим")
+                .lastname("Максимов")
+                .patronymic("Максимович")
+                .password("test1234")
+                .email(email)
+                .build();
+    }
+
     public SubjectCreateDTO createSubjectDTOByClassIdAndTeacherId(Long classId, Long teacherId) {
         return SubjectCreateDTO
                 .builder()
@@ -185,6 +196,17 @@ public class UtilConstants {
                 .description("На странице 5")
                 .deadline(now())
                 .subjectId(subjectId)
+                .build();
+    }
+
+    public static GradeDTO createGradeDTOByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return GradeDTO
+                .builder()
+                .mark(4)
+                .subjectId(subjectId)
+                .comment("Хорошая работа")
+                .dateOfMark(now())
+                .studentId(studentId)
                 .build();
     }
 

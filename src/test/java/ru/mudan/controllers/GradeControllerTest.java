@@ -120,7 +120,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
     public void getAllGradesForExistedStudentBySubjectForRoleTeacher() {
-        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentThatInClassThatContainsSubject(any(), any(), any());
+        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1?subjectId=1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -135,7 +135,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
     public void getAllGradesForExistedStudentBySubjectForRoleNotCurrentStudent() {
-        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentThatInClassThatContainsSubject(any(), any(), any());
+        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1?subjectId=1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -150,7 +150,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
     public void getAllGradesForExistedStudentByExistedSubjectForRoleParent() {
-        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentThatInClassThatContainsSubject(any(), any(), any());
+        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1?subjectId=1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -165,7 +165,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
     public void getAllGradesForExistedStudentForRoleParent() {
-        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentThatInClassThatContainsSubject(any(), any(), any());
+        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
@@ -180,7 +180,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
     public void getAllGradesForExistedStudentForRoleTeacher() {
-        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentThatInClassThatContainsSubject(any(), any(), any());
+        doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
