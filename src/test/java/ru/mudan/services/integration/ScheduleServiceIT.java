@@ -1,4 +1,4 @@
-package ru.mudan.services;
+package ru.mudan.services.integration;
 
 import java.time.LocalTime;
 import org.junit.jupiter.api.AfterEach;

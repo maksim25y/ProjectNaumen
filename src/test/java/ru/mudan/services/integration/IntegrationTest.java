@@ -1,4 +1,4 @@
-package ru.mudan.services;
+package ru.mudan.services.integration;
 
 import liquibase.Liquibase;
 import liquibase.Contexts;
