@@ -28,8 +28,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.mudan.controllers.UtilConstants.SUBJECTS_URL;
-import static ru.mudan.controllers.UtilConstants.getDefaultSubjectDTO;
+import static ru.mudan.UtilConstants.SUBJECTS_URL;
+import static ru.mudan.UtilConstants.getDefaultSubjectDTO;
 
 @WithMockUser(roles = "ADMIN")
 public class SubjectControllerTest extends BaseControllerTest {

@@ -14,7 +14,7 @@ import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
-import ru.mudan.services.auth.MyUserDetailsService;
+import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +25,6 @@ public class SubjectService {
     private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final SubjectsRepository subjectsRepository;
     private final ClassRepository classRepository;
-    private final MyUserDetailsService myUserDetailsService;
 
     public List<SubjectDTO> findAll() {
         return subjectsRepository.findAll()
@@ -59,7 +58,8 @@ public class SubjectService {
         var classForSubject = classRepository.findById(request.classId())
                 .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
 
-        var teacherForSubject = teacherRepository.findById(request.teacherId()).orElseThrow();
+        var teacherForSubject = teacherRepository.findById(request.teacherId())
+                .orElseThrow(() -> new TeacherNotFoundException(request.teacherId()));
 
         var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
 
@@ -97,19 +97,6 @@ public class SubjectService {
         subjectsRepository.delete(foundSubject);
     }
 
-    public List<SubjectDTO> findSubjectsWithNotClass() {
-        return subjectsRepository.findAllByClassEntity(null)
-                .stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .name(sb.getName())
-                        .build())
-                .toList();
-    }
-
     public List<SubjectDTO> findAllSubjectsForClass(Long id) {
         var foundClass = classRepository.findById(id)
                 .orElseThrow(() -> new ClassEntityNotFoundException(id));
@@ -122,12 +109,14 @@ public class SubjectService {
                         .code(sb.getCode())
                         .type(sb.getType())
                         .name(sb.getName())
+                        .description(sb.getDescription())
                         .build())
                 .toList();
     }
 
     public List<SubjectDTO> getSubjectsForTeacher(Long teacherId) {
-        var foundTeacher = teacherRepository.findById(teacherId).orElseThrow();
+        var foundTeacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new TeacherNotFoundException(teacherId));
 
         return foundTeacher.getSubjects().stream()
                 .map(sb -> SubjectDTO
@@ -135,6 +124,7 @@ public class SubjectService {
                         .id(sb.getId())
                         .code(sb.getCode())
                         .type(sb.getType())
+                        .description(sb.getDescription())
                         .name(sb.getName())
                         .build())
                 .toList();

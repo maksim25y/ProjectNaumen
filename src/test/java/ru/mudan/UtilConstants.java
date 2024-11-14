@@ -1,16 +1,19 @@
-package ru.mudan.controllers;
+package ru.mudan;
 
 import java.time.LocalTime;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.dto.classes.ClassDTO;
 import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.dto.grades.GradeDTOResponse;
+import ru.mudan.dto.homework.HomeworkCreateDTO;
 import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.dto.parent.ParentDTO;
 import ru.mudan.dto.schedule.ScheduleCreateDTO;
 import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.dto.student.StudentDTO;
+import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.teacher.TeacherDTO;
 
@@ -71,6 +74,17 @@ public class UtilConstants {
                 .startTime(LocalTime.now())
                 .classId(1L)
                 .subjectId(1L)
+                .build();
+    }
+
+    public static ScheduleCreateDTO createScheduleCreateDTOBySubjectIdAndClassId(Long subjectId, Long classId) {
+        return ScheduleCreateDTO
+                .builder()
+                .dayOfWeek(1)
+                .numberOfClassroom(1)
+                .startTime(LocalTime.now())
+                .classId(classId)
+                .subjectId(subjectId)
                 .build();
     }
 
@@ -139,6 +153,60 @@ public class UtilConstants {
                 .studentLastname("Иванов")
                 .comment("Хорошая работа")
                 .dateOfMark(now())
+                .build();
+    }
+
+    public RegisterUserDTO getDefaultRegisterUserDTO() {
+        return RegisterUserDTO
+                .builder()
+                .firstname("Максим")
+                .lastname("Максимов")
+                .patronymic("Максимович")
+                .password("test1234")
+                .email("email@mail.com")
+                .build();
+    }
+
+    public RegisterUserDTO getDefaultRegisterUserDTOByEmail(String email) {
+        return RegisterUserDTO
+                .builder()
+                .firstname("Максим")
+                .lastname("Максимов")
+                .patronymic("Максимович")
+                .password("test1234")
+                .email(email)
+                .build();
+    }
+
+    public SubjectCreateDTO createSubjectDTOByClassIdAndTeacherId(Long classId, Long teacherId) {
+        return SubjectCreateDTO
+                .builder()
+                .name("Математика")
+                .type("Базовый")
+                .description("Тестовое описание")
+                .teacherId(teacherId)
+                .classId(classId)
+                .build();
+    }
+
+    public HomeworkCreateDTO createHomeworkCreateDTOBySubjectId(Long subjectId) {
+        return HomeworkCreateDTO
+                .builder()
+                .title("Тест пройти")
+                .description("На странице 5")
+                .deadline(now())
+                .subjectId(subjectId)
+                .build();
+    }
+
+    public static GradeDTO createGradeDTOByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return GradeDTO
+                .builder()
+                .mark(4)
+                .subjectId(subjectId)
+                .comment("Хорошая работа")
+                .dateOfMark(now())
+                .studentId(studentId)
                 .build();
     }
 

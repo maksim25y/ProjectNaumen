@@ -31,8 +31,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.mudan.controllers.UtilConstants.CLASSES_URL;
-import static ru.mudan.controllers.UtilConstants.*;
+import static ru.mudan.UtilConstants.CLASSES_URL;
+import static ru.mudan.UtilConstants.*;
 
 @WithMockUser(roles = "ADMIN")
 public class ClassesControllerTest extends BaseControllerTest {
@@ -312,13 +312,11 @@ public class ClassesControllerTest extends BaseControllerTest {
     @DisplayName("Should return status 403")
     public void getPageForAddingNewClassForRoleAdmin() {
         when(studentService.findStudentsWithNotClass()).thenReturn(List.of());
-        when(subjectService.findSubjectsWithNotClass()).thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders.get(CLASSES_URL + "/add")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(view().name("admin/classes/classes-add"))
-                .andExpect(model().attributeExists("subjects"))
                 .andExpect(model().attributeExists("students"));
     }
 

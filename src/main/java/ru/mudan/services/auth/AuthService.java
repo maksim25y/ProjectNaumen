@@ -33,16 +33,7 @@ public class AuthService {
         }
 
         if (role.equals("ROLE_TEACHER")) {
-            var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-            var grade = gradeRepository.findById(id)
-                    .orElseThrow(() -> new GradeNotFoundException(id));
-
-            var subjectForGrade = grade.getSubject();
-
-            if (!teacher.getSubjects().contains(subjectForGrade)) {
-                throw new ApplicationForbiddenException();
-            }
+            checkTeacherHasGrade(id, authentication);
         } else {
             throw new ApplicationForbiddenException();
         }
@@ -56,14 +47,7 @@ public class AuthService {
         }
 
         if (role.equals("ROLE_TEACHER")) {
-            var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-            var subject = subjectsRepository.findById(subjectId)
-                    .orElseThrow(() -> new SubjectNotFoundException(subjectId));
-
-            if (!teacher.getSubjects().contains(subject)) {
-                throw new ApplicationForbiddenException();
-            }
+            checkTeacherHasSubject(subjectId, authentication);
         } else {
             throw new ApplicationForbiddenException();
         }
@@ -77,16 +61,7 @@ public class AuthService {
         }
 
         if (role.equals("ROLE_TEACHER")) {
-            var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-            var hw = homeworkRepository.findById(hwId)
-                    .orElseThrow(() -> new HomeworkNotFoundException(hwId));
-
-            var subjectForHW = hw.getSubject();
-
-            if (!teacher.getSubjects().contains(subjectForHW)) {
-                throw new ApplicationForbiddenException();
-            }
+            checkTeacherHasHW(hwId, authentication);
         } else {
             throw new ApplicationForbiddenException();
         }
@@ -97,97 +72,81 @@ public class AuthService {
             Authentication authentication) {
         var role = getAuthority(authentication);
 
-        if (role.equals("ROLE_ADMIN")) {
-            return;
+        switch (role) {
+            case "ROLE_ADMIN" -> {
+                return;
+            }
+            case "ROLE_STUDENT" -> {
+                checkStudentFromClass(classId, authentication);
+            }
+            case "ROLE_PARENT" -> {
+                checkParentHasStudentInClass(classId, authentication);
+            }
+            default -> throw new ApplicationForbiddenException();
         }
 
-        if (role.equals("ROLE_STUDENT")) {
-            var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
+    }
 
-            var foundClass = classRepository.findById(classId)
-                    .orElseThrow(() -> new ClassEntityNotFoundException(classId));
+    public void hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(Long studentId,
+                                                                                 Long subjectId,
+                                                                                 Authentication authentication) {
+        var role = getAuthority(authentication);
 
-            var studentsForClass = foundClass.getStudents();
-
-            if (!studentsForClass.contains(student)) {
-                throw new ApplicationForbiddenException();
+        switch (role) {
+            case "ROLE_ADMIN" -> {
+                return;
             }
-        } else if (role.equals("ROLE_PARENT")) {
-            var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-            var foundClass = classRepository.findById(classId)
-                    .orElseThrow(() -> new ClassEntityNotFoundException(classId));
-
-            var studentsForParent = parent.getStudents();
-
-            AtomicBoolean has = new AtomicBoolean(false);
-
-            studentsForParent.forEach(st -> {
-                var classEntity = st.getClassEntity();
-                if (classEntity != null) {
-                    if (classEntity.getId().equals(foundClass.getId())) {
-                        has.set(true);
-                    }
-                }
-            });
-
-            if (!has.get()) {
-                throw new ApplicationForbiddenException();
+            case "ROLE_STUDENT" -> {
+                checkStudentFromClassContainsSubject(studentId, subjectId, authentication);
             }
-        } else {
+            case "ROLE_PARENT" -> {
+                checkParentHasStudentInClassContainsSubject(studentId, subjectId, authentication);
+            }
+            default -> throw new ApplicationForbiddenException();
+        }
+
+    }
+
+    private void checkParentHasStudentInClassContainsSubject(Long studentId,
+                                                             Long subjectId,
+                                                             Authentication authentication) {
+        var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        var foundStudent = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
+
+        var studentsForParent = parent.getStudents();
+
+        if (!studentsForParent.contains(foundStudent)) {
             throw new ApplicationForbiddenException();
+        }
+
+        if (subjectId != null) {
+            checkClassContainsSubject(subjectId, foundStudent);
         }
     }
 
-    public void hasRoleAdminOrStudentThatInClassThatContainsSubject(Long studentId,
-                                                                    Long subjectId,
-                                                                    Authentication authentication) {
-        var role = getAuthority(authentication);
+    private void checkStudentFromClassContainsSubject(Long studentId, Long subjectId, Authentication authentication) {
+        var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
+        var studentById = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
 
-        if (role.equals("ROLE_ADMIN")) {
-            return;
-        }
-
-        if (role.equals("ROLE_STUDENT")) {
-            var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
-            var studentById = studentRepository.findById(studentId)
-                    .orElseThrow(() -> new StudentNotFoundException(studentId));
-
-            if (!studentById.getId().equals(student.getId())) {
-                throw new ApplicationForbiddenException();
-            }
-
-            var classForStudent = studentById.getClassEntity();
-
-            if (subjectId != null && classForStudent != null) {
-                var subjectForStudent = subjectsRepository.findById(subjectId)
-                        .orElseThrow(() -> new SubjectNotFoundException(subjectId));
-
-                var subjectsFromClass = classForStudent.getSubjects();
-
-                if (!subjectsFromClass.contains(subjectForStudent)) {
-                    throw new ApplicationForbiddenException();
-                }
-            }
-        } else if (role.equals("ROLE_PARENT")) {
-            var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-            var foundStudent = studentRepository.findById(studentId)
-                    .orElseThrow(() -> new StudentNotFoundException(studentId));
-
-            var studentsForParent = parent.getStudents();
-
-            if (!studentsForParent.contains(foundStudent)) {
-                throw new ApplicationForbiddenException();
-            }
-
-            if (subjectId != null) {
-               checkClassContainsSubject(subjectId, foundStudent);
-            }
-        } else {
+        if (!studentById.getId().equals(student.getId())) {
             throw new ApplicationForbiddenException();
         }
 
+        var classForStudent = studentById.getClassEntity();
+
+        if (subjectId != null && classForStudent != null) {
+            var subjectForStudent = subjectsRepository.findById(subjectId)
+                    .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+            var subjectsFromClass = classForStudent.getSubjects();
+
+            if (!subjectsFromClass.contains(subjectForStudent)) {
+                throw new ApplicationForbiddenException();
+            }
+        }
     }
 
     private void checkClassContainsSubject(Long subjectId, Student foundStudent) {
@@ -223,6 +182,80 @@ public class AuthService {
         var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
 
         if (!teacher.getSubjects().contains(foundSubject)) {
+            throw new ApplicationForbiddenException();
+        }
+    }
+
+    private void checkStudentFromClass(Long classId, Authentication authentication) {
+        var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        var foundClass = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassEntityNotFoundException(classId));
+
+        var studentsForClass = foundClass.getStudents();
+
+        if (!studentsForClass.contains(student)) {
+            throw new ApplicationForbiddenException();
+        }
+    }
+
+    private void checkTeacherHasSubject(Long subjectId, Authentication authentication) {
+        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        var subject = subjectsRepository.findById(subjectId)
+                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
+
+        if (!teacher.getSubjects().contains(subject)) {
+            throw new ApplicationForbiddenException();
+        }
+    }
+
+    private void checkParentHasStudentInClass(Long classId, Authentication authentication) {
+        var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        var foundClass = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassEntityNotFoundException(classId));
+
+        var studentsForParent = parent.getStudents();
+
+        AtomicBoolean has = new AtomicBoolean(false);
+
+        studentsForParent.forEach(st -> {
+            var classEntity = st.getClassEntity();
+            if (classEntity != null) {
+                if (classEntity.getId().equals(foundClass.getId())) {
+                    has.set(true);
+                }
+            }
+        });
+
+        if (!has.get()) {
+            throw new ApplicationForbiddenException();
+        }
+    }
+
+    private void checkTeacherHasGrade(Long id, Authentication authentication) {
+        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        var grade = gradeRepository.findById(id)
+                .orElseThrow(() -> new GradeNotFoundException(id));
+
+        var subjectForGrade = grade.getSubject();
+
+        if (!teacher.getSubjects().contains(subjectForGrade)) {
+            throw new ApplicationForbiddenException();
+        }
+    }
+
+    private void checkTeacherHasHW(Long hwId, Authentication authentication) {
+        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
+
+        var hw = homeworkRepository.findById(hwId)
+                .orElseThrow(() -> new HomeworkNotFoundException(hwId));
+
+        var subjectForHW = hw.getSubject();
+
+        if (!teacher.getSubjects().contains(subjectForHW)) {
             throw new ApplicationForbiddenException();
         }
     }

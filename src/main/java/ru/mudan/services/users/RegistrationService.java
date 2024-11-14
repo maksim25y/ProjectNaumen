@@ -3,6 +3,7 @@ package ru.mudan.services.users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.users.*;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
@@ -11,6 +12,7 @@ import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RegistrationService {
 
     private final AdminRepository adminRepository;
@@ -78,7 +80,6 @@ public class RegistrationService {
             registerUserDTO.studentsIds().forEach(studentId -> {
                studentRepository.findById(studentId).ifPresent(student -> {
                    student.setParent(parent);
-                   studentRepository.save(student);
                });
             });
         }

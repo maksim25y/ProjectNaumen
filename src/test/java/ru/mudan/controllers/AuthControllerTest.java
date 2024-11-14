@@ -21,7 +21,7 @@ import ru.mudan.services.users.RegistrationService;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.mudan.controllers.UtilConstants.*;
+import static ru.mudan.UtilConstants.*;
 
 @WithMockUser(roles = "ADMIN")
 public class AuthControllerTest extends BaseControllerTest {
@@ -407,17 +407,6 @@ public class AuthControllerTest extends BaseControllerTest {
                         .param("password", payload.password())
                         .with(csrf()))
                 .andExpect(status().is(forbidden.value()));
-    }
-
-    private RegisterUserDTO getDefaultRegisterUserDTO() {
-        return RegisterUserDTO
-                .builder()
-                .firstname("Максим")
-                .lastname("Максимов")
-                .patronymic("Максимович")
-                .password("test1234")
-                .email("email@mail.com")
-                .build();
     }
 
 }
