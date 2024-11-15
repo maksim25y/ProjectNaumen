@@ -2,6 +2,8 @@ package ru.mudan.services.subjects;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
@@ -20,6 +22,7 @@ import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
 @RequiredArgsConstructor
 public class SubjectService {
 
+    private static final Logger log = LoggerFactory.getLogger(SubjectService.class);
     private final TeacherRepository teacherRepository;
     @Value("${size.of.code}")
     private Integer sizeOfPartFromSubjectNameForSubjectCode;
@@ -43,6 +46,7 @@ public class SubjectService {
     public SubjectDTO findById(Long id) {
         var foundSubject = subjectsRepository.findById(id)
                 .orElseThrow(() -> new SubjectNotFoundException(id));
+        log.info("Found subject with id={}", id);
 
         return SubjectDTO
                 .builder()
@@ -55,11 +59,14 @@ public class SubjectService {
     }
 
     public void save(SubjectCreateDTO request) {
+        log.info("Started creating subject with name {}", request.name());
         var classForSubject = classRepository.findById(request.classId())
                 .orElseThrow(() -> new ClassEntityNotFoundException(request.classId()));
+        log.info("Found class with id={}", request.classId());
 
         var teacherForSubject = teacherRepository.findById(request.teacherId())
                 .orElseThrow(() -> new TeacherNotFoundException(request.teacherId()));
+        log.info("Found teacher with id={}", request.classId());
 
         var codeForSb = generateCode(request.name(), classForSubject.getNumber(), classForSubject.getLetter());
 
@@ -75,6 +82,7 @@ public class SubjectService {
         subjectForSaving.setTeacher(teacherForSubject);
 
         subjectsRepository.save(subjectForSaving);
+        log.info("Finished creating subject with name {}", request.name());
     }
 
     private String generateCode(String name, Integer classNumber, String letter) {
@@ -82,6 +90,7 @@ public class SubjectService {
     }
 
     public void update(SubjectUpdateDTO request, Long id) {
+        log.info("Started updating subject with id={}", id);
         var foundSubject = subjectsRepository.findById(id)
                 .orElseThrow(() -> new SubjectNotFoundException(id));
 
@@ -89,20 +98,25 @@ public class SubjectService {
         foundSubject.setDescription(request.description());
 
         subjectsRepository.save(foundSubject);
+        log.info("Finished updating subject with id={}", id);
     }
 
     public void deleteById(Long id) {
+        log.info("Started deleting subject with id={}", id);
         var foundSubject = subjectsRepository
                 .findById(id).orElseThrow(() -> new SubjectNotFoundException(id));
         subjectsRepository.delete(foundSubject);
+        log.info("Finished deleting subject with id={}", id);
     }
 
     public List<SubjectDTO> findAllSubjectsForClass(Long id) {
+        log.info("Started getting all subjects for class with id={}", id);
         var foundClass = classRepository.findById(id)
                 .orElseThrow(() -> new ClassEntityNotFoundException(id));
+        var subjectsForClass = foundClass.getSubjects();
+        log.info("Finished getting all subjects for class with id={}", id);
 
-        return foundClass.getSubjects()
-                .stream()
+        return subjectsForClass.stream()
                 .map(sb -> SubjectDTO
                         .builder()
                         .id(sb.getId())
@@ -118,7 +132,10 @@ public class SubjectService {
         var foundTeacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new TeacherNotFoundException(teacherId));
 
-        return foundTeacher.getSubjects().stream()
+        var subjectsForTeacher = foundTeacher.getSubjects();
+        log.info("Finished getting all subjects for teacher with id={}", teacherId);
+
+        return subjectsForTeacher.stream()
                 .map(sb -> SubjectDTO
                         .builder()
                         .id(sb.getId())
@@ -135,6 +152,7 @@ public class SubjectService {
 
         if (foundSubject != null) {
             var classForSubject = foundSubject.getClassEntity();
+            log.info("Subject with code {} already exists", code);
             throw new SubjectAlreadyExistsException(
                     foundSubject.getName(),
                     classForSubject.getNumber(),

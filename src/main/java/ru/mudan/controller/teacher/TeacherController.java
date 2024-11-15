@@ -48,8 +48,8 @@ public class TeacherController {
 
     @GetMapping("/schedule/{subjectId}")
     public String scheduleTeacher(Model model,
-                                   @PathVariable Long subjectId,
-                                   Authentication authentication) {
+                                  @PathVariable Long subjectId,
+                                  Authentication authentication) {
         authService.teacherContainSubject(subjectId, authentication);
 
         model.addAttribute("schedules", scheduleService.findAllBySubjectId(subjectId));
@@ -58,8 +58,8 @@ public class TeacherController {
 
     @GetMapping("/grades/subject/{subjectId}")
     public String gradesTeacher(Model model,
-                                  @PathVariable Long subjectId,
-                                  Authentication authentication) {
+                                @PathVariable Long subjectId,
+                                Authentication authentication) {
         authService.teacherContainSubject(subjectId, authentication);
 
         model.addAttribute("subject", subjectService.findById(subjectId));

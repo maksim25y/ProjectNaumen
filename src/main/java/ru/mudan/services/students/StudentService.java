@@ -2,6 +2,7 @@ package ru.mudan.services.students;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.Student;
@@ -16,6 +17,7 @@ import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.services.auth.MyUserDetailsService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StudentService {
@@ -27,8 +29,7 @@ public class StudentService {
     private final ParentRepository parentRepository;
 
     public StudentDTO findById(Long id) {
-        var foundStudent =  studentRepository.findById(id)
-                .orElseThrow(() -> new StudentNotFoundException(id));
+        var foundStudent = getStudentById(id);
 
         return StudentDTO
                 .builder()
@@ -41,6 +42,7 @@ public class StudentService {
     }
 
     public List<StudentDTO> findStudentsWithNotClass() {
+        log.info("Getting all students with not class");
         return studentRepository.findAllByClassEntity(null)
                 .stream()
                 .map(st -> StudentDTO
@@ -55,8 +57,10 @@ public class StudentService {
     }
 
     public List<StudentDTO> findAllStudentsForClass(Long id) {
+        log.info("Started getting all students for class with id={}", id);
         var foundClass = classRepository.findById(id)
                 .orElseThrow(() -> new ClassEntityNotFoundException(id));
+        log.info("Finished getting all students for class with id={}", id);
 
         return foundClass.getStudents()
                 .stream()
@@ -88,8 +92,10 @@ public class StudentService {
     }
 
     public List<StudentDTO> getAllStudentsForParent(Long parentId) {
+        log.info("Started getting all students for parent with id={}", parentId);
         var parent = parentRepository.findById(parentId)
                 .orElseThrow(() -> new ParentNotFoundException(parentId));
+        log.info("Finished getting all students for parent with id={}", parentId);
 
         return parent.getStudents().stream()
                 .map(st -> StudentDTO
@@ -141,5 +147,11 @@ public class StudentService {
                 .email(student.getEmail())
                 .classId(classId)
                 .build();
+    }
+
+    private Student getStudentById(Long id) {
+        log.info("Getting student with id {}", id);
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
     }
 }

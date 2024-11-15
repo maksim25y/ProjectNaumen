@@ -2,6 +2,7 @@ package ru.mudan.services.auth;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.Parent;
@@ -10,8 +11,8 @@ import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.exceptions.base.ApplicationForbiddenException;
 import ru.mudan.exceptions.entity.not_found.*;
-import ru.mudan.services.students.StudentService;
 
+@Slf4j
 @SuppressWarnings("MultipleStringLiterals")
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,6 @@ public class AuthService {
     private final SubjectsRepository subjectsRepository;
     private final HomeworkRepository homeworkRepository;
     private final ClassRepository classRepository;
-    private final StudentService studentService;
     private final StudentRepository studentRepository;
 
     public void teacherHasGradeOrRoleIsAdmin(Long id, Authentication authentication) {
@@ -182,6 +182,7 @@ public class AuthService {
         var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
 
         if (!teacher.getSubjects().contains(foundSubject)) {
+            log.info("Teacher not contains subject with id={}", subjectId);
             throw new ApplicationForbiddenException();
         }
     }
@@ -195,6 +196,7 @@ public class AuthService {
         var studentsForClass = foundClass.getStudents();
 
         if (!studentsForClass.contains(student)) {
+            log.info("Student with not from class with id={}", classId);
             throw new ApplicationForbiddenException();
         }
     }
@@ -206,6 +208,7 @@ public class AuthService {
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         if (!teacher.getSubjects().contains(subject)) {
+            log.info("Teacher has not subject with id={}", subjectId);
             throw new ApplicationForbiddenException();
         }
     }
@@ -230,19 +233,21 @@ public class AuthService {
         });
 
         if (!has.get()) {
+            log.info("Teacher has not students in class with id={}", classId);
             throw new ApplicationForbiddenException();
         }
     }
 
-    private void checkTeacherHasGrade(Long id, Authentication authentication) {
+    private void checkTeacherHasGrade(Long gradeId, Authentication authentication) {
         var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
 
-        var grade = gradeRepository.findById(id)
-                .orElseThrow(() -> new GradeNotFoundException(id));
+        var grade = gradeRepository.findById(gradeId)
+                .orElseThrow(() -> new GradeNotFoundException(gradeId));
 
         var subjectForGrade = grade.getSubject();
 
         if (!teacher.getSubjects().contains(subjectForGrade)) {
+            log.info("Teacher has not grade with id={}", gradeId);
             throw new ApplicationForbiddenException();
         }
     }
@@ -256,6 +261,7 @@ public class AuthService {
         var subjectForHW = hw.getSubject();
 
         if (!teacher.getSubjects().contains(subjectForHW)) {
+            log.info("Teacher has not homework with id={}", hwId);
             throw new ApplicationForbiddenException();
         }
     }

@@ -2,6 +2,7 @@ package ru.mudan.services.homework;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.Homework;
@@ -14,6 +15,7 @@ import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.HomeworkNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -24,12 +26,14 @@ public class HomeworkService {
     private final SubjectsRepository subjectsRepository;
 
     public List<HomeworkDTO> findAllByClassAndSubject(Long classId, Long subjectId) {
+        log.info("Started getting all homeworks for subject with id={} and class with id={}", subjectId, classId);
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         var listOfHomework = homeworkRepository.findByClassEntityAndSubject(foundClass, foundSubject);
+        log.info("Finished getting all homeworks for subject with id={} and class with id={}", subjectId, classId);
         return listOfHomework
                 .stream()
                 .map(hw -> HomeworkDTO
@@ -56,10 +60,13 @@ public class HomeworkService {
     }
 
     public List<HomeworkDTO> findAllByClass(Long classId) {
+        log.info("Started getting all homeworks for class with id={}", classId);
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));
+        var homeworksForClass = foundClass.getHomeworks();
+        log.info("Finished getting all homeworks for class with id={}", classId);
 
-        return foundClass.getHomeworks().stream()
+        return homeworksForClass.stream()
                 .map(hw -> HomeworkDTO
                         .builder()
                         .id(hw.getId())
@@ -86,16 +93,22 @@ public class HomeworkService {
     }
 
     public void delete(Long id) {
+        log.info("Started deleting homework for with id={}", id);
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));
         homeworkRepository.delete(foundHomework);
+        log.info("Finished deleting homework for with id={}", id);
     }
 
     public List<HomeworkDTO> findAllBySubject(Long subjectId) {
+        log.info("Started getting all homeworks for subject with id={}", subjectId);
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
-        return foundSubject.getHomeworks().stream()
+        var homeworksForSubject = foundSubject.getHomeworks();
+        log.info("Finished getting all homeworks for subject with id={}", subjectId);
+
+        return homeworksForSubject.stream()
                 .map(hw -> HomeworkDTO
                         .builder()
                         .id(hw.getId())

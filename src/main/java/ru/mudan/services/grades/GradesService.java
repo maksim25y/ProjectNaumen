@@ -2,6 +2,7 @@ package ru.mudan.services.grades;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Grade;
 import ru.mudan.domain.repositories.GradeRepository;
@@ -13,6 +14,7 @@ import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GradesService {
@@ -22,11 +24,13 @@ public class GradesService {
     private final SubjectsRepository subjectsRepository;
 
     public List<GradeDTO> findAllGradesForStudent(Long studentId) {
+        log.info("Started getting all grades for student with id={}", studentId);
         var foundStudent = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
 
 
         var grades = foundStudent.getGrades();
+        log.info("Finished getting all grades for student with id={}", studentId);
 
         return grades.stream()
                 .map(grade -> GradeDTO
@@ -42,6 +46,7 @@ public class GradesService {
     }
 
     public List<GradeDTO> findAllGradesForStudentWithSubject(Long studentId, Long subjectId) {
+        log.info("Started getting all grades for student with id={} and subject with id={}", studentId, subjectId);
         var foundStudent = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
 
@@ -49,6 +54,7 @@ public class GradesService {
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         var grades = gradeRepository.findAllByStudentAndSubject(foundStudent, foundSubject);
+        log.info("Finished getting all grades for student with id={} and subject with id={}", studentId, subjectId);
 
         return grades.stream()
                 .map(grade -> GradeDTO
@@ -77,6 +83,7 @@ public class GradesService {
     }
 
     public void save(GradeDTO request) {
+        log.info("Started creating grade for student with id={} and subject with id={}", request.studentId(), request.subjectId());
         var foundStudent = studentRepository.findById(request.studentId())
                 .orElseThrow(() -> new StudentNotFoundException(request.studentId()));
 
@@ -92,13 +99,18 @@ public class GradesService {
         grade.setSubject(foundSubject);
 
         gradeRepository.save(grade);
+        log.info("Finished creating grade for student with id={} and subject with id={}", request.studentId(), request.subjectId());
     }
 
     public List<GradeDTOResponse> findAllBySubjectId(Long subjectId) {
+        log.info("Started getting all grades for subject with id={}", subjectId);
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
-        return foundSubject.getGrades().stream()
+        var grades = foundSubject.getGrades();
+        log.info("Finished getting all grades for subject with id={}", subjectId);
+
+        return grades.stream()
                 .map(grade -> GradeDTOResponse
                         .builder()
                         .id(grade.getId())
@@ -112,6 +124,7 @@ public class GradesService {
     }
 
     public void update(GradeDTO request, Long id) {
+        log.info("Started updating grade with id={}", id);
         var foundGrade = gradeRepository.findById(id)
                 .orElseThrow(() -> new GradeNotFoundException(id));
 
@@ -119,12 +132,15 @@ public class GradesService {
         foundGrade.setDateOfMark(request.dateOfMark());
         foundGrade.setComment(request.comment());
         gradeRepository.save(foundGrade);
+        log.info("Finished updating grade with id={}", id);
     }
 
     public void deleteById(Long id) {
+        log.info("Started deleting grade with id={}", id);
         var foundGrade = gradeRepository.findById(id)
                 .orElseThrow(() -> new GradeNotFoundException(id));
 
         gradeRepository.delete(foundGrade);
+        log.info("Finished deleting grade with id={}", id);
     }
 }

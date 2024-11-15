@@ -2,6 +2,7 @@ package ru.mudan.services.classes;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.services.CrudService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -29,7 +31,9 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public List<ClassDTO> findAll() {
+        log.info("Started getting all classes");
         var allClasses = classRepository.findAll();
+        log.info("Finished getting all classes");
 
         return allClasses.stream()
                 .map(cl -> ClassDTO
@@ -56,6 +60,7 @@ public class ClassService implements CrudService<ClassDTO> {
 
     @Override
     public void save(ClassDTO request) {
+        log.info("Started creating new class {}{}", request.number(), request.letter());
         checkClassAlreadyExists(request);
 
         var classEntity = new ClassEntity(
@@ -75,10 +80,12 @@ public class ClassService implements CrudService<ClassDTO> {
                 );
             });
         }
+        log.info("Finished creating new class {}{}", request.number(), request.letter());
     }
 
     @Override
     public void update(ClassDTO request, Long id) {
+        log.info("Started updating class with id={}", id);
         var foundClass = findClassEntityById(id);
 
         checkClassAlreadyExistsAndIdNotEquals(request, id);
@@ -99,13 +106,16 @@ public class ClassService implements CrudService<ClassDTO> {
         });
 
         classRepository.save(foundClass);
+        log.info("Finished updating class with id={}", id);
     }
 
     @Override
     public void deleteById(Long id) {
+        log.info("Started deleting class with id={}", id);
         findClassEntityById(id);
 
         classRepository.deleteById(id);
+        log.info("Finished deleting class with id={}", id);
     }
 
     private void checkClassAlreadyExists(ClassDTO request) {
@@ -115,6 +125,7 @@ public class ClassService implements CrudService<ClassDTO> {
                         request.number());
 
         if (foundClass.isPresent()) {
+            log.info("Class {}{} already exists", request.number(), request.letter());
             throw new ClassAlreadyExistsException(request.number(), request.letter());
         }
     }
@@ -127,12 +138,14 @@ public class ClassService implements CrudService<ClassDTO> {
 
         if (foundClass.isPresent()) {
             if (!foundClass.get().getId().equals(id)) {
+                log.info("Class with parameters {}{} for updated already exists", request.number(), request.letter());
                 throw new ClassAlreadyExistsException(request.number(), request.letter());
             }
         }
     }
 
     public void addStudentsToClass(Long classId, List<Long> studentsForAddingIds) {
+        log.info("Started adding students to class with id={}", classId);
         var foundClass = findClassEntityById(classId);
 
         if (studentsForAddingIds != null) {
@@ -143,10 +156,12 @@ public class ClassService implements CrudService<ClassDTO> {
                         student.setClassEntity(foundClass);
                         studentRepository.save(student);
                     });
+            log.info("Finished adding students to class with id={}", classId);
         }
     }
 
     public void addSubjectsToClass(Long classId, List<Long> subjectsForAddingIds) {
+        log.info("Started adding subjects to class with id={}", classId);
         var foundClass = findClassEntityById(classId);
 
         if (subjectsForAddingIds != null) {
@@ -157,6 +172,7 @@ public class ClassService implements CrudService<ClassDTO> {
                         subject.setClassEntity(foundClass);
                         subjectsRepository.save(subject);
                     });
+            log.info("Finished adding subjects to class with id={}", classId);
         }
     }
 

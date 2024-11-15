@@ -1,6 +1,7 @@
 package ru.mudan.services.users;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,6 +25,7 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     public void registerAdmin(RegisterUserDTO registerUserDTO) {
+        log.info("Started creating admin with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
         var admin = new Admin(
@@ -41,9 +44,11 @@ public class RegistrationService {
         );
 
         appUserRepository.save(appUser);
+        log.info("Finished creating admin with email {}", registerUserDTO.email());
     }
 
     public void registerTeacher(RegisterUserDTO registerUserDTO) {
+        log.info("Started creating teacher with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
         var teacher = new Teacher(
@@ -62,9 +67,11 @@ public class RegistrationService {
         );
 
         appUserRepository.save(appUser);
+        log.info("Finished creating teacher with email {}", registerUserDTO.email());
     }
 
     public void registerParent(RegisterUserDTO registerUserDTO) {
+        log.info("Started creating parent with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
         var parent = new Parent(
@@ -78,9 +85,9 @@ public class RegistrationService {
 
         if (registerUserDTO.studentsIds() != null) {
             registerUserDTO.studentsIds().forEach(studentId -> {
-               studentRepository.findById(studentId).ifPresent(student -> {
-                   student.setParent(parent);
-               });
+                studentRepository.findById(studentId).ifPresent(student -> {
+                    student.setParent(parent);
+                });
             });
         }
 
@@ -89,11 +96,13 @@ public class RegistrationService {
                 Role.ROLE_PARENT,
                 savedParent.getEmail()
         );
-
         appUserRepository.save(appUser);
+        log.info("Finished creating parent with email {}", registerUserDTO.email());
     }
 
     public void registerStudent(RegisterUserDTO registerUserDTO) {
+        log.info("Started creating student with email {}", registerUserDTO.email());
+
         checkUserExists(registerUserDTO.email());
 
         var student = new Student(
@@ -112,11 +121,13 @@ public class RegistrationService {
         );
 
         appUserRepository.save(appUser);
+        log.info("Finished creating student with email {}", registerUserDTO.email());
     }
 
     private void checkUserExists(String email) {
         var user = appUserRepository.findByEmail(email);
         if (user.isPresent()) {
+            log.info("User with email {} already exists", email);
             throw new UserAlreadyExistsException(email);
         }
     }

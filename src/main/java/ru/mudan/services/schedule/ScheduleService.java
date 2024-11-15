@@ -3,6 +3,7 @@ package ru.mudan.services.schedule;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.Schedule;
@@ -17,6 +18,7 @@ import ru.mudan.exceptions.entity.not_found.ScheduleNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.util.ScheduleUtil;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,10 +29,12 @@ public class ScheduleService {
     private final SubjectsRepository subjectsRepository;
 
     public List<ScheduleDTO> findAllSchedulesForClass(Long classId) {
+        log.info("Started getting all schedules for class with id={}", classId);
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));
         var listOfSchedules = foundClass.getSchedules();
         listOfSchedules.sort(Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime));
+        log.info("Finished getting all schedules for class with id={}", classId);
 
         return listOfSchedules
                 .stream()
@@ -60,6 +64,7 @@ public class ScheduleService {
     }
 
     public void save(ScheduleCreateDTO request) {
+        log.info("Started creating schedule for class with id={} and subject with id={}", request.classId(), request.subjectId());
         var subjectForSchedule = subjectsRepository.findById(request.subjectId())
                 .orElseThrow(() -> new SubjectNotFoundException(request.subjectId()));
         var classForSchedule = classRepository.findById(request.classId())
@@ -74,9 +79,11 @@ public class ScheduleService {
         schedule.setSubject(subjectForSchedule);
 
         scheduleRepository.save(schedule);
+        log.info("Finished creating schedule for class with id={} and subject with id={}", request.classId(), request.subjectId());
     }
 
     public void update(ScheduleUpdateDTO request, Long id) {
+        log.info("Started updating schedule with id={}", id);
         var foundSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ScheduleNotFoundException(id));
 
@@ -84,21 +91,26 @@ public class ScheduleService {
         foundSchedule.setStartTime(request.startTime());
         foundSchedule.setNumberOfClassroom(request.numberOfClassroom());
         scheduleRepository.save(foundSchedule);
+        log.info("Finished updating schedule with id={}", id);
     }
 
     public void deleteById(Long id) {
+        log.info("Started deleting schedule with id={}", id);
         var foundSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ScheduleNotFoundException(id));
 
         scheduleRepository.delete(foundSchedule);
+        log.info("Finished deleting schedule with id={}", id);
     }
 
     public List<ScheduleDTO> findAllBySubjectId(Long subjectId) {
+        log.info("Started getting all schedules for subject with id={}", subjectId);
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         var teacherSchedule = foundSubject.getSchedules();
         teacherSchedule.sort((Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime)));
+        log.info("Finished getting all schedules for subject with id={}", subjectId);
 
         return teacherSchedule.stream().map(sch -> ScheduleDTO
                         .builder()
