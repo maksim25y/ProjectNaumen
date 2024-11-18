@@ -12,6 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.domain.entity.users.enums.Role;
 
+/**
+ * Сущность для работы с таблицей parents в БД
+ */
 @Getter
 @Setter
 @ToString

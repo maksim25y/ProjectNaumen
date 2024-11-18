@@ -14,6 +14,9 @@ import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.entity.Grade;
 import ru.mudan.domain.entity.users.enums.Role;
 
+/**
+ * Сущность для работы с таблицей students в БД
+ */
 @Getter
 @Setter
 @ToString

@@ -2,6 +2,9 @@ package ru.mudan.dto.subjects;
 
 import lombok.Builder;
 
+/**
+ * DTO для сущности Subject
+ */
 @Builder
 public record SubjectDTO(
         Long id,

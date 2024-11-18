@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+/**
+ * Входные данные для создания предмета
+ */
 @Builder
 public record SubjectCreateDTO(
         @Pattern(regexp = "[А-ЯЁ][а-яё\\s]*", message = "{subject.name.invalid_pattern}")

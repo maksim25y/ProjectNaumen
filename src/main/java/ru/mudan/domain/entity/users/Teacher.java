@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.entity.users.enums.Role;
 
+/**
+ * Сущность для работы с таблицей teachers в БД
+ */
 @Getter
 @Setter
 @ToString

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.Builder;
 
+/**
+ * Входные данные для регистрации нового пользователя
+ */
 @Builder
 public record RegisterUserDTO(
         @Size(min = 4, max = 15, message = "{firstname.invalid_size}")

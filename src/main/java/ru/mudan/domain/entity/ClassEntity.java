@@ -8,6 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.mudan.domain.entity.users.Student;
 
+/**
+ * Сущность для работы с таблицей classes в БД
+ */
 @Getter
 @Setter
 @ToString

@@ -7,6 +7,9 @@ import ru.mudan.domain.entity.Grade;
 import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.entity.users.Student;
 
+/**
+ * Репозиторий для работы с сущностью Grade
+ */
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, Long> {
     List<Grade> findAllByStudentAndSubject(Student student, Subject subject);

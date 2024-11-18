@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Сущность для работы с таблицей schedules в БД
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

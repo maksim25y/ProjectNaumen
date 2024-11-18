@@ -5,6 +5,9 @@ import java.time.LocalTime;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 
+/**
+ * Входные данные для обновления ячейки расписания
+ */
 @Builder
 public record ScheduleUpdateDTO(
         @Range(min = 1, max = 5, message = "{schedule.day.of.week.range}")

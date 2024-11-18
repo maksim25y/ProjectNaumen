@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Сущность для работы с таблицей homeworks в БД
+ */
 @Getter
 @Setter
 @ToString
