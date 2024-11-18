@@ -11,7 +11,10 @@ import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 
-
+/**
+ * Класс с описанием бизнес-логики
+ * для работы с регистрацией новых пользователей
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,12 +28,16 @@ public class RegistrationService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Метод для регистрации администратора
+     *
+     * @param registerUserDTO - входные данные для регистрации
+     */
     public void registerAdmin(RegisterUserDTO registerUserDTO) {
         log.info("Started creating admin with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
-        var admin = new Admin(
-                registerUserDTO.firstname(),
+        var admin = new Admin(registerUserDTO.firstname(),
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
                 registerUserDTO.email(),
@@ -38,22 +45,22 @@ public class RegistrationService {
 
         var savedAdmin = adminRepository.save(admin);
 
-        var appUser = getAppUserByRoleUserIdAndEmail(
-                savedAdmin.getId(),
-                Role.ROLE_ADMIN,
-                savedAdmin.getEmail()
-        );
+        var appUser = getAppUserByRoleUserIdAndEmail(savedAdmin.getId(), Role.ROLE_ADMIN, savedAdmin.getEmail());
 
         appUserRepository.save(appUser);
         log.info("Finished creating admin with email {}", registerUserDTO.email());
     }
 
+    /**
+     * Метод для регистрации учителя
+     *
+     * @param registerUserDTO - входные данные для регистрации
+     */
     public void registerTeacher(RegisterUserDTO registerUserDTO) {
         log.info("Started creating teacher with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
-        var teacher = new Teacher(
-                registerUserDTO.firstname(),
+        var teacher = new Teacher(registerUserDTO.firstname(),
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
                 registerUserDTO.email(),
@@ -61,16 +68,17 @@ public class RegistrationService {
 
         var savedTeacher = teacherRepository.save(teacher);
 
-        var appUser = getAppUserByRoleUserIdAndEmail(
-                savedTeacher.getId(),
-                Role.ROLE_TEACHER,
-                savedTeacher.getEmail()
-        );
+        var appUser = getAppUserByRoleUserIdAndEmail(savedTeacher.getId(), Role.ROLE_TEACHER, savedTeacher.getEmail());
 
         appUserRepository.save(appUser);
         log.info("Finished creating teacher with email {}", registerUserDTO.email());
     }
 
+    /**
+     * Метод для регистрации родителя
+     *
+     * @param registerUserDTO - входные данные для регистрации
+     */
     public void registerParent(RegisterUserDTO registerUserDTO) {
         log.info("Started creating parent with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
@@ -101,6 +109,11 @@ public class RegistrationService {
         log.info("Finished creating parent with email {}", registerUserDTO.email());
     }
 
+    /**
+     * Метод для регистрации ученика
+     *
+     * @param registerUserDTO - входные данные для регистрации
+     */
     public void registerStudent(RegisterUserDTO registerUserDTO) {
         log.info("Started creating student with email {}", registerUserDTO.email());
 
@@ -125,6 +138,11 @@ public class RegistrationService {
         log.info("Finished creating student with email {}", registerUserDTO.email());
     }
 
+    /**
+     * Метод для проверки существования пользователя
+     *
+     * @param email - адрес электронной почты пользователя
+     */
     private void checkUserExists(String email) {
         var user = appUserRepository.findByEmail(email);
         if (user.isPresent()) {
@@ -133,14 +151,22 @@ public class RegistrationService {
         }
     }
 
+    /**
+     * Метод для создания пользователя по userId, role, email
+     *
+     * @param userId - id пользователя с ролью role в таблице
+     * @param role - роль пользователя
+     * @param email - адрес электронной почты пользователя
+     */
     private AppUser getAppUserByRoleUserIdAndEmail(Long userId, Role role, String email) {
-        return new AppUser(
-                userId,
-                role,
-                email
-        );
+        return new AppUser(userId, role, email);
     }
 
+    /**
+     * Метод для хэширования пароля
+     *
+     * @param password - пароль пользователя
+     */
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }

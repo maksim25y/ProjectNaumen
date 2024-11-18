@@ -12,6 +12,10 @@ import ru.mudan.domain.repositories.*;
 import ru.mudan.exceptions.base.ApplicationForbiddenException;
 import ru.mudan.exceptions.entity.not_found.*;
 
+/**
+ * Класс с описанием бизнес-логики
+ * проверки доступа к ресурсу
+ */
 @Slf4j
 @SuppressWarnings("MultipleStringLiterals")
 @Service
@@ -25,6 +29,13 @@ public class AuthService {
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
 
+    /**
+     * Метод для проверки является ли текущий пользователь администратором или
+     * учителем, который имеет доступ к оценке
+     *
+     * @param id             - id оценки
+     * @param authentication - текущая аутентификация
+     **/
     public void teacherHasGradeOrRoleIsAdmin(Long id, Authentication authentication) {
         var role = getAuthority(authentication);
 
@@ -39,6 +50,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки является ли текущий пользователь администратором или
+     * учителем, который имеет доступ к предмету
+     *
+     * @param subjectId      - id предмета
+     * @param authentication - текущая аутентификация
+     **/
     public void teacherHasSubjectOrRoleIsAdmin(Long subjectId, Authentication authentication) {
         var role = getAuthority(authentication);
 
@@ -47,12 +65,19 @@ public class AuthService {
         }
 
         if (role.equals("ROLE_TEACHER")) {
-            checkTeacherHasSubject(subjectId, authentication);
+            teacherContainSubject(subjectId, authentication);
         } else {
             throw new ApplicationForbiddenException();
         }
     }
 
+    /**
+     * Метод для проверки является ли текущий пользователь администратором или
+     * учителем, который имеет доступ к ДЗ
+     *
+     * @param hwId           - id ДЗ
+     * @param authentication - текущая аутентификация
+     **/
     public void teacherHasHomeworkOrRoleIsAdmin(Long hwId, Authentication authentication) {
         var role = getAuthority(authentication);
 
@@ -67,6 +92,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки является ли текущий пользователь администратором,
+     * учеником класса или родителем, который имеет ребёнка в классе
+     *
+     * @param classId        - id класса
+     * @param authentication - текущая аутентификация
+     **/
     public void hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(
             Long classId,
             Authentication authentication) {
@@ -87,6 +119,15 @@ public class AuthService {
 
     }
 
+    /**
+     * Метод для проверки является ли текущий пользователь администратором,
+     * учеником класса, в котором есть предмет или
+     * родителем, у которого есть ребёнок в классе с данным предметом
+     *
+     * @param studentId      - id ученика
+     * @param subjectId      - id предмета
+     * @param authentication - текущая аутентификация
+     **/
     public void hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(Long studentId,
                                                                                  Long subjectId,
                                                                                  Authentication authentication) {
@@ -107,6 +148,13 @@ public class AuthService {
 
     }
 
+    /**
+     * Метод для проверки имеет ли родитель ребёнка в классе с предметом
+     *
+     * @param studentId      - id ученика
+     * @param subjectId      - id предмета
+     * @param authentication - текущая аутентификация
+     **/
     private void checkParentHasStudentInClassContainsSubject(Long studentId,
                                                              Long subjectId,
                                                              Authentication authentication) {
@@ -126,6 +174,14 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки является ли текущий пользователь
+     * учеником класса, в котором есть предмет
+     *
+     * @param studentId      - id ученика
+     * @param subjectId      - id предмета
+     * @param authentication - текущая аутентификация
+     **/
     private void checkStudentFromClassContainsSubject(Long studentId, Long subjectId, Authentication authentication) {
         var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
         var studentById = studentRepository.findById(studentId)
@@ -149,6 +205,12 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки содержит ли класс предмет
+     *
+     * @param foundStudent - ученик
+     * @param subjectId    - id предмета
+     **/
     private void checkClassContainsSubject(Long subjectId, Student foundStudent) {
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
@@ -163,10 +225,21 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для получения authority
+     *
+     * @param authentication - текущая аутентификация
+     **/
     private String getAuthority(Authentication authentication) {
         return authentication.getAuthorities().stream().findFirst().get().getAuthority();
     }
 
+    /**
+     * Метод для проверки является
+     * ли пользователь администратором
+     *
+     * @param authentication - текущая аутентификация
+     **/
     public void hasRoleAdmin(Authentication authentication) {
         var role = getAuthority(authentication);
 
@@ -175,6 +248,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки имеет ли
+     * учитель доступ к предмету
+     *
+     * @param subjectId      - id предмета
+     * @param authentication - текущая аутентификация
+     **/
     public void teacherContainSubject(Long subjectId, Authentication authentication) {
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
@@ -187,6 +267,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки является ли
+     * ученик учеником класса
+     *
+     * @param classId        - id класса
+     * @param authentication - текущая аутентификация
+     **/
     private void checkStudentFromClass(Long classId, Authentication authentication) {
         var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
 
@@ -201,18 +288,13 @@ public class AuthService {
         }
     }
 
-    private void checkTeacherHasSubject(Long subjectId, Authentication authentication) {
-        var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
-
-        var subject = subjectsRepository.findById(subjectId)
-                .orElseThrow(() -> new SubjectNotFoundException(subjectId));
-
-        if (!teacher.getSubjects().contains(subject)) {
-            log.info("Teacher has not subject with id={}", subjectId);
-            throw new ApplicationForbiddenException();
-        }
-    }
-
+    /**
+     * Метод для проверки имеет ли
+     * родитель детей в классе
+     *
+     * @param classId        - id класса
+     * @param authentication - текущая аутентификация
+     **/
     private void checkParentHasStudentInClass(Long classId, Authentication authentication) {
         var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
 
@@ -238,6 +320,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки имеет ли
+     * учитель доступ к оценке
+     *
+     * @param gradeId        - id класса
+     * @param authentication - текущая аутентификация
+     **/
     private void checkTeacherHasGrade(Long gradeId, Authentication authentication) {
         var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
 
@@ -252,6 +341,13 @@ public class AuthService {
         }
     }
 
+    /**
+     * Метод для проверки имеет ли
+     * учитель доступ к ДЗ
+     *
+     * @param hwId           - id класса
+     * @param authentication - текущая аутентификация
+     **/
     private void checkTeacherHasHW(Long hwId, Authentication authentication) {
         var teacher = (Teacher) myUserDetailsService.loadUserByUsername(authentication.getName());
 

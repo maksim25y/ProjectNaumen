@@ -15,21 +15,29 @@ import ru.mudan.exceptions.entity.already_exists.ClassAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
-import ru.mudan.services.CrudService;
 
+/**
+ * Класс с описанием бизнес-логики
+ * для работы с сущностью ClassEntity
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ClassService implements CrudService<ClassDTO> {
+public class ClassService {
 
+    /**
+     * Длина части названия предмета для генерации кода предмета
+     */
     @Value("${size.of.code}")
     private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
 
-    @Override
+    /**
+     * Метод для получения списка всех классов
+     **/
     public List<ClassDTO> findAll() {
         log.info("Started getting all classes");
         var allClasses = classRepository.findAll();
@@ -45,7 +53,11 @@ public class ClassService implements CrudService<ClassDTO> {
                         .build()).toList();
     }
 
-    @Override
+    /**
+     * Метод для получения класса по id
+     *
+     * @param id - id класса
+     **/
     public ClassDTO findById(Long id) {
         var foundClass = findClassEntityById(id);
 
@@ -58,7 +70,11 @@ public class ClassService implements CrudService<ClassDTO> {
                 .build();
     }
 
-    @Override
+    /**
+     * Метод для получения сохранения класса
+     *
+     * @param request - входные данные
+     */
     public void save(ClassDTO request) {
         log.info("Started creating new class {}{}", request.number(), request.letter());
         checkClassAlreadyExists(request);
@@ -83,7 +99,12 @@ public class ClassService implements CrudService<ClassDTO> {
         log.info("Finished creating new class {}{}", request.number(), request.letter());
     }
 
-    @Override
+    /**
+     * Метод для обновления существующего класса по id
+     *
+     * @param request - входные данные для обновления
+     * @param id      - id ДЗ для обновления
+     */
     public void update(ClassDTO request, Long id) {
         log.info("Started updating class with id={}", id);
         var foundClass = findClassEntityById(id);
@@ -109,7 +130,11 @@ public class ClassService implements CrudService<ClassDTO> {
         log.info("Finished updating class with id={}", id);
     }
 
-    @Override
+    /**
+     * Метод для удаления класса по id
+     *
+     * @param id - id класса для удаления
+     */
     public void deleteById(Long id) {
         log.info("Started deleting class with id={}", id);
         findClassEntityById(id);
@@ -118,6 +143,11 @@ public class ClassService implements CrudService<ClassDTO> {
         log.info("Finished deleting class with id={}", id);
     }
 
+    /**
+     * Метод для проверки существования класса
+     *
+     * @param request - данные для проверки
+     */
     private void checkClassAlreadyExists(ClassDTO request) {
         var foundClass = classRepository
                 .findByLetterAndNumber(
@@ -130,6 +160,12 @@ public class ClassService implements CrudService<ClassDTO> {
         }
     }
 
+    /**
+     * Метод для проверки существования класса во время обновления
+     *
+     * @param request - данные для проверки
+     * @param id      - id класса для обновления
+     */
     private void checkClassAlreadyExistsAndIdNotEquals(ClassDTO request, Long id) {
         var foundClass = classRepository
                 .findByLetterAndNumber(
@@ -144,6 +180,12 @@ public class ClassService implements CrudService<ClassDTO> {
         }
     }
 
+    /**
+     * Метод для проверки добавления учеников в класс
+     *
+     * @param classId              - id класса, в который добавляются ученики
+     * @param studentsForAddingIds - список id учеников для добавления в класс
+     */
     public void addStudentsToClass(Long classId, List<Long> studentsForAddingIds) {
         log.info("Started adding students to class with id={}", classId);
         var foundClass = findClassEntityById(classId);
@@ -160,6 +202,12 @@ public class ClassService implements CrudService<ClassDTO> {
         }
     }
 
+    /**
+     * Метод для проверки добавления предметов классу
+     *
+     * @param classId              - id класса, которому добавляются предметы
+     * @param subjectsForAddingIds - список id предметов для добавления в класс
+     */
     public void addSubjectsToClass(Long classId, List<Long> subjectsForAddingIds) {
         log.info("Started adding subjects to class with id={}", classId);
         var foundClass = findClassEntityById(classId);
@@ -176,6 +224,11 @@ public class ClassService implements CrudService<ClassDTO> {
         }
     }
 
+    /**
+     * Метод для поиска класса по id
+     *
+     * @param classId - id класса для поиска
+     */
     private ClassEntity findClassEntityById(Long classId) {
         return classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));
