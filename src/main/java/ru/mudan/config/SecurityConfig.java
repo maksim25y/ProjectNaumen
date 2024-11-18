@@ -26,7 +26,8 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/registration/**",
                                         "/subjects/**",
-                                        "/classes/**").hasAnyRole("ADMIN")
+                                        "/classes/**",
+                                        "/monitoring").hasAnyRole("ADMIN")
                                 .requestMatchers("/schedules/**",
                                         "/grades/**",
                                         "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT", "PARENT")
