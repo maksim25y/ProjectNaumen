@@ -11,6 +11,7 @@ import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
