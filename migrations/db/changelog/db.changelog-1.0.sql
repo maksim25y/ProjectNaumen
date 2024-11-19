@@ -48,8 +48,8 @@ CREATE TABLE subjects
     description VARCHAR(255),
     class_id    BIGINT,
     teacher_id  BIGINT,
-    FOREIGN KEY (class_id)  REFERENCES classes (id) ON DELETE SET NULL ,
-    FOREIGN KEY (teacher_id) REFERENCES teachers (id) ON DELETE SET NULL
+    FOREIGN KEY (class_id)  REFERENCES classes (id) ON DELETE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES teachers (id) ON DELETE CASCADE
 );
 
 CREATE TABLE schedules

@@ -77,8 +77,14 @@ public class UsersController {
     }
 
     @PutMapping("/{email}")
-    public String updateUserWith(@PathVariable String email, @Valid UserUpdateDTO userUpdateDTO) {
+    public String updateUser(@PathVariable String email, @Valid UserUpdateDTO userUpdateDTO) {
         myUserDetailsService.updateUserByEmail(email, userUpdateDTO);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/{email}")
+    public String deleteUserByEmail(@PathVariable String email) {
+        myUserDetailsService.deleteUserByEmail(email);
         return "redirect:/";
     }
 }

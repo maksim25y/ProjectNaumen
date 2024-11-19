@@ -67,6 +67,27 @@ public class MyUserDetailsService implements UserDetailsService {
         }
     }
 
+    public void deleteUserByEmail(String email) {
+        var appUser = appUserRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        switch (appUser.getRoleName()) {
+            case ROLE_PARENT -> {
+                parentRepository.deleteById(appUser.getUserId());
+                appUserRepository.delete(appUser);
+            }
+            case ROLE_STUDENT -> {
+                studentRepository.deleteById(appUser.getUserId());
+                appUserRepository.delete(appUser);
+            }
+            case ROLE_TEACHER -> {
+                teacherRepository.deleteById(appUser.getUserId());
+                appUserRepository.delete(appUser);
+            }
+            default -> throw new UsernameNotFoundException(email);
+        }
+    }
+
     private void updateTeacher(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
         var foundTeacher = teacherRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
