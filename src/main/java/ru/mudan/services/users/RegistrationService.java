@@ -194,7 +194,7 @@ public class RegistrationService {
                   <title>Добро пожаловать</title>
                 </head>
                 <body style="font-family: Arial, sans-serif; color: #333;">
-                  <div style="max-width: 600px; margin: 0 auto; padding: 20px; 
+                  <div style="max-width: 600px; margin: 0 auto; padding: 20px;
                   background-color: #f9f9f9; border: 1px solid #ddd;">
                     <h2 style="color: #0078cf;">Здравствуйте, %s!</h2>
                     <p>Вы успешно зарегистрированы на сайте электронного дневника <strong>[сайт]</strong>.</p>
