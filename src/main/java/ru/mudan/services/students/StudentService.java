@@ -184,6 +184,21 @@ public class StudentService {
                 .build();
     }
 
+    public List<StudentDTO> findAll() {
+        var allStudents = studentRepository.findAll();
+
+        return allStudents.stream()
+                .map(st -> StudentDTO
+                        .builder()
+                        .id(st.getId())
+                        .firstname(st.getFirstname())
+                        .lastname(st.getLastname())
+                        .patronymic(st.getPatronymic())
+                        .email(st.getEmail())
+                        .build())
+                .toList();
+    }
+
     /**
      * Метод для получения ученика по id
      *

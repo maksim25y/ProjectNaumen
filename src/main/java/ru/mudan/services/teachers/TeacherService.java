@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.repositories.TeacherRepository;
 import ru.mudan.dto.teacher.TeacherDTO;
+import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
 import ru.mudan.services.auth.MyUserDetailsService;
 
 /**
@@ -57,5 +58,19 @@ public class TeacherService {
                         .email(teacher.getEmail())
                         .build())
                 .toList();
+    }
+
+    public TeacherDTO findTeacherById(Long id) {
+        var foundTeacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new TeacherNotFoundException(id));
+
+        return TeacherDTO
+                .builder()
+                .id(foundTeacher.getId())
+                .firstname(foundTeacher.getFirstname())
+                .lastname(foundTeacher.getLastname())
+                .patronymic(foundTeacher.getPatronymic())
+                .email(foundTeacher.getEmail())
+                .build();
     }
 }

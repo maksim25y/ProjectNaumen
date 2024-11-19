@@ -30,7 +30,8 @@ public class SecurityConfig {
                                 .requestMatchers("/registration/**",
                                         "/subjects/**",
                                         "/classes/**",
-                                        "/monitoring").hasAnyRole("ADMIN")
+                                        "/monitoring",
+                                        "/users/**").hasAnyRole("ADMIN")
                                 .requestMatchers("/schedules/**",
                                         "/grades/**",
                                         "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT", "PARENT")
