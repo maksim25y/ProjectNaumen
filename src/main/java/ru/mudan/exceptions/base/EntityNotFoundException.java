@@ -2,6 +2,10 @@ package ru.mudan.exceptions.base;
 
 import lombok.EqualsAndHashCode;
 
+/**
+ * Класс для исключений, которые
+ * означают, что сущность в БД не найдена
+ */
 @EqualsAndHashCode(callSuper = true)
 public abstract class EntityNotFoundException extends ApplicationNotFoundException {
 

@@ -14,6 +14,10 @@ import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
+/**
+ * Класс с описанием бизнес-логики
+ * для работы с сущностью Grade
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,11 @@ public class GradesService {
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
 
+    /**
+     * Метод для получения списка оценок для ученика
+     *
+     * @param studentId - id ученика
+     */
     public List<GradeDTO> findAllGradesForStudent(Long studentId) {
         log.info("Started getting all grades for student with id={}", studentId);
         var foundStudent = studentRepository.findById(studentId)
@@ -45,6 +54,12 @@ public class GradesService {
                 .toList();
     }
 
+    /**
+     * Метод для получения списка оценок для ученика по предмету
+     *
+     * @param studentId - id ученика
+     * @param subjectId - id предмета
+     */
     public List<GradeDTO> findAllGradesForStudentWithSubject(Long studentId, Long subjectId) {
         log.info("Started getting all grades for student with id={} and subject with id={}", studentId, subjectId);
         var foundStudent = studentRepository.findById(studentId)
@@ -69,6 +84,11 @@ public class GradesService {
                 .toList();
     }
 
+    /**
+     * Метод для получения оценки по id
+     *
+     * @param id - id оценки
+     */
     public GradeDTO findById(Long id) {
         var foundGrade = gradeRepository.findById(id)
                 .orElseThrow(() -> new GradeNotFoundException(id));
@@ -82,8 +102,15 @@ public class GradesService {
                 .build();
     }
 
+    /**
+     * Метод для получения сохранения оценки
+     *
+     * @param request - входные данные
+     */
     public void save(GradeDTO request) {
-        log.info("Started creating grade for student with id={} and subject with id={}", request.studentId(), request.subjectId());
+        log.info("Started creating grade for student with id={} and subject with id={}",
+                request.studentId(),
+                request.subjectId());
         var foundStudent = studentRepository.findById(request.studentId())
                 .orElseThrow(() -> new StudentNotFoundException(request.studentId()));
 
@@ -99,9 +126,16 @@ public class GradesService {
         grade.setSubject(foundSubject);
 
         gradeRepository.save(grade);
-        log.info("Finished creating grade for student with id={} and subject with id={}", request.studentId(), request.subjectId());
+        log.info("Finished creating grade for student with id={} and subject with id={}",
+                request.studentId(),
+                request.subjectId());
     }
 
+    /**
+     * Метод для получения списка оценок по предмету
+     *
+     * @param subjectId      - id предмета
+     */
     public List<GradeDTOResponse> findAllBySubjectId(Long subjectId) {
         log.info("Started getting all grades for subject with id={}", subjectId);
         var foundSubject = subjectsRepository.findById(subjectId)
@@ -123,6 +157,12 @@ public class GradesService {
                 .toList();
     }
 
+    /**
+     * Метод для создания обновления существующей ячейки расписания по id
+     *
+     * @param request - входные данные для обновления
+     * @param id      - id оценки для обновления
+     */
     public void update(GradeDTO request, Long id) {
         log.info("Started updating grade with id={}", id);
         var foundGrade = gradeRepository.findById(id)
@@ -135,6 +175,11 @@ public class GradesService {
         log.info("Finished updating grade with id={}", id);
     }
 
+    /**
+     * Метод для удаления оценки по id
+     *
+     * @param id - id оценки для удаления
+     */
     public void deleteById(Long id) {
         log.info("Started deleting grade with id={}", id);
         var foundGrade = gradeRepository.findById(id)

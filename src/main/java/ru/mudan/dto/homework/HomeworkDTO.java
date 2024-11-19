@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.Builder;
 
+/**
+ * DTO для сущности Homework
+ */
 @Builder
 public record HomeworkDTO(
         Long id,

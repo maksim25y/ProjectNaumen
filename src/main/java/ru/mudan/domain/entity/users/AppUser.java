@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.mudan.domain.entity.users.enums.Role;
 
+/**
+ * Сущность для работы с таблицей app_users в БД
+ */
 @Getter
 @Setter
 @ToString

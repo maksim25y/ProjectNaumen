@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.mudan.services.auth.MyUserDetailsService;
 
+/**
+ * Класс для настройки авторизации
+ */
 @Component
 @RequiredArgsConstructor
 public class AuthProvider implements AuthenticationProvider {

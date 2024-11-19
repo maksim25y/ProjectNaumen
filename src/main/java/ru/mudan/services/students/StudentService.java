@@ -17,6 +17,10 @@ import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.services.auth.MyUserDetailsService;
 
+/**
+ * Класс с описанием бизнес-логики
+ * для работы с сущностью Student
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,11 @@ public class StudentService {
     private final MyUserDetailsService myUserDetailsService;
     private final ParentRepository parentRepository;
 
+    /**
+     * Метод для получения ученика по id
+     *
+     * @param id - id ученика
+     */
     public StudentDTO findById(Long id) {
         var foundStudent = getStudentById(id);
 
@@ -41,6 +50,9 @@ public class StudentService {
                 .build();
     }
 
+    /**
+     * Метод для получения учеников без класса
+     */
     public List<StudentDTO> findStudentsWithNotClass() {
         log.info("Getting all students with not class");
         return studentRepository.findAllByClassEntity(null)
@@ -56,6 +68,11 @@ public class StudentService {
                 .toList();
     }
 
+    /**
+     * Метод для получения учеников для класса
+     *
+     * @param id - id класса
+     */
     public List<StudentDTO> findAllStudentsForClass(Long id) {
         log.info("Started getting all students for class with id={}", id);
         var foundClass = classRepository.findById(id)
@@ -75,6 +92,9 @@ public class StudentService {
                 .toList();
     }
 
+    /**
+     * Метод для получения учеников без назначенного родителя
+     */
     public List<StudentDTO> findAllStudentsWithNotParent() {
         var students = studentRepository.findAllByParent(null);
 
@@ -91,6 +111,11 @@ public class StudentService {
                 .toList();
     }
 
+    /**
+     * Метод для получения учеников для родителя
+     *
+     * @param parentId - id родителя
+     */
     public List<StudentDTO> getAllStudentsForParent(Long parentId) {
         log.info("Started getting all students for parent with id={}", parentId);
         var parent = parentRepository.findById(parentId)
@@ -110,6 +135,11 @@ public class StudentService {
                 .toList();
     }
 
+    /**
+     * Метод для получения учеников по предмету
+     *
+     * @param subjectId - id предмета
+     */
     public List<StudentDTO> findAllStudentsBySubjectId(Long subjectId) {
         var foundSubject = subjectsRepository.findById(subjectId)
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
@@ -128,6 +158,11 @@ public class StudentService {
                 .toList();
     }
 
+    /**
+     * Метод для получения ученика по аутентификации
+     *
+     * @param authentication - текущая аутентификация
+     */
     public StudentDTO findStudentByAuth(Authentication authentication) {
         var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
 
@@ -149,6 +184,11 @@ public class StudentService {
                 .build();
     }
 
+    /**
+     * Метод для получения ученика по id
+     *
+     * @param id - id ученика
+     */
     private Student getStudentById(Long id) {
         log.info("Getting student with id {}", id);
         return studentRepository.findById(id)

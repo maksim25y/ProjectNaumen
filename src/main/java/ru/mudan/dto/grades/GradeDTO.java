@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 
+/**
+ * DTO для сущности Grade
+ */
 @Builder
 public record GradeDTO(
         Long id,

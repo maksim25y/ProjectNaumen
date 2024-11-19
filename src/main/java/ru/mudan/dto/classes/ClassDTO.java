@@ -6,6 +6,9 @@ import java.util.List;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 
+/**
+ * DTO для сущности ClassEntity
+ */
 @Builder
 public record ClassDTO(
         Long id,

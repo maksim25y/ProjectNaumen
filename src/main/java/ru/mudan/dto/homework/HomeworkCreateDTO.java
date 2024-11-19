@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.Builder;
 
+/**
+ * Входные данные для создания нового ДЗ
+ */
 @Builder
 public record HomeworkCreateDTO(
         @NotBlank(message = "{homework.title.is_blank}")

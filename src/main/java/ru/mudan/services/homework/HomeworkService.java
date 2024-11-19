@@ -15,6 +15,10 @@ import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.HomeworkNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 
+/**
+ * Класс с описанием бизнес-логики
+ * для работы с сущностью Homework
+ */
 @Slf4j
 @Service
 @Transactional
@@ -25,6 +29,12 @@ public class HomeworkService {
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
 
+    /**
+     * Метод для получения списка ДЗ класса
+     *
+     * @param classId - id класса
+     * @param subjectId - id предмета
+     */
     public List<HomeworkDTO> findAllByClassAndSubject(Long classId, Long subjectId) {
         log.info("Started getting all homeworks for subject with id={} and class with id={}", subjectId, classId);
         var foundClass = classRepository.findById(classId)
@@ -46,6 +56,11 @@ public class HomeworkService {
                 .toList();
     }
 
+    /**
+     * Метод для получения сохранения ДЗ
+     *
+     * @param hwDTO - входные данные
+     */
     public void save(HomeworkCreateDTO hwDTO) {
         var foundSubject = subjectsRepository.findById(hwDTO.subjectId())
                 .orElseThrow(() -> new SubjectNotFoundException(hwDTO.subjectId()));
@@ -59,6 +74,9 @@ public class HomeworkService {
         homeworkRepository.save(homework);
     }
 
+    /**
+     * Метод для получения списка ДЗ по классу
+     */
     public List<HomeworkDTO> findAllByClass(Long classId) {
         log.info("Started getting all homeworks for class with id={}", classId);
         var foundClass = classRepository.findById(classId)
@@ -77,6 +95,11 @@ public class HomeworkService {
                 .toList();
     }
 
+    /**
+     * Метод для получения ДЗ по id
+     *
+     * @param id - id ДЗ
+     */
     public HomeworkDTO findById(Long id) {
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));
@@ -92,6 +115,11 @@ public class HomeworkService {
                 .build();
     }
 
+    /**
+     * Метод для удаления ДЗ по id
+     *
+     * @param id - id ДЗ для удаления
+     */
     public void delete(Long id) {
         log.info("Started deleting homework for with id={}", id);
         var foundHomework = homeworkRepository.findById(id)
@@ -100,6 +128,9 @@ public class HomeworkService {
         log.info("Finished deleting homework for with id={}", id);
     }
 
+    /**
+     * Метод для получения списка ДЗ по предмету
+     */
     public List<HomeworkDTO> findAllBySubject(Long subjectId) {
         log.info("Started getting all homeworks for subject with id={}", subjectId);
         var foundSubject = subjectsRepository.findById(subjectId)
@@ -121,6 +152,12 @@ public class HomeworkService {
 
     }
 
+    /**
+     * Метод для обновления существующего ДЗ по id
+     *
+     * @param homeworkDTO - входные данные для обновления
+     * @param id      - id ДЗ для обновления
+     */
     public void update(Long id, HomeworkDTO homeworkDTO) {
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));
