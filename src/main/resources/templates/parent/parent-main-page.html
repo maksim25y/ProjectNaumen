@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница родителя</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{header-parent :: parent-header}"></div>
+    <hr>
+    <ul class="list-group mb-2">
+        <li class="list-group-item" aria-current="true">
+            Имя: <span class="text-danger" th:text="${parent.firstname()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Фамилия: <span class="text-danger" th:text="${parent.lastname()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Отчество: <span class="text-danger" th:text="${parent.patronymic()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Почта: <span class="text-danger" th:text="${parent.email()}"></span>
+        </li>
+    </ul>
+    <hr>
+    <div th:if="${!students.isEmpty()}" class="p-3">
+        <h3 th:text="${'Список ваших детей:  '}"></h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Отчество</th>
+                <th scope="col">Адрес электроннй почты</th>
+                <th scope="col">Оценки</th>
+                <th scope="col">ДЗ</th>
+                <th scope="col">Расписание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-light" th:each="st : ${students}">
+                <td class="table-light" th:text="${st.lastname()}"></td>
+                <td class="table-light" th:text="${st.firstname()}"></td>
+                <td class="table-light" th:text="${st.patronymic()}"></td>
+                <td class="table-light" th:text="${st.email()}"></td>
+                <!--                Оценки-->
+                <td class="table-light" th:if="${st.classId()!=null}">
+                    <a th:href="@{/grades/all/{id}(id=${st.id()})}" class="me-2 mb-2">Оценки</a>
+                </td>
+                <td class="table-light" th:if="${st.classId()==null}">
+                    Отсутствует класс
+                </td>
+                <!--                ДЗ -->
+
+                <td class="table-light" th:if="${st.classId()!=null}">
+                    <a th:href="@{/homeworks/all/{classId}(classId=${st.classId()})}" class="me-2 mb-2">
+                        ДЗ
+                    </a>
+                </td>
+                <td class="table-light" th:if="${st.classId()==null}">
+                    Отсутствует класс
+                </td>
+                <!--                Расписание -->
+                <td class="table-light" th:if="${st.classId()!=null}">
+                    <a th:href="@{/schedules/all/{classId}(classId=${st.classId()})}" class="me-2 mb-2">
+                        Расписание класса
+                    </a>
+                </td>
+                <td class="table-light" th:if="${st.classId()==null}">
+                    Отсутствует класс
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

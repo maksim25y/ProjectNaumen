@@ -17,6 +17,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 3s
       timeout: 5s
+    networks:
+      - backend
 
   liquibase-migrations:
     image: liquibase/liquibase:4.25
@@ -34,6 +36,8 @@ services:
       - update
     volumes:
       - ../migrations/db/changelog:/liquibase/changelog/
+    networks:
+      - backend
 
 volumes:
   postgresql: { }

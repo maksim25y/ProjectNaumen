@@ -1,11 +1,10 @@
 name: Project Build
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "master", "dev"]
   pull_request:
-    paths:
-      - .github/workflows/project.yml
-      - /**
+    branches: [ "master", "dev"]
 
 jobs:
   build:
@@ -40,8 +39,8 @@ jobs:
 
       - run: mvn checkstyle:check
 
-  integration-test:
-    name: Integration Tests
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -52,4 +51,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn verify -Dskip.unit.tests=true
+      - run: mvn verify

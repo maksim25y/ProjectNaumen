@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Изменение информации о классе</title>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{header-admin :: admin-header}"></div>
+    <hr>
+    <form class="mb-2 w-25" th:method="PUT" th:action="@{/classes/{id}(id=${cl.id})}">
+        <div class="form-group mb-2">
+            <label for="number">Введите новый номер класса: </label>
+            <input class="form-control" type="number" name="number" id="number" max="11" min="1" th:value="${cl.number()}" required/>
+        </div>
+        <div class="form-group mb-2">
+            <label for="letter">Введите  новую букву класса: </label>
+            <input class="form-control" type="text" name="letter" id="letter" th:value="${cl.letter()}" required/>
+        </div>
+        <div class="form-group mb-2">
+            <label for="letter">Введите новое описание класса: </label>
+            <input class="form-control" type="text" name="description" id="description" th:value="${cl.description()}"/>
+        </div>
+        <div th:each="error : ${errors}">
+            <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
+
+        </div>
+        <input type="submit" class="btn btn-info" value="Изменить класс"/>
+    </form>
+    <hr>
+    <div th:insert="~{footer :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

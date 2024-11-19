@@ -13,3 +13,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         enable_lazy_load_no_trans: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+size:
+  of:
+    code: 3 #    Длина части названия предмета в коде для предмета
+attribute:
+  error: errors #    Название атрибута, в котором содержатся ошибки в Model

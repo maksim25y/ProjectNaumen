@@ -1,0 +1,14 @@
+<header th:fragment="student-header" class="d-flex flex-wrap justify-content-center py-3 border-bottom">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <span class="fs-4">Электронный дневник</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Главная</a></li>
+        <li class="nav-item"><a href="/student/account" class="nav-link">Профиль ученика</a></li>
+    </ul>
+    <form th:action="@{/logout}" th:method="POST" class="me-2">
+        <button class="btn btn-outline-danger active" type="submit">
+            Выйти
+        </button>
+    </form>
+</header>
