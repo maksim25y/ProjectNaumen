@@ -198,4 +198,19 @@ public class StudentServiceIT extends IntegrationTest {
                 () -> assertEquals(studentCreated.getEmail(), foundStudent.email()));
     }
 
+    @Test
+    public void getAllStudents() {
+        var foundStudents = studentService.findAll();
+
+        var foundStudent = foundStudents.getFirst();
+
+        assertAll("Grouped assertions for found student",
+                () -> assertEquals(1, foundStudents.size()),
+                () -> assertEquals(studentCreated.getId(), foundStudent.id()),
+                () -> assertEquals(studentCreated.getFirstname(), foundStudent.firstname()),
+                () -> assertEquals(studentCreated.getLastname(), foundStudent.lastname()),
+                () -> assertEquals(studentCreated.getPatronymic(), foundStudent.patronymic()),
+                () -> assertEquals(studentCreated.getEmail(), foundStudent.email()));
+    }
+
 }
