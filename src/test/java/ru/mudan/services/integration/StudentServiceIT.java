@@ -125,7 +125,6 @@ public class StudentServiceIT extends IntegrationTest {
         var parentId = parentRepository.findAll().getFirst().getId();
         var foundParent = parentRepository.findById(parentId).get();
 
-        //TODO - добавлять через метод сервиса, который будет добавлен
         var studentById = studentRepository.findAll().getFirst();
         studentById.setParent(foundParent);
         studentRepository.save(studentById);

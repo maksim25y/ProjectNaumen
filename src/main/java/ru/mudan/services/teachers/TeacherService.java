@@ -1,6 +1,7 @@
 package ru.mudan.services.teachers;
 
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ public class TeacherService {
 
     /**
      * Метод для получения текущего учителя по аутентификации
+     *
      * @param authentication - аутентификация текущего пользователя
      */
     public TeacherDTO findTeacherByAuth(Authentication authentication) {
@@ -60,6 +62,11 @@ public class TeacherService {
                 .toList();
     }
 
+    /**
+     * Метод для получения учителя по id
+     *
+     * @param id - id учителя
+     */
     public TeacherDTO findTeacherById(Long id) {
         var foundTeacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new TeacherNotFoundException(id));

@@ -16,6 +16,7 @@ import ru.mudan.dto.student.StudentDTO;
 import ru.mudan.dto.subjects.SubjectCreateDTO;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.dto.teacher.TeacherDTO;
+import ru.mudan.dto.users.UserUpdateDTO;
 
 import static java.time.LocalDate.now;
 
@@ -175,6 +176,15 @@ public class UtilConstants {
                 .patronymic("Максимович")
                 .password("test1234")
                 .email(email)
+                .build();
+    }
+
+    public UserUpdateDTO getDefaultUserUpdateDTO() {
+        return UserUpdateDTO
+                .builder()
+                .firstname("Сергей")
+                .lastname("Иванов")
+                .patronymic("Иванович")
                 .build();
     }
 
