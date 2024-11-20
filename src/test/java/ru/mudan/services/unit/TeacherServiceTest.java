@@ -1,5 +1,6 @@
 package ru.mudan.services.unit;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,14 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.ProjectNaumenApplication;
-import ru.mudan.domain.entity.users.Parent;
 import ru.mudan.domain.entity.users.Teacher;
 import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.services.auth.MyUserDetailsService;
-import ru.mudan.services.parent.ParentService;
 import ru.mudan.services.teachers.TeacherService;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

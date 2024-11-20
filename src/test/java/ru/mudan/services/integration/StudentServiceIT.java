@@ -125,7 +125,6 @@ public class StudentServiceIT extends IntegrationTest {
         var parentId = parentRepository.findAll().getFirst().getId();
         var foundParent = parentRepository.findById(parentId).get();
 
-        //TODO - добавлять через метод сервиса, который будет добавлен
         var studentById = studentRepository.findAll().getFirst();
         studentById.setParent(foundParent);
         studentRepository.save(studentById);
@@ -191,6 +190,21 @@ public class StudentServiceIT extends IntegrationTest {
         var foundStudent = foundStudents.getFirst();
 
         assertAll("Grouped assertions for found students",
+                () -> assertEquals(1, foundStudents.size()),
+                () -> assertEquals(studentCreated.getId(), foundStudent.id()),
+                () -> assertEquals(studentCreated.getFirstname(), foundStudent.firstname()),
+                () -> assertEquals(studentCreated.getLastname(), foundStudent.lastname()),
+                () -> assertEquals(studentCreated.getPatronymic(), foundStudent.patronymic()),
+                () -> assertEquals(studentCreated.getEmail(), foundStudent.email()));
+    }
+
+    @Test
+    public void getAllStudents() {
+        var foundStudents = studentService.findAll();
+
+        var foundStudent = foundStudents.getFirst();
+
+        assertAll("Grouped assertions for found student",
                 () -> assertEquals(1, foundStudents.size()),
                 () -> assertEquals(studentCreated.getId(), foundStudent.id()),
                 () -> assertEquals(studentCreated.getFirstname(), foundStudent.firstname()),
