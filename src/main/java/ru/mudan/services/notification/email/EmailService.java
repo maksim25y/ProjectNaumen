@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import ru.mudan.exceptions.NotificationException;
 import ru.mudan.services.notification.NotificationService;
 
+/**
+ * Класс с бизнес-логикой отправки писем на почту
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

@@ -8,6 +8,13 @@ import java.util.List;
 import lombok.Builder;
 import ru.mudan.services.notification.NotificationDetails;
 
+/**
+ * Данные для отправки письма по почте
+ *
+ * @param recipient - получатель письма
+ * @param subject - тема письма
+ * @param text - текст письма
+ */
 @Builder
 public record EmailNotificationDetails(
     @NotBlank(message = "Отправитель не должен быть пустым")

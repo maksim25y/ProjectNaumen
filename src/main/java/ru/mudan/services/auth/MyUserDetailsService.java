@@ -46,6 +46,12 @@ public class MyUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     * Метод для обновления данных пользователя по email
+     *
+     * @param email         - email пользователя
+     * @param userUpdateDTO - данные для обновления
+     **/
     public void updateUserByEmail(String email, UserUpdateDTO userUpdateDTO) {
         var appUser = appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
@@ -67,6 +73,11 @@ public class MyUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     * Метод для удаления данных пользователя по email
+     *
+     * @param email - email пользователя
+     **/
     public void deleteUserByEmail(String email) {
         var appUser = appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
@@ -88,6 +99,11 @@ public class MyUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     * Метод для обновления данных учителя по email
+     *
+     * @param email - email учителя
+     **/
     private void updateTeacher(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
         var foundTeacher = teacherRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
@@ -97,6 +113,11 @@ public class MyUserDetailsService implements UserDetailsService {
         teacherRepository.save(foundTeacher);
     }
 
+    /**
+     * Метод для обновления данных ученика по email
+     *
+     * @param email - email ученика
+     **/
     private void updateStudent(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
         var foundStudent = studentRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
@@ -106,6 +127,11 @@ public class MyUserDetailsService implements UserDetailsService {
         studentRepository.save(foundStudent);
     }
 
+    /**
+     * Метод для обновления данных родителя по email
+     *
+     * @param email - email родителя
+     **/
     private void updateParent(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
         var foundParent = parentRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
@@ -115,6 +141,11 @@ public class MyUserDetailsService implements UserDetailsService {
         parentRepository.save(foundParent);
     }
 
+    /**
+     * Метод для обновления данных администратора по email
+     *
+     * @param email - email администратора
+     **/
     private void updateAdmin(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
         var foundAdmin = adminRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
