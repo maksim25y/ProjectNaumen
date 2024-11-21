@@ -5,6 +5,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+/**
+ * Входные данные для обновления данных пользователя
+ *
+ * @param firstname  - имя пользователя
+ * @param lastname   - фамилия пользователя
+ * @param patronymic - отчество пользователя
+ */
 @Builder
 public record UserUpdateDTO(
         @Size(min = 4, max = 15, message = "{firstname.invalid_size}")
@@ -19,5 +26,5 @@ public record UserUpdateDTO(
         @Pattern(regexp = "[А-ЯЁ][а-яё]+", message = "{patronymic.invalid_pattern}")
         @NotBlank(message = "{patronymic.is_blank}")
         String patronymic
-){
+) {
 }

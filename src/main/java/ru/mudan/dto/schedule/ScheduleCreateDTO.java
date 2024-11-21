@@ -1,12 +1,20 @@
 package ru.mudan.dto.schedule;
 
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalTime;
+
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 
 /**
  * Входные данные для создания ячейки расписания
+ *
+ * @param dayOfWeek         - день недели (от понедельника до пятницы)
+ * @param startTime         - время начала занятия
+ * @param numberOfClassroom - номер классной комнаты
+ * @param classId           - id класса, для которого создаётся ячейка расписания
+ * @param subjectId         - id предмета, для которого создаётся ячейка расписания
  */
 @Builder
 public record ScheduleCreateDTO(
