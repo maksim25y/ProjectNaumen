@@ -1,5 +1,6 @@
 package ru.mudan.controller.homeworks;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import ru.mudan.services.auth.AuthService;
 import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.subjects.SubjectService;
+import static ru.mudan.controller.Util.doRedirect;
 
 /**
  * Контроллер, принимающий запросы
@@ -19,11 +21,10 @@ import ru.mudan.services.subjects.SubjectService;
  */
 @Controller
 @RequestMapping("/homeworks")
-@SuppressWarnings({"MemberName", "MultipleStringLiterals"})
+@SuppressWarnings("MultipleStringLiterals")
 @RequiredArgsConstructor
 public class HomeworkController {
 
-    private final String HOMEWORK = "homework";
     private final HomeworkService homeworkService;
     private final ClassService classService;
     private final SubjectService subjectService;
@@ -60,10 +61,12 @@ public class HomeworkController {
      * @param homeworkDTO - входные данные для создания ДЗ
      */
     @PostMapping
-    public String createNewHomework(@Valid HomeworkCreateDTO homeworkDTO, Authentication authentication) {
+    public String createNewHomework(@Valid HomeworkCreateDTO homeworkDTO,
+                                    Authentication authentication,
+                                    HttpServletRequest request) {
         authService.teacherHasSubjectOrRoleIsAdmin(homeworkDTO.subjectId(), authentication);
         homeworkService.save(homeworkDTO);
-        return "redirect:/";
+        return doRedirect(request);
     }
 
     /**
@@ -77,7 +80,7 @@ public class HomeworkController {
                                                    Authentication authentication) {
         authService.teacherHasHomeworkOrRoleIsAdmin(id, authentication);
         var foundHomework = homeworkService.findById(id);
-        model.addAttribute(HOMEWORK, homeworkService.findById(id));
+        model.addAttribute("homework", homeworkService.findById(id));
         model.addAttribute("class", classService.findById(foundHomework.classId()));
         model.addAttribute("subject", subjectService.findById(foundHomework.subjectId()));
         return "admin/homeworks/homeworks-show";
@@ -89,9 +92,11 @@ public class HomeworkController {
      * @param id - id ДЗ
      */
     @GetMapping("/{id}/edit")
-    public String getPageForEditingHomework(@PathVariable("id") Long id, Model model, Authentication authentication) {
+    public String getPageForEditingHomework(@PathVariable("id") Long id,
+                                            Model model,
+                                            Authentication authentication) {
         authService.teacherHasHomeworkOrRoleIsAdmin(id, authentication);
-        model.addAttribute(HOMEWORK, homeworkService.findById(id));
+        model.addAttribute("homework", homeworkService.findById(id));
         return "admin/homeworks/homeworks-edit";
     }
 
@@ -101,7 +106,8 @@ public class HomeworkController {
      * @param id - id ДЗ
      */
     @DeleteMapping("/{id}")
-    public String deleteHomework(@PathVariable("id") Long id, Authentication authentication) {
+    public String deleteHomework(@PathVariable("id") Long id,
+                                 Authentication authentication) {
         authService.teacherHasHomeworkOrRoleIsAdmin(id, authentication);
         homeworkService.delete(id);
         return "redirect:/";

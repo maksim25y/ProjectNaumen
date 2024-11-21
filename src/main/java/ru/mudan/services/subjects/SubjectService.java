@@ -3,7 +3,6 @@ package ru.mudan.services.subjects;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.repositories.ClassRepository;
@@ -29,11 +28,6 @@ public class SubjectService {
 
     private final TeacherRepository teacherRepository;
     private final SubjectFacade subjectFacade;
-    /**
-     * Длина части названия предмета для генерации кода предмета
-     */
-    @Value("${size.of.code}")
-    private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final SubjectsRepository subjectsRepository;
     private final ClassRepository classRepository;
 
@@ -100,7 +94,7 @@ public class SubjectService {
      * @param letter      - буква класса
      */
     private String generateCode(String name, Integer classNumber, String letter) {
-        return name.substring(0, sizeOfPartFromSubjectNameForSubjectCode).toUpperCase() + classNumber + letter;
+        return name.toUpperCase() + classNumber + letter;
     }
 
     /**

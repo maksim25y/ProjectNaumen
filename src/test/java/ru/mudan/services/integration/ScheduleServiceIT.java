@@ -19,7 +19,7 @@ import ru.mudan.services.users.RegistrationService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.mudan.UtilConstants.*;
-import static ru.mudan.util.ScheduleUtil.days;
+import static ru.mudan.util.Util.days;
 
 public class ScheduleServiceIT extends IntegrationTest {
 

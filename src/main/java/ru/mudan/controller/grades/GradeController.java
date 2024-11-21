@@ -1,5 +1,6 @@
 package ru.mudan.controller.grades;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import ru.mudan.services.auth.AuthService;
 import ru.mudan.services.grades.GradesService;
 import ru.mudan.services.students.StudentService;
 import ru.mudan.services.subjects.SubjectService;
+import static ru.mudan.controller.Util.doRedirect;
 
 /**
  * Контроллер, принимающий запросы
@@ -67,10 +69,10 @@ public class GradeController {
      * @param gradeDTO - входные данные для создания оценки
      */
     @PostMapping
-    public String createNewGrade(@Valid GradeDTO gradeDTO, Authentication auth) {
+    public String createNewGrade(@Valid GradeDTO gradeDTO, Authentication auth, HttpServletRequest request) {
         authService.teacherHasSubjectOrRoleIsAdmin(gradeDTO.subjectId(), auth);
         gradesService.save(gradeDTO);
-        return "redirect:/";
+        return doRedirect(request);
     }
 
     /**
@@ -104,7 +106,7 @@ public class GradeController {
      * @param id - id оценки
      */
     @DeleteMapping("/{id}")
-    public String deleteGrade(@PathVariable Long id, Authentication auth) {
+    public String deleteGrade(@PathVariable Long id, Authentication auth, HttpServletRequest request) {
         authService.teacherHasGradeOrRoleIsAdmin(id, auth);
         gradesService.deleteById(id);
         return "redirect:/";

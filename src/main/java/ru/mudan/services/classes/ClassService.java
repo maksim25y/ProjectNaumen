@@ -3,7 +3,6 @@ package ru.mudan.services.classes;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.ClassEntity;
@@ -28,11 +27,6 @@ import ru.mudan.facade.classes.ClassFacade;
 public class ClassService {
 
     private final ClassFacade classFacade;
-    /**
-     * Длина части названия предмета для генерации кода предмета
-     */
-    @Value("${size.of.code}")
-    private Integer sizeOfPartFromSubjectNameForSubjectCode;
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
@@ -109,8 +103,7 @@ public class ClassService {
         var subjectsForClass = foundClass.getSubjects();
 
         subjectsForClass.forEach(sb -> {
-            var code = sb.getCode().substring(0,
-                    sizeOfPartFromSubjectNameForSubjectCode)
+            var code = sb.getCode().substring(0, sb.getCode().length() - 2).toUpperCase()
                     + foundClass.getNumber()
                     + foundClass.getLetter();
             sb.setCode(code);
