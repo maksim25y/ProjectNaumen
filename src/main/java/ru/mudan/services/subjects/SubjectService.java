@@ -16,6 +16,7 @@ import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
+import ru.mudan.facade.subjects.SubjectFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -27,6 +28,7 @@ import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
 public class SubjectService {
 
     private final TeacherRepository teacherRepository;
+    private final SubjectFacade subjectFacade;
     /**
      * Длина части названия предмета для генерации кода предмета
      */
@@ -41,14 +43,7 @@ public class SubjectService {
     public List<SubjectDTO> findAll() {
         return subjectsRepository.findAll()
                 .stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .name(sb.getName())
-                        .description(sb.getDescription())
-                        .type(sb.getType())
-                        .build())
+                .map(subjectFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -62,14 +57,7 @@ public class SubjectService {
                 .orElseThrow(() -> new SubjectNotFoundException(id));
         log.info("Found subject with id={}", id);
 
-        return SubjectDTO
-                .builder()
-                .id(foundSubject.getId())
-                .name(foundSubject.getName())
-                .code(foundSubject.getCode())
-                .description(foundSubject.getDescription())
-                .type(foundSubject.getType())
-                .build();
+        return subjectFacade.convertEntityToDTO(foundSubject);
     }
 
     /**
@@ -159,14 +147,7 @@ public class SubjectService {
         log.info("Finished getting all subjects for class with id={}", id);
 
         return subjectsForClass.stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .name(sb.getName())
-                        .description(sb.getDescription())
-                        .build())
+                .map(subjectFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -183,14 +164,7 @@ public class SubjectService {
         log.info("Finished getting all subjects for teacher with id={}", teacherId);
 
         return subjectsForTeacher.stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .description(sb.getDescription())
-                        .name(sb.getName())
-                        .build())
+                .map(subjectFacade::convertEntityToDTO)
                 .toList();
     }
 

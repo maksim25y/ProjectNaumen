@@ -13,6 +13,7 @@ import ru.mudan.dto.grades.GradeDTOResponse;
 import ru.mudan.exceptions.entity.not_found.GradeNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.facade.grades.GradeFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -26,6 +27,7 @@ public class GradesService {
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
+    private final GradeFacade gradeFacade;
 
     /**
      * Метод для получения списка оценок для ученика
@@ -42,15 +44,7 @@ public class GradesService {
         log.info("Finished getting all grades for student with id={}", studentId);
 
         return grades.stream()
-                .map(grade -> GradeDTO
-                        .builder()
-                        .id(grade.getId())
-                        .mark(grade.getMark())
-                        .dateOfMark(grade.getDateOfMark())
-                        .comment(grade.getComment())
-                        .studentId(studentId)
-                        .subjectId(grade.getSubject().getId())
-                        .build())
+                .map(gradeFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -72,15 +66,7 @@ public class GradesService {
         log.info("Finished getting all grades for student with id={} and subject with id={}", studentId, subjectId);
 
         return grades.stream()
-                .map(grade -> GradeDTO
-                        .builder()
-                        .id(grade.getId())
-                        .mark(grade.getMark())
-                        .dateOfMark(grade.getDateOfMark())
-                        .comment(grade.getComment())
-                        .studentId(studentId)
-                        .subjectId(subjectId)
-                        .build())
+                .map(gradeFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -93,13 +79,7 @@ public class GradesService {
         var foundGrade = gradeRepository.findById(id)
                 .orElseThrow(() -> new GradeNotFoundException(id));
 
-        return GradeDTO
-                .builder()
-                .id(foundGrade.getId())
-                .mark(foundGrade.getMark())
-                .dateOfMark(foundGrade.getDateOfMark())
-                .comment(foundGrade.getComment())
-                .build();
+        return gradeFacade.convertEntityToDTO(foundGrade);
     }
 
     /**

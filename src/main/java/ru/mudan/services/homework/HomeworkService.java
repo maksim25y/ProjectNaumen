@@ -14,6 +14,7 @@ import ru.mudan.dto.homework.HomeworkDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.HomeworkNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.facade.homework.HomeworkFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -28,6 +29,7 @@ public class HomeworkService {
     private final HomeworkRepository homeworkRepository;
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
+    private final HomeworkFacade homeworkFacade;
 
     /**
      * Метод для получения списка ДЗ класса
@@ -46,13 +48,7 @@ public class HomeworkService {
         log.info("Finished getting all homeworks for subject with id={} and class with id={}", subjectId, classId);
         return listOfHomework
                 .stream()
-                .map(hw -> HomeworkDTO
-                        .builder()
-                        .id(hw.getId())
-                        .title(hw.getTitle())
-                        .description(hw.getDescription())
-                        .deadline(hw.getDeadline())
-                        .build())
+                .map(homeworkFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -85,13 +81,7 @@ public class HomeworkService {
         log.info("Finished getting all homeworks for class with id={}", classId);
 
         return homeworksForClass.stream()
-                .map(hw -> HomeworkDTO
-                        .builder()
-                        .id(hw.getId())
-                        .title(hw.getTitle())
-                        .description(hw.getDescription())
-                        .deadline(hw.getDeadline())
-                        .build())
+                .map(homeworkFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -104,15 +94,7 @@ public class HomeworkService {
         var foundHomework = homeworkRepository.findById(id)
                 .orElseThrow(() -> new HomeworkNotFoundException(id));
 
-        return HomeworkDTO
-                .builder()
-                .id(foundHomework.getId())
-                .title(foundHomework.getTitle())
-                .description(foundHomework.getDescription())
-                .deadline(foundHomework.getDeadline())
-                .classId(foundHomework.getClassEntity().getId())
-                .subjectId(foundHomework.getSubject().getId())
-                .build();
+        return homeworkFacade.convertEntityToDTO(foundHomework);
     }
 
     /**
@@ -140,13 +122,7 @@ public class HomeworkService {
         log.info("Finished getting all homeworks for subject with id={}", subjectId);
 
         return homeworksForSubject.stream()
-                .map(hw -> HomeworkDTO
-                        .builder()
-                        .id(hw.getId())
-                        .title(hw.getTitle())
-                        .description(hw.getDescription())
-                        .deadline(hw.getDeadline())
-                        .build())
+                .map(homeworkFacade::convertEntityToDTO)
                 .toList();
 
 

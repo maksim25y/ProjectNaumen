@@ -8,6 +8,7 @@ import ru.mudan.domain.entity.users.Parent;
 import ru.mudan.domain.repositories.ParentRepository;
 import ru.mudan.dto.parent.ParentDTO;
 import ru.mudan.exceptions.entity.not_found.ParentNotFoundException;
+import ru.mudan.facade.parent.ParentFacade;
 import ru.mudan.services.auth.MyUserDetailsService;
 
 /**
@@ -20,6 +21,7 @@ public class ParentService {
 
     private final MyUserDetailsService myUserDetailsService;
     private final ParentRepository parentRepository;
+    private final ParentFacade parentFacade;
 
     /**
      * Метод для получения родителя по аутентификации
@@ -29,28 +31,14 @@ public class ParentService {
     public ParentDTO findParentByAuth(Authentication authentication) {
         var parent = (Parent) myUserDetailsService.loadUserByUsername(authentication.getName());
 
-        return ParentDTO
-                .builder()
-                .id(parent.getId())
-                .firstname(parent.getFirstname())
-                .lastname(parent.getLastname())
-                .patronymic(parent.getPatronymic())
-                .email(parent.getEmail())
-                .build();
+        return parentFacade.convertEntityToDTO(parent);
     }
 
     public List<ParentDTO> findAllParents() {
         var allParents = parentRepository.findAll();
 
         return allParents.stream()
-                .map(parent -> ParentDTO
-                        .builder()
-                        .id(parent.getId())
-                        .firstname(parent.getFirstname())
-                        .lastname(parent.getLastname())
-                        .patronymic(parent.getPatronymic())
-                        .email(parent.getEmail())
-                        .build())
+                .map(parentFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -58,13 +46,6 @@ public class ParentService {
         var foundParent = parentRepository.findById(id)
                 .orElseThrow(() -> new ParentNotFoundException(id));
 
-        return ParentDTO
-                .builder()
-                .id(foundParent.getId())
-                .firstname(foundParent.getFirstname())
-                .lastname(foundParent.getLastname())
-                .patronymic(foundParent.getPatronymic())
-                .email(foundParent.getEmail())
-                .build();
+        return parentFacade.convertEntityToDTO(foundParent);
     }
 }
