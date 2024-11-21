@@ -3,9 +3,7 @@ package ru.mudan.dto.auth;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 import java.util.List;
-
 import lombok.Builder;
 
 /**

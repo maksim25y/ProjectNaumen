@@ -1,9 +1,7 @@
 package ru.mudan.dto.schedule;
 
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalTime;
-
 import lombok.Builder;
 import org.hibernate.validator.constraints.Range;
 
