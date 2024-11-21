@@ -68,7 +68,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getAllSchedulesForExistedClassForRoleAdmin() {
+    public void getAllSchedulesForExistedClass_roleAdmin() {
         when(scheduleService.findAllSchedulesForClass(any())).thenReturn(List.of(getDefaultScheduleDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/all/1")
@@ -79,7 +79,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getAllSchedulesForNotExistedClassForRoleAdmin() {
+    public void getAllSchedulesForNotExistedClass_roleAdmin() {
         when(scheduleService.findAllSchedulesForClass(any())).thenThrow(ClassEntityNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Класс с id=1 не найден");
 
@@ -93,7 +93,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void getAllSchedulesForExistedClassForRoleParentOfStudentFromClass() {
+    public void getAllSchedulesForExistedClass_roleParentOfStudentFromClass() {
         when(scheduleService.findAllSchedulesForClass(any())).thenReturn(List.of(getDefaultScheduleDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/all/1")
@@ -105,7 +105,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void getAllSchedulesForExistedClassForRoleParentOfStudentNotFromClass() {
+    public void getAllSchedulesForExistedClass_roleParentOfStudentNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/all/1")
@@ -117,7 +117,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getAllSchedulesForExistedClassForStudentNotFromClass() {
+    public void getAllSchedulesForExistedClass_roleStudentNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/all/1")
@@ -129,7 +129,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getAllSchedulesForExistedClassForStudentFromClass() {
+    public void getAllSchedulesForExistedClass_roleStudentFromClass() {
         when(scheduleService.findAllSchedulesForClass(any())).thenReturn(List.of(getDefaultScheduleDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/all/1")
@@ -140,7 +140,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getScheduleByIdForRoleAdminAndScheduleExists() {
+    public void getScheduleById_roleAdminAndScheduleExists() {
         when(scheduleService.findById(any())).thenReturn(getDefaultScheduleDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1")
@@ -152,7 +152,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getScheduleByIdForRoleAdminAndScheduleNotExists() {
+    public void getScheduleById_roleAdminAndScheduleNotExists() {
         when(scheduleService.findById(any())).thenThrow(ScheduleNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Ячейка расписания с id=1 не найдена");
 
@@ -166,7 +166,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void getScheduleByIdForRoleTeacher() {
+    public void getScheduleById_roleTeacher() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdmin(any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1")
@@ -178,7 +178,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void getScheduleByIdForRoleParent() {
+    public void getScheduleById_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdmin(any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1")
@@ -190,7 +190,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getScheduleByIdForRoleStudent() {
+    public void getScheduleById_roleStudent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdmin(any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1")
@@ -201,7 +201,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageForEditingScheduleForRoleAdminAndScheduleExists() {
+    public void getPageForEditingSchedule_roleAdminAndScheduleExists() {
         when(scheduleService.findById(any())).thenReturn(getDefaultScheduleDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1/edit")
@@ -213,7 +213,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageForEditingScheduleForRoleAdminAndScheduleNotExists() {
+    public void getPageForEditingSchedule_roleAdminAndScheduleNotExists() {
         when(scheduleService.findById(any())).thenThrow(ScheduleNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Ячейка расписания с id=1 не найдена");
 
@@ -227,7 +227,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void getPageForEditingScheduleForRoleTeacher() {
+    public void getPageForEditingSchedule_roleTeacher() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdmin(any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1/edit")
@@ -239,7 +239,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void getPageForEditingScheduleForRoleParent() {
+    public void getPageForEditingSchedule_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdmin(any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1/edit")
@@ -251,7 +251,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getPageForEditingScheduleForRoleStudent() {
+    public void getPageForEditingSchedule_roleStudent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdmin(any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SCHEDULES_URL + "/1/edit")
@@ -263,7 +263,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @DisplayName("Should return status 302 and page for delete existed schedule")
-    public void deleteExistedScheduleForRoleAdmin() {
+    public void deleteExistedSchedule_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.delete(SCHEDULES_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
@@ -272,7 +272,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
-    public void deleteNotExistedScheduleForRoleAdmin() {
+    public void deleteNotExistedSchedule_roleAdmin() {
         doThrow(ScheduleNotFoundException.class).when(scheduleService).deleteById(any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Ячейка расписания c id=1 не найдена");
 
@@ -287,7 +287,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and create new schedule")
-    public void postCreateScheduleValidForRoleAdmin() {
+    public void postCreateScheduleValid_roleAdmin() {
         var payload = getDefaultScheduleCreateDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.post(SCHEDULES_URL)
@@ -305,7 +305,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @ParameterizedTest
     @DisplayName("Should return status 200 and errors")
     @MethodSource("provideInvalidScheduleCreateDTOs")
-    public void postCreateNewScheduleInvalid(ScheduleCreateDTO scheduleCreateDTO) {
+    public void postCreateNewSchedule_invalid(ScheduleCreateDTO scheduleCreateDTO) {
         checkPostCreateInvalidSchedule(scheduleCreateDTO);
     }
 
@@ -313,7 +313,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and create new schedule")
-    public void putUpdateScheduleValidForRoleAdmin() {
+    public void putUpdateScheduleValid_roleAdmin() {
         var payload = ScheduleUpdateDTO
                 .builder()
                 .dayOfWeek(1)
@@ -334,7 +334,7 @@ public class ScheduleControllerTest extends BaseControllerTest {
     @ParameterizedTest
     @DisplayName("Should return status 200 and errors")
     @MethodSource("provideInvalidScheduleUpdateDTOs")
-    public void postUpdateScheduleInvalid(ScheduleUpdateDTO scheduleUpdateDTO) {
+    public void postUpdateSchedule_invalid(ScheduleUpdateDTO scheduleUpdateDTO) {
         checkPutCreateInvalidSchedule(scheduleUpdateDTO);
     }
 

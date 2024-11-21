@@ -77,7 +77,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleAdmin() {
+    public void getPageWithAllHomeworkByExistedSubjectInExistedClass_roleAdmin() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(homeworkService.findAllByClassAndSubject(any(), any())).thenReturn(List.of(getDefaultHomeworkDTO()));
@@ -94,7 +94,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByNotExistedSubjectInExistedClassForRoleAdmin() {
+    public void getPageWithAllHomeworkByNotExistedSubjectInExistedClass_roleAdmin() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(subjectService.findById(any())).thenThrow(SubjectNotFoundException.class);
 
@@ -108,7 +108,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInNotExistedClassForRoleAdmin() {
+    public void getPageWithAllHomeworkByExistedSubjectInNotExistedClass_roleAdmin() {
         when(classService.findById(any())).thenThrow(ClassEntityNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1?subjectId=1")
@@ -121,7 +121,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleStudentOfClass() {
+    public void getPageWithAllHomeworkByExistedSubjectInExistedClass_roleStudentOfClass() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(homeworkService.findAllByClassAndSubject(any(), any())).thenReturn(List.of(getDefaultHomeworkDTO()));
@@ -138,7 +138,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleParentOfStudentInClass() {
+    public void getPageWithAllHomeworkByExistedSubjectInExistedClass_roleParentOfStudentInClass() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(homeworkService.findAllByClassAndSubject(any(), any())).thenReturn(List.of(getDefaultHomeworkDTO()));
@@ -155,7 +155,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleParentOfStudentThatNotFromClass() {
+    public void getPageWithAllHomeworkByExistedSubjectInExistedClass_roleParentOfStudentThatNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(),any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1?subjectId=1")
@@ -168,7 +168,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByNotExistedSubjectInExistedClassForRoleParentOfStudentOfClass() {
+    public void getPageWithAllHomeworkByNotExistedSubjectInExistedClass_roleParentOfStudentOfClass() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(subjectService.findById(any())).thenThrow(SubjectNotFoundException.class);
 
@@ -182,7 +182,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInNotExistedClassForRoleParentOfStudentOfClass() {
+    public void getPageWithAllHomeworkByExistedSubjectInNotExistedClass_roleParentOfStudentOfClass() {
         when(classService.findById(any())).thenThrow(ClassEntityNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1?subjectId=1")
@@ -195,7 +195,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
     @DisplayName("Should return status 200 and error page")
-    public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleStudentNotFromClass() {
+    public void getPageWithAllHomeworkByExistedSubjectInExistedClass_roleStudentNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(),any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1?subjectId=1")
@@ -208,7 +208,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByNotExistedSubjectInExistedClassForRoleStudentFromClass() {
+    public void getPageWithAllHomeworkByNotExistedSubjectInExistedClass_roleStudentFromClass() {
         when(homeworkService.findAllByClassAndSubject(any(), any())).thenThrow(SubjectNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1?subjectId=1")
@@ -221,7 +221,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkByExistedSubjectInExistedClassForRoleTeacher() {
+    public void getPageWithAllHomeworkByExistedSubjectInExistedClass_roleTeacher() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1?subjectId=1")
@@ -234,7 +234,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInExistedClassForRoleAdmin() {
+    public void getPageWithAllHomeworkInExistedClass_roleAdmin() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(homeworkService.findAllByClass(any())).thenReturn(List.of(getDefaultHomeworkDTO()));
 
@@ -249,7 +249,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInNotExistedClassForRoleAdmin() {
+    public void getPageWithAllHomeworkInNotExistedClass_roleAdmin() {
         when(classService.findById(any())).thenThrow(ClassEntityNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1")
@@ -262,7 +262,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInExistedClassForRoleStudentOfClass() {
+    public void getPageWithAllHomeworkInExistedClass_roleStudentOfClass() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(homeworkService.findAllByClass(any())).thenReturn(List.of(getDefaultHomeworkDTO()));
 
@@ -277,7 +277,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInExistedClassForRoleParentOfStudentInClass() {
+    public void getPageWithAllHomeworkInExistedClass_roleParentOfStudentInClass() {
         when(classService.findById(any())).thenReturn(getDefaultClassDTO());
         when(homeworkService.findAllByClass(any())).thenReturn(List.of(getDefaultHomeworkDTO()));
 
@@ -292,7 +292,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInExistedClassForRoleParentOfStudentThatNotFromClass() {
+    public void getPageWithAllHomeworkInExistedClass_roleParentOfStudentThatNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(),any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1")
@@ -305,7 +305,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInNotExistedClassForRoleParentOfStudentOfClass() {
+    public void getPageWithAllHomeworkInNotExistedClass_roleParentOfStudentOfClass() {
         when(classService.findById(any())).thenThrow(ClassEntityNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1")
@@ -318,7 +318,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
     @DisplayName("Should return status 200 and all homeworks for class")
-    public void getPageWithAllHomeworkInExistedClassForRoleStudentNotFromClass() {
+    public void getPageWithAllHomeworkInExistedClass_roleStudentNotFromClass() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(),any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1")
@@ -331,7 +331,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
     @DisplayName("Should return status 200 and all page with error")
-    public void getPageWithAllHomeworkInExistedClassForRoleTeacher() {
+    public void getPageWithAllHomeworkInExistedClass_roleTeacher() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentFromClassOrParentThatHasStudentInClass(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/all/1")
@@ -423,7 +423,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 302 and update homework")
-    public void putUpdateHomeworkValidForRoleAdmin() {
+    public void putUpdateHomeworkValid_roleAdmin() {
         var payload = getDefaultHomeworkDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.put(HOMEWORKS_URL + "/1")
@@ -439,7 +439,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and error page")
-    public void putUpdateNotExistedHomeworkValidForRoleAdmin() {
+    public void putUpdateNotExistedHomeworkValid_roleAdmin() {
         var payload = getDefaultHomeworkDTO();
         doThrow(HomeworkNotFoundException.class).when(homeworkService).update(any(), any());
         when(messageSource.getMessage(any(), any())).thenReturn("ДЗ с id=1 не найдено");
@@ -458,7 +458,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and create new homework")
-    public void postCreateHomeworkValidForRoleAdmin() {
+    public void postCreateHomeworkValid_roleAdmin() {
         var payload = HomeworkCreateDTO
                 .builder()
                 .title("Решить примеры")
@@ -499,7 +499,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and page for editing existed homework")
-    public void getPageForEditingExistingHomeworkForRoleAdmin() {
+    public void getPageForEditingExistingHomework_roleAdmin() {
         when(homeworkService.findById(any())).thenReturn(getDefaultHomeworkDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/1/edit")
@@ -513,7 +513,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
     @DisplayName("Should return status 200 and page for editing existed homework")
-    public void getPageForEditingExistingHomeworkForRoleTeacherBySubject() {
+    public void getPageForEditingExistingHomework_roleTeacherBySubject() {
         when(homeworkService.findById(any())).thenReturn(getDefaultHomeworkDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/1/edit")
@@ -527,7 +527,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
     @DisplayName("Should return status 200 and page with error")
-    public void getPageForEditingExistingHomeworkForRoleTeacherHasNotSubject() {
+    public void getPageForEditingExistingHomework_roleTeacherHasNotSubject() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasHomeworkOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(HOMEWORKS_URL + "/1/edit")
@@ -540,7 +540,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 302 and page for delete existed homework")
-    public void deleteExistedHomeworkForRoleAdmin() {
+    public void deleteExistedHomework_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.delete(HOMEWORKS_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
@@ -550,7 +550,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and error")
-    public void deleteNotExistedHomeworkForRoleAdmin() {
+    public void deleteNotExistedHomework_roleAdmin() {
         doThrow(HomeworkNotFoundException.class).when(homeworkService).delete(any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("ДЗ c id=1 не найдено");
 
@@ -565,7 +565,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
     @DisplayName("Should return status 302 and page for delete existed homework")
-    public void deleteExistedHomeworkForRoleTeacher() {
+    public void deleteExistedHomework_roleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.delete(HOMEWORKS_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
@@ -575,7 +575,7 @@ public class HomeworkControllerTest extends BaseControllerTest {
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
     @DisplayName("Should return status 200 and error")
-    public void deleteNotExistedHomeworkForRoleTeacher() {
+    public void deleteNotExistedHomework_roleTeacher() {
         doThrow(HomeworkNotFoundException.class).when(homeworkService).delete(any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("ДЗ c id=1 не найдено");
 

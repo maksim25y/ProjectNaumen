@@ -1,5 +1,6 @@
 package ru.mudan.controller.subjects;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,14 +11,14 @@ import ru.mudan.dto.subjects.SubjectUpdateDTO;
 import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.subjects.SubjectService;
 import ru.mudan.services.teachers.TeacherService;
+import static ru.mudan.controller.Util.doRedirect;
 
 @Controller
-@SuppressWarnings({"MultipleStringLiterals", "MemberName"})
+@SuppressWarnings("MultipleStringLiterals")
 @RequestMapping("/subjects")
 @RequiredArgsConstructor
 public class SubjectController {
 
-    private final String REDIRECT_SUBJECTS_ALL = "redirect:/subjects/all";
     private final SubjectService subjectService;
     private final ClassService classService;
     private final TeacherService teacherService;
@@ -58,9 +59,9 @@ public class SubjectController {
      * @param subjectDTO - входные данные для создания предмета
      */
     @PostMapping
-    public String createSubject(@Valid SubjectCreateDTO subjectDTO) {
+    public String createSubject(@Valid SubjectCreateDTO subjectDTO, HttpServletRequest request) {
         subjectService.save(subjectDTO);
-        return REDIRECT_SUBJECTS_ALL;
+        return doRedirect(request);
     }
 
     /**
@@ -94,6 +95,6 @@ public class SubjectController {
     @DeleteMapping("/{id}")
     public String deleteSubject(@PathVariable Long id) {
         subjectService.deleteById(id);
-        return REDIRECT_SUBJECTS_ALL;
+        return "redirect:/subjects/all";
     }
 }

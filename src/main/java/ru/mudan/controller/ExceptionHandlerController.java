@@ -15,6 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.mudan.exceptions.base.ApplicationForbiddenException;
 import ru.mudan.exceptions.base.ApplicationRuntimeException;
 
+/**
+ * Класс для обработки ошибок
+ * во время работы приложения
+ */
 @ControllerAdvice
 @RequiredArgsConstructor
 @SuppressWarnings({"MultipleStringLiterals", "MemberName"})
@@ -39,20 +43,22 @@ public class ExceptionHandlerController {
         model.addAttribute(nameOfAttributeForErrors, errors);
         redirectAttributes.addFlashAttribute(nameOfAttributeForErrors, errors);
 
-        String referer = request.getHeader("Referer");
+        var referer = request.getHeader("Referer");
 
-        if (referer != null) {
-            return "redirect:" + referer;
-        } else {
-            return "error/400";
-        }
+        return ((referer != null) ? "redirect:" + referer : "error/400");
     }
 
+    /**
+     * Обработчик ошибок, возникающих в процессе работы приложения
+     *
+     * @param exception          - ошибка, произошедшая в приложениия
+     * @param redirectAttributes - класс для установки ошибок в атрибуты и послудующего их сохранения при редиректе
+     */
     @ExceptionHandler(ApplicationRuntimeException.class)
     public String appRuntimeException(ApplicationRuntimeException exception,
-                                                   RedirectAttributes redirectAttributes,
-                                                   Model model,
-                                                   Locale locale) {
+                                      RedirectAttributes redirectAttributes,
+                                      Model model,
+                                      Locale locale) {
 
         var error = messageSource.getMessage(exception.getMessage(), exception.getArgs(), locale);
 
@@ -62,6 +68,10 @@ public class ExceptionHandlerController {
         return "error/error-app";
     }
 
+    /**
+     * Обработчик ошибок, которые возникают при попытке выполнить
+     * запрос для которого у пользователя не хватает прав
+     */
     @ExceptionHandler(ApplicationForbiddenException.class)
     public String handleForbiddenException() {
         return "error/403";

@@ -18,10 +18,9 @@ import ru.mudan.services.schedule.ScheduleService;
 @Controller
 @RequestMapping("/schedules")
 @RequiredArgsConstructor
-@SuppressWarnings({"MultipleStringLiterals", "MemberName"})
+@SuppressWarnings("MultipleStringLiterals")
 public class ScheduleController {
 
-    private final String REDIRECT_CLASSES_ALL = "redirect:/classes/all";
     private final ScheduleService scheduleService;
     private final AuthService authService;
 
@@ -65,7 +64,7 @@ public class ScheduleController {
                                       Authentication authentication) {
         authService.hasRoleAdmin(authentication);
         scheduleService.save(scheduleCreateDTO);
-        return REDIRECT_CLASSES_ALL;
+        return "redirect:schedules/all/" + scheduleCreateDTO.classId();
     }
 
     /**
@@ -107,6 +106,6 @@ public class ScheduleController {
                                  Authentication authentication) {
         authService.hasRoleAdmin(authentication);
         scheduleService.deleteById(id);
-        return REDIRECT_CLASSES_ALL;
+        return "redirect:/classes/all";
     }
 }

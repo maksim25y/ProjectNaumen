@@ -1,5 +1,6 @@
 package ru.mudan.controller.users;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import ru.mudan.services.auth.MyUserDetailsService;
 import ru.mudan.services.parent.ParentService;
 import ru.mudan.services.students.StudentService;
 import ru.mudan.services.teachers.TeacherService;
+import static ru.mudan.controller.Util.doRedirect;
 
 /**
  * Контроллер, принимающий запросы
@@ -125,9 +127,9 @@ public class UsersController {
      * @param userUpdateDTO - входные данные для обновления информации о пользователе
      */
     @PutMapping
-    public String updateUser(@Valid UserUpdateDTO userUpdateDTO) {
+    public String updateUser(@Valid UserUpdateDTO userUpdateDTO, HttpServletRequest request) {
         myUserDetailsService.updateUser(userUpdateDTO);
-        return "redirect:/";
+        return doRedirect(request);
     }
 
     /**

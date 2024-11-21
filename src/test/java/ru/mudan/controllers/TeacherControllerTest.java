@@ -48,7 +48,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageAccountOfTeacherWithRoleParent() {
+    public void getPageAccountOfTeacher_roleParent() {
         when(teacherService.findTeacherByAuth(any())).thenReturn(getDefaultTeacherDTO());
         when(subjectService.getSubjectsForTeacher(any())).thenReturn(List.of(getDefaultSubjectDTO()));
 
@@ -62,7 +62,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageHwForTeacherWithRoleTeacher() {
+    public void getPageHwForTeacher_roleTeacher() {
         when(teacherService.findTeacherByAuth(any())).thenReturn(getDefaultTeacherDTO());
         when(homeworkService.findAllBySubject(any())).thenReturn(List.of(getDefaultHomeworkDTO()));
 
@@ -75,7 +75,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageHwForTeacherWithRoleTeacherAndSubjectDoesNotExists() {
+    public void getPageHwForTeacher_roleTeacherAndSubjectDoesNotExists() {
         doThrow(SubjectNotFoundException.class).when(authService).teacherContainSubject(any(), any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Предмет с id=1 не найден");
 
@@ -87,7 +87,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageHwForTeacherWithRoleTeacherAndSubjectHasNotSubject() {
+    public void getPageHwForTeacher_roleTeacherAndSubjectHasNotSubject() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherContainSubject(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(TEACHER_URL + "/hw/1")
@@ -98,7 +98,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageScheduleForTeacherWithRoleTeacher() {
+    public void getPageScheduleForTeacher_roleTeacher() {
         when(scheduleService.findAllBySubjectId(any())).thenReturn(List.of(getDefaultScheduleDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(TEACHER_URL + "/schedule/1")
@@ -110,7 +110,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageScheduleForTeacherWithRoleTeacherAndSubjectDoesNotExists() {
+    public void getPageScheduleForTeacher_roleTeacherAndSubjectDoesNotExists() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherContainSubject(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(TEACHER_URL + "/schedule/1")
@@ -121,7 +121,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageHwForTeacherWithRoleTeacherAndTeacherHasNotSubject() {
+    public void getPageHwForTeacher_roleTeacherAndTeacherHasNotSubject() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherContainSubject(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(TEACHER_URL + "/schedule/1")
@@ -132,7 +132,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageGradesForTeacherWithRoleTeacherAndSubjectExists() {
+    public void getPageGradesForTeacher_roleTeacherAndSubjectExists() {
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(gradesService.findAllBySubjectId(any())).thenReturn(List.of(getDefaultGradeDTOResponse()));
 
@@ -145,7 +145,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageGradesForTeacherWithRoleTeacherAndSubjectDoesNotExists() {
+    public void getPageGradesForTeacher_roleTeacherAndSubjectDoesNotExists() {
         doThrow(SubjectNotFoundException.class).when(authService).teacherContainSubject(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(TEACHER_URL + "/grades/subject/1")
@@ -156,7 +156,7 @@ public class TeacherControllerTest extends BaseControllerTest {
 
     @Test
     @SneakyThrows
-    public void getPageGradesForTeacherWithRoleTeacherAndTeacherHasNotSubject() {
+    public void getPageGradesForTeacher_roleTeacherAndTeacherHasNotSubject() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherContainSubject(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(TEACHER_URL + "/grades/subject/1")

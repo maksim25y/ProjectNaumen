@@ -8,7 +8,7 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 @SuppressWarnings("MagicNumber")
-public class ScheduleUtil {
+public class Util {
 
     /**
      * Словарь, хранящий дни недели, которые могут быть указаны в Schedule
