@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.mudan.services.students.StudentService;
 import ru.mudan.services.subjects.SubjectService;
 
+/**
+ * Контроллер, принимающий запросы
+ * только от ученика
+ */
 @Controller
 @RequestMapping("/student")
 @RequiredArgsConstructor
@@ -17,6 +21,9 @@ public class StudentController {
     private final StudentService studentService;
     private final SubjectService subjectService;
 
+    /**
+     * Эндпоинт для получения шаблона аккаунта ученика
+     */
     @GetMapping("/account")
     public String account(Model model, Authentication authentication) {
         var student = studentService.findStudentByAuth(authentication);

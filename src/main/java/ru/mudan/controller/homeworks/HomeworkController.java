@@ -13,6 +13,10 @@ import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.homework.HomeworkService;
 import ru.mudan.services.subjects.SubjectService;
 
+/**
+ * Контроллер, принимающий запросы
+ * для работы с ДЗ
+ */
 @Controller
 @RequestMapping("/homeworks")
 @SuppressWarnings({"MemberName", "MultipleStringLiterals"})
@@ -25,6 +29,12 @@ public class HomeworkController {
     private final SubjectService subjectService;
     private final AuthService authService;
 
+    /**
+     * Эндпоинт для получения ДЗ для класса
+     *
+     * @param classId   - id класса
+     * @param subjectId - id предмета
+     */
     @GetMapping("/all/{classId}")
     public String getPageWithInfoAboutAllHomeworksWithSubjectIdAndClassId(Model model,
                                                                           @PathVariable Long classId,
@@ -44,6 +54,11 @@ public class HomeworkController {
         return "admin/homeworks/homeworks-index";
     }
 
+    /**
+     * Эндпоинт для создания ДЗ
+     *
+     * @param homeworkDTO - входные данные для создания ДЗ
+     */
     @PostMapping
     public String createNewHomework(@Valid HomeworkCreateDTO homeworkDTO, Authentication authentication) {
         authService.teacherHasSubjectOrRoleIsAdmin(homeworkDTO.subjectId(), authentication);
@@ -51,6 +66,11 @@ public class HomeworkController {
         return "redirect:/";
     }
 
+    /**
+     * Эндпоинт для получения ДЗ по id
+     *
+     * @param id - id ДЗ
+     */
     @GetMapping("/{id}")
     public String getPageWithInfoAboutHomeworkById(@PathVariable("id") Long id,
                                                    Model model,
@@ -63,6 +83,11 @@ public class HomeworkController {
         return "admin/homeworks/homeworks-show";
     }
 
+    /**
+     * Эндпоинт для получения шаблона для редактирования ДЗ
+     *
+     * @param id - id ДЗ
+     */
     @GetMapping("/{id}/edit")
     public String getPageForEditingHomework(@PathVariable("id") Long id, Model model, Authentication authentication) {
         authService.teacherHasHomeworkOrRoleIsAdmin(id, authentication);
@@ -70,6 +95,11 @@ public class HomeworkController {
         return "admin/homeworks/homeworks-edit";
     }
 
+    /**
+     * Эндпоинт для удаления ДЗ по id
+     *
+     * @param id - id ДЗ
+     */
     @DeleteMapping("/{id}")
     public String deleteHomework(@PathVariable("id") Long id, Authentication authentication) {
         authService.teacherHasHomeworkOrRoleIsAdmin(id, authentication);
@@ -77,6 +107,12 @@ public class HomeworkController {
         return "redirect:/";
     }
 
+    /**
+     * Эндпоинт для обновления ДЗ
+     *
+     * @param id          - id ДЗ
+     * @param homeworkDTO - входные данные для обновления ДЗ
+     */
     @PutMapping("/{id}")
     public String updateHomework(@Valid HomeworkDTO homeworkDTO,
                                  @PathVariable("id") Long id,
