@@ -33,6 +33,19 @@ spring:
       filter:
         enabled: true
 
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 server:
   error:
     whitelabel:
