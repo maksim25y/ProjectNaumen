@@ -1,12 +1,12 @@
 -- Ready
-CREATE TABLE classes
+CREATE TABLE IF NOT EXISTS classes
 (
     id          BIGSERIAL PRIMARY KEY,
     letter      VARCHAR(10),
     number      INTEGER,
     description VARCHAR
 );
-CREATE TABLE parents
+CREATE TABLE IF NOT EXISTS parents
 (
     id              BIGSERIAL PRIMARY KEY,
     firstname       VARCHAR NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE parents
     hashed_password VARCHAR NOT NULL
 );
 -- Ready
-CREATE TABLE students
+CREATE TABLE IF NOT EXISTS students
 (
     id              BIGSERIAL PRIMARY KEY,
     firstname       VARCHAR(255),
@@ -29,7 +29,7 @@ CREATE TABLE students
     FOREIGN KEY (class_id) REFERENCES classes (id) ON DELETE SET NULL,
     FOREIGN KEY (parent_id) REFERENCES parents (id) ON DELETE SET NULL
 );
-CREATE TABLE teachers
+CREATE TABLE IF NOT EXISTS teachers
 (
     id              BIGSERIAL PRIMARY KEY,
     firstname       VARCHAR(255) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE teachers
     hashed_password VARCHAR      NOT NULL
 );
 -- Ready
-CREATE TABLE subjects
+CREATE TABLE IF NOT EXISTS subjects
 (
     id          BIGSERIAL PRIMARY KEY,
     name        VARCHAR(255),
@@ -52,7 +52,7 @@ CREATE TABLE subjects
     FOREIGN KEY (teacher_id) REFERENCES teachers (id) ON DELETE CASCADE
 );
 
-CREATE TABLE schedules
+CREATE TABLE IF NOT EXISTS schedules
 (
     id                  BIGSERIAL PRIMARY KEY,
     day_of_week         INTEGER,
@@ -64,7 +64,7 @@ CREATE TABLE schedules
     FOREIGN KEY (subject_id) REFERENCES subjects (id) ON DELETE CASCADE
 );
 
-CREATE TABLE homeworks
+CREATE TABLE IF NOT EXISTS homeworks
 (
     id          BIGSERIAL PRIMARY KEY,
     title       VARCHAR(255),
@@ -76,7 +76,7 @@ CREATE TABLE homeworks
     FOREIGN KEY (subject_id) REFERENCES subjects (id) ON DELETE CASCADE
 );
 
-CREATE TABLE grades
+CREATE TABLE IF NOT EXISTS grades
 (
     id           BIGSERIAL PRIMARY KEY,
     mark         INTEGER,
@@ -88,14 +88,14 @@ CREATE TABLE grades
     FOREIGN KEY (subject_id) REFERENCES subjects (id) ON DELETE CASCADE
 );
 
-CREATE TABLE app_users
+CREATE TABLE IF NOT EXISTS app_users
 (
     id        BIGSERIAL PRIMARY KEY,
     user_id   BIGINT,
     role_name VARCHAR NOT NULL,
     email     VARCHAR NOT NULL
 );
-CREATE TABLE admins
+CREATE TABLE  IF NOT EXISTS admins
 (
     id              BIGSERIAL PRIMARY KEY,
     firstname       VARCHAR NOT NULL,
