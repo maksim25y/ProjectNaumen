@@ -25,7 +25,8 @@
             Почта: <span class="text-danger" th:text="${parent.email()}"></span>
         </li>
     </ul>
-    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/users/{email}(email=${parent.email()})}">
+    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/users}">
+        <input type="text" th:name="email" th:value="${parent.email()}" hidden>
         <button class="btn btn-outline-danger active" type="submit">
             Удалить родителя
         </button>

@@ -122,12 +122,11 @@ public class UsersController {
     /**
      * Эндпоинт для обновления пользователя по email
      *
-     * @param email         - email пользователя для обновления
      * @param userUpdateDTO - входные данные для обновления информации о пользователе
      */
-    @PutMapping("/{email}")
-    public String updateUser(@PathVariable String email, @Valid UserUpdateDTO userUpdateDTO) {
-        myUserDetailsService.updateUserByEmail(email, userUpdateDTO);
+    @PutMapping
+    public String updateUser(@Valid UserUpdateDTO userUpdateDTO) {
+        myUserDetailsService.updateUser(userUpdateDTO);
         return "redirect:/";
     }
 
@@ -136,8 +135,8 @@ public class UsersController {
      *
      * @param email - email пользователя для удаления
      */
-    @DeleteMapping("/{email}")
-    public String deleteUserByEmail(@PathVariable String email) {
+    @DeleteMapping
+    public String deleteUserByEmail(String email) {
         myUserDetailsService.deleteUserByEmail(email);
         return "redirect:/";
     }

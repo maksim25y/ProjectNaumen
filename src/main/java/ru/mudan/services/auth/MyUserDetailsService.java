@@ -49,27 +49,26 @@ public class MyUserDetailsService implements UserDetailsService {
     /**
      * Метод для обновления данных пользователя по email
      *
-     * @param email         - email пользователя
      * @param userUpdateDTO - данные для обновления
      **/
-    public void updateUserByEmail(String email, UserUpdateDTO userUpdateDTO) {
-        var appUser = appUserRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
+    public void updateUser(UserUpdateDTO userUpdateDTO) {
+        var appUser = appUserRepository.findByEmail(userUpdateDTO.email())
+                .orElseThrow(() -> new UserNotFoundException(userUpdateDTO.email()));
 
         switch (appUser.getRoleName()) {
             case ROLE_ADMIN -> {
-                updateAdmin(email, userUpdateDTO, appUser);
+                updateAdmin(userUpdateDTO.email(), userUpdateDTO, appUser);
             }
             case ROLE_PARENT -> {
-                updateParent(email, userUpdateDTO, appUser);
+                updateParent(userUpdateDTO.email(), userUpdateDTO, appUser);
             }
             case ROLE_STUDENT -> {
-                updateStudent(email, userUpdateDTO, appUser);
+                updateStudent(userUpdateDTO.email(), userUpdateDTO, appUser);
             }
             case ROLE_TEACHER -> {
-                updateTeacher(email, userUpdateDTO, appUser);
+                updateTeacher(userUpdateDTO.email(), userUpdateDTO, appUser);
             }
-            default -> throw new UsernameNotFoundException(email);
+            default -> throw new UsernameNotFoundException(userUpdateDTO.email());
         }
     }
 
