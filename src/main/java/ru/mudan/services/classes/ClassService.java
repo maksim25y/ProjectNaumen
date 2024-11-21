@@ -15,6 +15,7 @@ import ru.mudan.exceptions.entity.already_exists.ClassAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.facade.classes.ClassFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -26,6 +27,7 @@ import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 @Transactional
 public class ClassService {
 
+    private final ClassFacade classFacade;
     /**
      * Длина части названия предмета для генерации кода предмета
      */
@@ -44,13 +46,8 @@ public class ClassService {
         log.info("Finished getting all classes");
 
         return allClasses.stream()
-                .map(cl -> ClassDTO
-                        .builder()
-                        .id(cl.getId())
-                        .number(cl.getNumber())
-                        .letter(cl.getLetter())
-                        .description(cl.getDescription())
-                        .build()).toList();
+                .map(classFacade::convertEntityToDTO)
+                .toList();
     }
 
     /**
@@ -61,13 +58,7 @@ public class ClassService {
     public ClassDTO findById(Long id) {
         var foundClass = findClassEntityById(id);
 
-        return ClassDTO
-                .builder()
-                .id(foundClass.getId())
-                .number(foundClass.getNumber())
-                .letter(foundClass.getLetter())
-                .description(foundClass.getDescription())
-                .build();
+        return classFacade.convertEntityToDTO(foundClass);
     }
 
     /**

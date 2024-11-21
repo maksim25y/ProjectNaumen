@@ -8,6 +8,12 @@ import lombok.Builder;
 
 /**
  * Входные данные для создания предмета
+ *
+ * @param name        - название предмета
+ * @param type        - тип предмета
+ * @param description - описание предмета
+ * @param classId     - id класса, для которого создаётся предмет
+ * @param teacherId   - id учителя, который будет вести предмет
  */
 @Builder
 public record SubjectCreateDTO(

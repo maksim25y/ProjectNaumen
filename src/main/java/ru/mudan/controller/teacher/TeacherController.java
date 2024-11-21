@@ -15,6 +15,10 @@ import ru.mudan.services.students.StudentService;
 import ru.mudan.services.subjects.SubjectService;
 import ru.mudan.services.teachers.TeacherService;
 
+/**
+ * Контроллер, принимающий запросы
+ * только от учителя
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/teacher")
@@ -28,6 +32,9 @@ public class TeacherController {
     private final StudentService studentService;
     private final AuthService authService;
 
+    /**
+     * Эндпоинт для получения шаблона аккаунта учителя
+     */
     @GetMapping("/account")
     public String getTeacherMainPage(Authentication authentication, Model model) {
         var teacher = teacherService.findTeacherByAuth(authentication);
@@ -36,6 +43,12 @@ public class TeacherController {
         return "teacher/teacher-main-page";
     }
 
+    /**
+     * Эндпоинт для получения всех ДЗ учителя по предмету
+     * !Только по предмету, который учитель ведёт
+     *
+     * @param subjectId - id предмета
+     */
     @GetMapping("/hw/{subjectId}")
     public String hwTeacherSubject(Model model,
                                    @PathVariable Long subjectId,
@@ -46,6 +59,12 @@ public class TeacherController {
         return "teacher/homework/homeworks-show";
     }
 
+    /**
+     * Эндпоинт для получения расписания учителя по предмету
+     * !Только по предмету, который учитель ведёт
+     *
+     * @param subjectId - id предмета
+     */
     @GetMapping("/schedule/{subjectId}")
     public String scheduleTeacher(Model model,
                                   @PathVariable Long subjectId,
@@ -56,6 +75,12 @@ public class TeacherController {
         return "teacher/schedule/schedule-teacher-index";
     }
 
+    /**
+     * Эндпоинт для получения оценок учителя по предмету
+     * !Только по предмету, который учитель ведёт
+     *
+     * @param subjectId - id предмета
+     */
     @GetMapping("/grades/subject/{subjectId}")
     public String gradesTeacher(Model model,
                                 @PathVariable Long subjectId,

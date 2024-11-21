@@ -12,7 +12,7 @@
     <div th:insert="~{header-admin :: admin-header}"></div>
     <hr>
     <h1 th:text="${'Редактирование информации о пользователе '+user.email()}"></h1>
-    <form class="mb-2 w-25" th:method="PUT" th:action="@{/users/{email}(email=${user.email()})}">
+    <form class="mb-2 w-25" th:method="PUT" th:action="@{/users}">
         <div class="form-group mb-2">
             <div class="form-group mb-2">
                 <label for="lastname">Введите новую фамилию: </label>
@@ -29,6 +29,7 @@
                 <input class="form-control" type="text" name="patronymic" th:value="${user.patronymic()}" id="patronymic" required/>
             </div>
         </div>
+        <input type="text" th:name="email" th:value="${user.email()}" hidden>
         <div th:each="error : ${errors}">
             <div class="alert alert-danger mt-2" role="alert" th:text="${error}"></div>
         </div>

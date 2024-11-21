@@ -22,6 +22,11 @@ public class EmailService implements NotificationService<EmailNotificationDetail
 
     private final JavaMailSender javaMailSender;
 
+    /**
+     * Метод для отправки письма на почту
+     *
+     * @param emailDetails - данные для отправки на почту
+     */
     @Override
     public void sendNotification(EmailNotificationDetails emailDetails) {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -39,8 +44,14 @@ public class EmailService implements NotificationService<EmailNotificationDetail
         }
     }
 
+    /**
+     * Метод для настройки объекта MimeMessageHelper для отправки письма
+     *
+     * @param message - сообщение для отправки
+     * @param emailDetails - данные для отправки
+     */
     private void createMimeMessageHelper(MimeMessage message, EmailNotificationDetails emailDetails)
-        throws MessagingException {
+            throws MessagingException {
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setTo(emailDetails.recipient());
         helper.setSubject(emailDetails.subject());

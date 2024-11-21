@@ -15,6 +15,7 @@ import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.ParentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.facade.student.StudentFacade;
 import ru.mudan.services.auth.MyUserDetailsService;
 
 /**
@@ -31,6 +32,7 @@ public class StudentService {
     private final SubjectsRepository subjectsRepository;
     private final MyUserDetailsService myUserDetailsService;
     private final ParentRepository parentRepository;
+    private final StudentFacade studentFacade;
 
     /**
      * Метод для получения ученика по id
@@ -40,14 +42,7 @@ public class StudentService {
     public StudentDTO findById(Long id) {
         var foundStudent = getStudentById(id);
 
-        return StudentDTO
-                .builder()
-                .id(foundStudent.getId())
-                .firstname(foundStudent.getFirstname())
-                .lastname(foundStudent.getLastname())
-                .patronymic(foundStudent.getPatronymic())
-                .email(foundStudent.getEmail())
-                .build();
+        return studentFacade.convertEntityToDTO(foundStudent);
     }
 
     /**
@@ -57,14 +52,7 @@ public class StudentService {
         log.info("Getting all students with not class");
         return studentRepository.findAllByClassEntity(null)
                 .stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .build())
+                .map(studentFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -81,14 +69,7 @@ public class StudentService {
 
         return foundClass.getStudents()
                 .stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .build())
+                .map(studentFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -99,15 +80,7 @@ public class StudentService {
         var students = studentRepository.findAllByParent(null);
 
         return students.stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .classId(st.getClassEntity() != null ? st.getClassEntity().getId() : null)
-                        .build())
+                .map(studentFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -123,15 +96,7 @@ public class StudentService {
         log.info("Finished getting all students for parent with id={}", parentId);
 
         return parent.getStudents().stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .classId(st.getClassEntity() != null ? st.getClassEntity().getId() : null)
-                        .build())
+                .map(studentFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -147,14 +112,7 @@ public class StudentService {
         var classEntity = foundSubject.getClassEntity();
 
         return classEntity.getStudents().stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .build())
+                .map(studentFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -166,36 +124,17 @@ public class StudentService {
     public StudentDTO findStudentByAuth(Authentication authentication) {
         var student = (Student) myUserDetailsService.loadUserByUsername(authentication.getName());
 
-        Long classId = null;
-        var classEntity = student.getClassEntity();
-
-        if (classEntity != null) {
-            classId = classEntity.getId();
-        }
-
-        return StudentDTO
-                .builder()
-                .id(student.getId())
-                .firstname(student.getFirstname())
-                .lastname(student.getLastname())
-                .patronymic(student.getPatronymic())
-                .email(student.getEmail())
-                .classId(classId)
-                .build();
+        return studentFacade.convertEntityToDTO(student);
     }
 
+    /**
+     * Метод для получения списка всех учеников
+     */
     public List<StudentDTO> findAll() {
         var allStudents = studentRepository.findAll();
 
         return allStudents.stream()
-                .map(st -> StudentDTO
-                        .builder()
-                        .id(st.getId())
-                        .firstname(st.getFirstname())
-                        .lastname(st.getLastname())
-                        .patronymic(st.getPatronymic())
-                        .email(st.getEmail())
-                        .build())
+                .map(studentFacade::convertEntityToDTO)
                 .toList();
     }
 

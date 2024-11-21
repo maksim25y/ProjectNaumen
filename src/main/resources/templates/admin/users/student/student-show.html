@@ -25,14 +25,16 @@
             Почта: <span class="text-danger" th:text="${student.email()}"></span>
         </li>
     </ul>
-    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/users/{email}(email=${student.email()})}">
+    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/users}">
+        <input type="text" th:name="email" th:value="${student.email()}" hidden>
         <button class="btn btn-outline-danger active" type="submit">
-            Удалить учителя
+            Удалить ученика
         </button>
     </form>
     <a th:href="@{/users/students/{id}/edit(id=${student.id()})}" class="me-2">
+        <input type="number" th:name="email" th:value="${student.email()}" hidden>
         <button class="btn btn-outline-warning active" type="submit">
-            Редактировать информацию об учителе
+            Редактировать информацию об ученике
         </button>
     </a>
     <hr>

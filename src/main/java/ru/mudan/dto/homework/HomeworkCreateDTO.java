@@ -7,6 +7,11 @@ import lombok.Builder;
 
 /**
  * Входные данные для создания нового ДЗ
+ *
+ * @param title       - название ДЗ
+ * @param description - описание ДЗ
+ * @param deadline    - крайний срок сдачи ДЗ
+ * @param subjectId   - id предмета, по которому создаётся ДЗ
  */
 @Builder
 public record HomeworkCreateDTO(

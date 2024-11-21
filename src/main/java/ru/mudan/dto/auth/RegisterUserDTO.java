@@ -8,6 +8,13 @@ import lombok.Builder;
 
 /**
  * Входные данные для регистрации нового пользователя
+ *
+ * @param firstname   - имя пользователя
+ * @param lastname    - фамилия пользователя
+ * @param patronymic  - отчество пользователя
+ * @param email       - адрес электронной почты пользователя
+ * @param password    - пароль пользователя
+ * @param studentsIds - список id учеников (нужен для регистрации родителя)
  */
 @Builder
 public record RegisterUserDTO(

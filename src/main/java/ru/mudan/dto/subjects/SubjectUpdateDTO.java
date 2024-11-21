@@ -5,6 +5,9 @@ import lombok.Builder;
 
 /**
  * Входные данные для обновления предмета
+ *
+ * @param type        - тип предмета
+ * @param description - описание предмета
  */
 @Builder
 public record SubjectUpdateDTO(

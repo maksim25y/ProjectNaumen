@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.mudan.services.parent.ParentService;
 import ru.mudan.services.students.StudentService;
 
+/**
+ * Контроллер, принимающий запросы
+ * только от родителя
+ */
 @Controller
 @RequestMapping("/parent")
 @RequiredArgsConstructor
@@ -17,6 +21,9 @@ public class ParentController {
     private final ParentService parentService;
     private final StudentService studentService;
 
+    /**
+     * Эндпоинт для получения шаблона аккаунта родителя
+     */
     @GetMapping("/account")
     public String account(Model model, Authentication authentication) {
         var parent = parentService.findParentByAuth(authentication);

@@ -179,12 +179,13 @@ public class UtilConstants {
                 .build();
     }
 
-    public UserUpdateDTO getDefaultUserUpdateDTO() {
+    public UserUpdateDTO getDefaultUserUpdateDTOByEmail(String email) {
         return UserUpdateDTO
                 .builder()
                 .firstname("Сергей")
                 .lastname("Иванов")
                 .patronymic("Иванович")
+                .email(email)
                 .build();
     }
 

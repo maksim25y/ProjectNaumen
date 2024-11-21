@@ -16,7 +16,7 @@ import ru.mudan.dto.schedule.ScheduleUpdateDTO;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.ScheduleNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
-import ru.mudan.util.ScheduleUtil;
+import ru.mudan.facade.schedule.ScheduleFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -31,6 +31,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ClassRepository classRepository;
     private final SubjectsRepository subjectsRepository;
+    private final ScheduleFacade scheduleFacade;
 
     /**
      * Метод для получения списка ячеек расписания класса
@@ -47,14 +48,7 @@ public class ScheduleService {
 
         return listOfSchedules
                 .stream()
-                .map(sch -> ScheduleDTO
-                        .builder()
-                        .id(sch.getId())
-                        .numberOfClassRoom(sch.getNumberOfClassroom())
-                        .dayOfWeek(ScheduleUtil.days.get(sch.getDayOfWeek()))
-                        .subjectName(sch.getSubject().getName())
-                        .startTime(sch.getStartTime())
-                        .build())
+                .map(scheduleFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -67,14 +61,7 @@ public class ScheduleService {
         var foundSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ScheduleNotFoundException(id));
 
-        return ScheduleDTO
-                .builder()
-                .id(foundSchedule.getId())
-                .numberOfClassRoom(foundSchedule.getNumberOfClassroom())
-                .dayOfWeek(ScheduleUtil.days.get(foundSchedule.getDayOfWeek()))
-                .subjectName(foundSchedule.getSubject().getName())
-                .startTime(foundSchedule.getStartTime())
-                .build();
+        return scheduleFacade.convertEntityToDTO(foundSchedule);
     }
 
     /**
@@ -153,14 +140,8 @@ public class ScheduleService {
         teacherSchedule.sort((Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime)));
         log.info("Finished getting all schedules for subject with id={}", subjectId);
 
-        return teacherSchedule.stream().map(sch -> ScheduleDTO
-                        .builder()
-                        .id(sch.getId())
-                        .numberOfClassRoom(sch.getNumberOfClassroom())
-                        .dayOfWeek(ScheduleUtil.days.get(sch.getDayOfWeek()))
-                        .subjectName(sch.getSubject().getName())
-                        .startTime(sch.getStartTime())
-                        .build())
+        return teacherSchedule.stream()
+                .map(scheduleFacade::convertEntityToDTO)
                 .toList();
     }
 }
