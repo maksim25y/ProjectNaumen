@@ -27,15 +27,15 @@ import static ru.mudan.UtilConstants.*;
 public class AuthControllerTest extends BaseControllerTest {
 
     private static final Supplier<Stream<Arguments>> invalidRegisterUserDTOs = () -> Stream.of(
-            Arguments.of(new RegisterUserDTO("Ива", "Иванов", "Иванович", "ivan@mail.ru", "testPassword", null)),
+            Arguments.of(new RegisterUserDTO("И", "Иванов", "Иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иваниваниваниванивани", "Иванов", "Иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("иван", "Иванов", "Иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Ivan", "Иванов", "Иванович", "ivan@mail.ru", "testPassword", null)),
-            Arguments.of(new RegisterUserDTO("Иван", "Ива", "Иванович", "ivan@mail.ru", "testPassword", null)),
+            Arguments.of(new RegisterUserDTO("Иван", "И", "Иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иван", "Иваниваниваниванивани", "Иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иван", "иванов", "Иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иван", "Ivanov", "Иванович", "ivan@mail.ru", "testPassword", null)),
-            Arguments.of(new RegisterUserDTO("Иван", "Иванов", "Ива", "ivan@mail.ru", "testPassword", null)),
+            Arguments.of(new RegisterUserDTO("Иван", "Иванов", "Ив", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иван", "Иванов", "Иваниваниваниванивани", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иван", "Иванов", "иванович", "ivan@mail.ru", "testPassword", null)),
             Arguments.of(new RegisterUserDTO("Иван", "Иванов", "Ivanovich", "ivan@mail.ru", "testPassword", null)),
