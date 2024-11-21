@@ -16,7 +16,7 @@ import ru.mudan.services.users.RegistrationService;
 @Controller
 @RequestMapping("/registration")
 @RequiredArgsConstructor
-public class AuthController {
+public class RegistrationController {
 
     private final RegistrationService registrationService;
     private final StudentService studentService;
