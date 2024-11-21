@@ -52,7 +52,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
                 () -> assertEquals(teacherCreated.getPatronymic(), teacherForCreating.patronymic()),
                 () -> assertEquals(teacherCreated.getEmail(), teacherForCreating.email()));
 
-        var teacherForUpdating = getDefaultUserUpdateDTO();
+        var teacherForUpdating = getDefaultUserUpdateDTOByEmail(teacherForCreating.email());
 
         myUserDetailsService.updateUser(teacherForUpdating);
 
@@ -77,9 +77,9 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
                 () -> assertEquals(teacherForCreating.patronymic(), teacherCreated.getPatronymic()),
                 () -> assertEquals(teacherForCreating.email(), teacherCreated.getEmail()));
 
-        var teacherForUpdating = getDefaultUserUpdateDTO();
+        var teacherForUpdating = getDefaultUserUpdateDTOByEmail("not_existed@mail.ru");
 
-//        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.updateUser("not_existed@mail.ru", teacherForUpdating));
+        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.updateUser(teacherForUpdating));
     }
 
     @Test
@@ -97,9 +97,9 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
                 () -> assertEquals(studentForCreating.patronymic(), studentCreated.getPatronymic()),
                 () -> assertEquals(studentForCreating.email(), studentCreated.getEmail()));
 
-        var studentForUpdating = getDefaultUserUpdateDTO();
+        var studentForUpdating = getDefaultUserUpdateDTOByEmail(studentForCreating.email());
 
-//        myUserDetailsService.updateUserByEmail(studentForCreating.email(), studentForUpdating);
+        myUserDetailsService.updateUser(studentForUpdating);
 
         var studentUpdated = studentRepository.findById(studentId).get();
 
@@ -122,9 +122,9 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
                 () -> assertEquals(studentForCreating.patronymic(), studentCreated.getPatronymic()),
                 () -> assertEquals(studentForCreating.email(), studentCreated.getEmail()));
 
-        var studentForUpdating = getDefaultUserUpdateDTO();
+        var studentForUpdating = getDefaultUserUpdateDTOByEmail("not_existed@mail.ru");
 
-//        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.updateUserByEmail("not_existed@mail.ru", studentForUpdating));
+        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.updateUser(studentForUpdating));
     }
 
     @Test
@@ -142,9 +142,9 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
                 () -> assertEquals(parentForCreating.patronymic(), parentCreated.getPatronymic()),
                 () -> assertEquals(parentForCreating.email(), parentCreated.getEmail()));
 
-        var parentForUpdating = getDefaultUserUpdateDTO();
+        var parentForUpdating = getDefaultUserUpdateDTOByEmail(parentForCreating.email());
 
-//        myUserDetailsService.updateUserByEmail(parentForCreating.email(), parentForUpdating);
+        myUserDetailsService.updateUser(parentForUpdating);
 
         var parentUpdated = parentRepository.findById(parentId).get();
 
@@ -167,9 +167,9 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
                 () -> assertEquals(parentForCreating.patronymic(), parentCreated.getPatronymic()),
                 () -> assertEquals(parentForCreating.email(), parentCreated.getEmail()));
 
-        var parentForUpdating = getDefaultUserUpdateDTO();
+        var parentForUpdating = getDefaultUserUpdateDTOByEmail("not_existed@mail.ru");
 
-//        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.updateUserByEmail("not_existed@mail.ru", parentForUpdating));
+        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.updateUser(parentForUpdating));
     }
 
     @Test
