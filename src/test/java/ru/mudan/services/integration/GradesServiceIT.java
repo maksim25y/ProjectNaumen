@@ -91,26 +91,26 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createGradeTest() {
+    public void createGrade_valid() {
         assertEquals(1, gradeRepository.findAll().size());
     }
 
     @Test
-    public void createGradeWithNotExistedSubject() {
+    public void createGrade_subjectNotExists() {
         var gradeCreateDTO = createGradeDTOByStudentIdAndSubjectId(studentId, subjectId+1);
 
         assertThrows(SubjectNotFoundException.class, () -> gradesService.save(gradeCreateDTO));
     }
 
     @Test
-    public void createGradeWithNotExistedStudent() {
+    public void createGrade_studentNotExists() {
         var gradeCreateDTO = createGradeDTOByStudentIdAndSubjectId(studentId+1, subjectId);
 
         assertThrows(StudentNotFoundException.class, () -> gradesService.save(gradeCreateDTO));
     }
 
     @Test
-    public void getExistedGradeById() {
+    public void getGradeById_existed() {
         var foundGrade = gradesService.findById(gradeId);
 
         assertAll("Grouped assertions for found grade",
@@ -121,12 +121,12 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getNotExistedGradeById() {
+    public void getGradeById_notExisted() {
         assertThrows(GradeNotFoundException.class, () -> gradesService.findById(gradeId+1));
     }
 
     @Test
-    public void getAllGradesForStudentBySubject() {
+    public void getAllGradesForStudentBySubject_subjectExists() {
         var foundGrades = gradesService.findAllGradesForStudentWithSubject(studentId, subjectId);
 
         var grade = foundGrades.getFirst();
@@ -139,17 +139,17 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllGradesForNotExistedStudentBySubject() {
+    public void getAllGradesByStudentAndSubject_studentNotExists() {
         assertThrows(StudentNotFoundException.class, () -> gradesService.findAllGradesForStudentWithSubject(studentId+1, subjectId));
     }
 
     @Test
-    public void getAllGradesForStudentByNotExistedSubject() {
+    public void getAllGradesByStudentAndSubject_subjectNotExists() {
         assertThrows(SubjectNotFoundException.class, () -> gradesService.findAllGradesForStudentWithSubject(studentId, subjectId+1));
     }
 
     @Test
-    public void getAllGradesForExistedStudent() {
+    public void getAllGrades_studentExists() {
         var foundGrades = gradesService.findAllGradesForStudent(studentId);
 
         var grade = foundGrades.getFirst();
@@ -162,12 +162,12 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllGradesForNotExistedStudent() {
+    public void getAllGrades_studentNotExists() {
         assertThrows(StudentNotFoundException.class, () -> gradesService.findAllGradesForStudent(studentId+1));
     }
 
     @Test
-    public void getAllGradesBySubject() {
+    public void getAllGradesBySubject_subjectExists() {
         var foundGrades = gradesService.findAllBySubjectId(subjectId);
 
         var grade = foundGrades.getFirst();
@@ -180,12 +180,12 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllGradesByBotExistedSubject() {
+    public void getAllGradesSubject_subjectNotExists() {
         assertThrows(SubjectNotFoundException.class, () -> gradesService.findAllBySubjectId(subjectId+1));
     }
 
     @Test
-    public void updateExistedGradeById() {
+    public void updateGradeById_gradeExists() {
         var gradeForUpdate = GradeDTO
                 .builder()
                 .mark(3)
@@ -207,7 +207,7 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateNotExistedGradeById() {
+    public void updateGradeById_gradeNotExists() {
         var gradeForUpdate = GradeDTO
                 .builder()
                 .mark(3)
@@ -221,13 +221,13 @@ public class GradesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteExistedGradeById() {
+    public void deleteGradeById_gradeExists() {
         gradesService.deleteById(gradeId);
         assertEquals(0, gradeRepository.count());
     }
 
     @Test
-    public void deleteNotExistedGradeById() {
+    public void deleteGradeById_gradeNotExists() {
         assertThrows(GradeNotFoundException.class, () -> gradesService.deleteById(gradeId+1));
     }
 

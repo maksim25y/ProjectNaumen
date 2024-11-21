@@ -71,7 +71,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and all subjects")
-    public void getAllSubjectsWithRoleAdmin() {
+    public void getAllSubjects_roleAdmin() {
         when(subjectService.findAll()).thenReturn(List.of(getDefaultSubjectDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECTS_URL + "/all")
@@ -84,7 +84,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getAllSubjectsWithRoleParent() {
+    public void getAllSubjects_roleParent() {
         checkForbiddenGetMethod("/all");
     }
 
@@ -92,7 +92,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getAllSubjectsWithRoleTeacher() {
+    public void getAllSubjects_roleTeacher() {
         checkForbiddenGetMethod("/all");
     }
 
@@ -100,14 +100,14 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getAllSubjectsWithRoleStudent() {
+    public void getAllSubjects_roleStudent() {
         checkForbiddenGetMethod("/all");
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and subject")
-    public void getSubjectByIdWithRoleAdminAndSubjectExists() {
+    public void getSubjectById_roleAdminAndSubjectExists() {
         when(subjectService.findById(any())).thenReturn((getDefaultSubjectDTO()));
 
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECTS_URL + "/1")
@@ -119,7 +119,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and error page")
-    public void getSubjectByIdWithRoleAdminAndSubjectDoesNotExists() {
+    public void getSubjectById_roleAdminAndSubjectDoesNotExists() {
         when(subjectService.findById(any())).thenThrow((SubjectNotFoundException.class));
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Предмет с id=1 не найден");
 
@@ -134,7 +134,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getSubjectByIdWithRoleParent() {
+    public void getSubjectById_roleParent() {
         checkForbiddenGetMethod("/1");
     }
 
@@ -142,7 +142,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getSubjectByIdWithRoleTeacher() {
+    public void getSubjectById_roleTeacher() {
         checkForbiddenGetMethod("/1");
     }
 
@@ -150,14 +150,14 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getSubjectByIdWithRoleStudent() {
+    public void getSubjectById_roleStudent() {
         checkForbiddenGetMethod("/1");
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and page for adding new subject")
-    public void getPageForAddingNewSubjectForRoleAdmin() {
+    public void getPageForAddingNewSubject_roleAdmin() {
         when(classService.findAll()).thenReturn(List.of());
         when(teacherService.findAll()).thenReturn(List.of());
 
@@ -173,7 +173,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void gePageForAddingNewSubjectForRoleStudent() {
+    public void gePageForAddingNewSubject_roleStudent() {
         checkForbiddenGetMethod("/add");
     }
 
@@ -181,7 +181,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void gePageForAddingNewSubjectForRoleParent() {
+    public void gePageForAddingNewSubject_roleParent() {
         checkForbiddenGetMethod("/add");
     }
 
@@ -189,14 +189,14 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void gePageForAddingNewSubjectForRoleTeacher() {
+    public void gePageForAddingNewSubject_roleTeacher() {
         checkForbiddenGetMethod("/add");
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and create new subject")
-    public void postCreateNewSubjectValid() {
+    public void postCreateNewSubject_valid() {
         var payload = SubjectCreateDTO
                 .builder()
                 .name("Математика")
@@ -213,14 +213,14 @@ public class SubjectControllerTest extends BaseControllerTest {
     @ParameterizedTest
     @DisplayName("Should return status 200 and errors")
     @MethodSource("provideInvalidSubjectCreateDTOs")
-    public void postCreateNewSubjectInvalid(SubjectCreateDTO subjectCreateDTO) {
+    public void postCreateNewSubject_invalid(SubjectCreateDTO subjectCreateDTO) {
         checkPostCreateInvalidSubject(subjectCreateDTO);
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and page for editing existed subject")
-    public void getPageForEditingExistingSubjectForRoleAdmin() {
+    public void getPageForEditingExistingSubject_roleAdmin() {
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(SUBJECTS_URL + "/1/edit")
@@ -233,7 +233,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and return error page")
-    public void getPageForEditingNotExistingSubjectForRoleAdmin() {
+    public void getPageForEditingNotExistingSubject_roleAdmin() {
         when(subjectService.findById(any())).thenThrow(SubjectNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Предмет c id=1 не найден");
 
@@ -248,7 +248,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getPageForEditingSubjectForRoleStudent() {
+    public void getPageForEditingSubject_roleStudent() {
         checkForbiddenGetMethod("/1/edit");
     }
 
@@ -256,7 +256,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getPageForEditingSubjectForRoleParent() {
+    public void getPageForEditingSubject_roleParent() {
         checkForbiddenGetMethod("/1/edit");
     }
 
@@ -264,14 +264,14 @@ public class SubjectControllerTest extends BaseControllerTest {
     @SneakyThrows
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getPageForEditingSubjectForRoleTeacher() {
+    public void getPageForEditingSubject_roleTeacher() {
         checkForbiddenGetMethod("/1/edit");
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Should return status 302 and update subject")
-    public void putUpdateSubjectValidForRoleAdmin() {
+    public void putUpdateSubjectValid_roleAdmin() {
         var payload = SubjectUpdateDTO
                 .builder()
                 .type("Факультативный")
@@ -285,14 +285,14 @@ public class SubjectControllerTest extends BaseControllerTest {
     @ParameterizedTest
     @DisplayName("Should return status 200 and errors")
     @MethodSource("provideInvalidSubjectUpdateDTOs")
-    public void putUpdateSubjectInvalid(SubjectUpdateDTO subjectUpdateDTO) {
+    public void putUpdateSubject_invalid(SubjectUpdateDTO subjectUpdateDTO) {
         checkPutUpdateInvalidSubject(subjectUpdateDTO);
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Should return status 302 and page for delete existed subject")
-    public void deleteExistedSubjectForRoleAdmin() {
+    public void deleteExistedSubject_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.delete(SUBJECTS_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
@@ -301,7 +301,7 @@ public class SubjectControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @DisplayName("Should return status 200 and error")
-    public void deleteNotExistedSubjectForRoleAdmin() {
+    public void deleteNotExistedSubject_roleAdmin() {
         doThrow(SubjectNotFoundException.class).when(subjectService).deleteById(any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Предмет c id=1 не найден");
 

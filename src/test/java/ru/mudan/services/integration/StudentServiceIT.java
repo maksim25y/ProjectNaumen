@@ -66,7 +66,7 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getExistedStudentById() {
+    public void getStudentById_existed() {
         var foundStudent = studentService.findById(studentId);
 
         assertAll("Grouped assertions for found student",
@@ -78,12 +78,12 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getNotExistedStudentById() {
+    public void getStudentById_notExisted() {
         assertThrows(StudentNotFoundException.class, () -> studentService.findById(studentId+1));
     }
 
     @Test
-    public void getAllStudentsWithNotClass() {
+    public void getAllStudentsWithNotClass_notEmpty() {
         var foundStudents = studentService.findStudentsWithNotClass();
 
         var foundStudent = foundStudents.getFirst();
@@ -98,7 +98,7 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllStudentsWithClass() {
+    public void getAllStudentsByClass_classExists() {
         classService.save(getDefaultClassDTO());
 
         var classId = classRepository.findAll().getFirst().getId();
@@ -119,7 +119,7 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllStudentsWithParent() {
+    public void getAllStudentsByParent_parentExists() {
         registrationService.registerParent(getDefaultRegisterUserDTOByEmail("parent@mail.ru"));
 
         var parentId = parentRepository.findAll().getFirst().getId();
@@ -143,17 +143,17 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllClassesWithNotExistedParent() {
+    public void getAllStudentsByParent_parentNotExists() {
         assertThrows(ParentNotFoundException.class, () -> studentService.getAllStudentsForParent(1L));
     }
 
     @Test
-    public void getAllClassesWithNotExistedSubject() {
+    public void getAllStudents_notExistedSubject() {
         assertThrows(SubjectNotFoundException.class, () -> studentService.findAllStudentsBySubjectId(1L));
     }
 
     @Test
-    public void getAllStudentsWithNotParent() {
+    public void getAllStudentsWithNotParent_notEmpty() {
         var foundStudents = studentService.findAllStudentsWithNotParent();
 
         var foundStudent = foundStudents.getFirst();
@@ -168,7 +168,7 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllStudentsForSubject() {
+    public void getAllStudentsForSubject_subjectExists() {
         classService.save(getDefaultClassDTO());
 
         var classId = classRepository.findAll().getFirst().getId();
@@ -199,7 +199,7 @@ public class StudentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllStudents() {
+    public void getAllStudents_notEmpty() {
         var foundStudents = studentService.findAll();
 
         var foundStudent = foundStudents.getFirst();

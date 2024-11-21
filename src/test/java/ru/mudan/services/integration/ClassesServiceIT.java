@@ -49,7 +49,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createNewClassEntityTest() {
+    public void createNewClassEntity_withNotStudents() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -65,7 +65,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createNewClassEntityWithStudentsTest() {
+    public void createNewClassEntity_withStudents() {
         var studentForAdding = getDefaultRegisterUserDTO();
         registrationService.registerStudent(studentForAdding);
         var studentId = studentRepository.findAll().getFirst().getId();
@@ -92,7 +92,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createNewClassEntityAlreadyExistsTest() {
+    public void createNewClassEntity_classEntityAlreadyExists() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -108,7 +108,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateClassEntityTest() {
+    public void updateClassEntity_valid() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -140,7 +140,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateClassEntityButClassAlreadyExistsTest() {
+    public void updateClassEntity_classAlreadyExists() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -166,7 +166,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateClassEntityWithSubjectsTest() {
+    public void updateClassEntityWithSubjects_classExisted() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -217,7 +217,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteExistedClassById() {
+    public void deleteClassById_classExisted() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -237,12 +237,12 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteNotExistedClassById() {
+    public void deleteClassById_classNotExisted() {
          assertThrows(ClassEntityNotFoundException.class, () -> classService.deleteById(9L));
     }
 
     @Test
-    public void getExistedClassById() {
+    public void getClassById_classExisted() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -258,12 +258,12 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getNotExistedClassById() {
+    public void getClassById_classNotExisted() {
         assertThrows(ClassEntityNotFoundException.class, () -> classService.findById(9L));
     }
 
     @Test
-    public void getAllClasses() {
+    public void getAllClasses_notEmpty() {
         var classForSaving = getDefaultClassDTO();
 
         classService.save(classForSaving);
@@ -274,7 +274,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void addStudentsToClassExisted() {
+    public void addStudentsToClass_classExisted() {
         var studentForRegistering = getDefaultRegisterUserDTO();
         registrationService.registerStudent(studentForRegistering);
         var idOfStudent = appUserRepository.findAll().getFirst().getUserId();
@@ -292,7 +292,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void addStudentsToClassNotExisted() {
+    public void addStudentsToClass_classNotExisted() {
         var classForSaving = getDefaultClassDTO();
         classService.save(classForSaving);
 
@@ -302,7 +302,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void addSubjectsToClassExisted() {
+    public void addSubjectsToClass_classExisted() {
         var teacherForRegistering = getDefaultRegisterUserDTO();
         registrationService.registerTeacher(teacherForRegistering);
         var idOfTeacher = appUserRepository.findAll().getFirst().getUserId();
@@ -333,7 +333,7 @@ public class ClassesServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void addSubjectsToClassNotExisted() {
+    public void addSubjectsToClass_classNotExisted() {
         var classForSaving = getDefaultClassDTO();
         classService.save(classForSaving);
 

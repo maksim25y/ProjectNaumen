@@ -45,7 +45,7 @@ public class TeacherServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void findTeacherByIdExisted() {
+    public void findTeacherById_existed() {
         var foundTeacher = teacherService.findTeacherById(teacherId);
 
         assertAll("Grouped assertions for found teacher",
@@ -57,12 +57,12 @@ public class TeacherServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void findTeacherByIdNotExisted() {
+    public void findTeacherById_notExisted() {
         assertThrows(TeacherNotFoundException.class, () -> teacherService.findTeacherById(teacherId+1));
     }
 
     @Test
-    public void findAllTeachers() {
+    public void findAllTeachers_notEmpty() {
         var foundTeachers = teacherService.findAll();
 
         var firstTeacher = foundTeachers.getFirst();

@@ -30,7 +30,7 @@ public class StudentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getPageAccountOfStudentWithRoleStudentWithClass() {
+    public void getPageAccountOfStudentWith_studentWithClass() {
         when(studentService.findStudentByAuth(any())).thenReturn(getDefaultStudentDTO());
         when(subjectService.findAllSubjectsForClass(any())).thenReturn(List.of(getDefaultSubjectDTO()));
         mockMvc.perform(MockMvcRequestBuilders.get(STUDENT_URL + "/account")
@@ -44,7 +44,7 @@ public class StudentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getPageAccountOfStudentWithRoleStudentWithNotClass() {
+    public void getPageAccountOfStudentWith_studentWithNotClass() {
         var studentWithNotClass = StudentDTO
                 .builder()
                 .id(1L)
@@ -66,7 +66,7 @@ public class StudentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void getPageAccountOfStudentWithRoleAdmin() {
+    public void getPageAccountOfStudent_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.get(STUDENT_URL + "/account")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -75,7 +75,7 @@ public class StudentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void getPageAccountOfStudentWithRoleParent() {
+    public void getPageAccountOfStudent_roleParent() {
         mockMvc.perform(MockMvcRequestBuilders.get(STUDENT_URL + "/account")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -84,7 +84,7 @@ public class StudentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void getPageAccountOfStudentWithRoleTeacher() {
+    public void getPageAccountOfStudent_roleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(STUDENT_URL + "/account")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));

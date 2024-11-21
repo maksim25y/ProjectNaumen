@@ -30,7 +30,7 @@ public class ParentServiceIT extends IntegrationTest {
     private Parent parentCreated;
 
     @BeforeEach
-    public void registerParent() {
+    public void registerParent_valid() {
         var parent = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerParent(parent);
 
@@ -46,7 +46,7 @@ public class ParentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void findParentByIdExisted() {
+    public void findParentById_existed() {
         var foundParent = parentService.findParentById(parentId);
 
         assertAll("Grouped assertions for found parent",
@@ -58,12 +58,12 @@ public class ParentServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void findParentByIdNotExisted() {
+    public void findParentById_notExisted() {
         assertThrows(ParentNotFoundException.class, () -> parentService.findParentById(parentId+1));
     }
 
     @Test
-    public void findAllParents() {
+    public void findAllParents_notEmpty() {
         var foundParents = parentService.findAllParents();
 
         var firstTeacher = foundParents.getFirst();

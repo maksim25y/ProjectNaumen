@@ -87,19 +87,19 @@ public class ScheduleServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createScheduleWithNotExistedSubjectTest() {
+    public void createSchedule_subjectNotExists() {
         var scheduleCreateDTOWithNotExistedSubjectId = createScheduleCreateDTOBySubjectIdAndClassId(subjectId+1, classId);
         assertThrows(SubjectNotFoundException.class, () -> scheduleService.save(scheduleCreateDTOWithNotExistedSubjectId));
     }
 
     @Test
-    public void createScheduleWithNotExistedClassTest() {
+    public void createSchedule_classNotExists() {
         var scheduleCreateDTOWithNotExistedClassId = createScheduleCreateDTOBySubjectIdAndClassId(subjectId, classId+1);
         assertThrows(ClassEntityNotFoundException.class, () -> scheduleService.save(scheduleCreateDTOWithNotExistedClassId));
     }
 
     @Test
-    public void getSchedulesByExistedSubject() {
+    public void getSchedules_subjectExists() {
         var schedulesBySubject = scheduleService.findAllBySubjectId(subjectId);
 
         var scheduleFirst = scheduleRepository.findAll().getFirst();
@@ -110,12 +110,12 @@ public class ScheduleServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getSchedulesByNotExistedSubject() {
+    public void getSchedules_subjectNotExists() {
         assertThrows(SubjectNotFoundException.class, () -> scheduleService.findAllBySubjectId(subjectId+1));
     }
 
     @Test
-    public void getSchedulesByExistedClass() {
+    public void getSchedulesClass_classExists() {
         var schedulesBySubject = scheduleService.findAllSchedulesForClass(classId);
 
         var scheduleFirst = scheduleRepository.findAll().getFirst();
@@ -126,12 +126,12 @@ public class ScheduleServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getSchedulesByNotExistedClass() {
+    public void getSchedulesClass_classNotExists() {
         assertThrows(ClassEntityNotFoundException.class, () -> scheduleService.findAllSchedulesForClass(subjectId+1));
     }
 
     @Test
-    public void updateExistedSchedule() {
+    public void updateSchedule_existed() {
         var scheduleForUpdate = ScheduleUpdateDTO
                 .builder()
                 .startTime(LocalTime.now())
@@ -150,7 +150,7 @@ public class ScheduleServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateNotExistedSchedule() {
+    public void updateSchedule_notExisted() {
         var scheduleForUpdate = ScheduleUpdateDTO
                 .builder()
                 .startTime(LocalTime.now())
@@ -162,19 +162,19 @@ public class ScheduleServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteExistedSchedule() {
+    public void deleteSchedule_existed() {
         scheduleService.deleteById(scheduleId);
 
         assertEquals(0, scheduleRepository.count());
     }
 
     @Test
-    public void deleteNotExistedSchedule() {
+    public void deleteSchedule_notExisted() {
         assertThrows(ScheduleNotFoundException.class, () -> scheduleService.deleteById(scheduleId+1));
     }
 
     @Test
-    public void getScheduleByIdExisted() {
+    public void getScheduleById_existed() {
         var scheduleBySubject = scheduleService.findById(scheduleId);
 
         assertAll("Grouped assertions for found schedule",
@@ -183,7 +183,7 @@ public class ScheduleServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getScheduleByIdNotExisted() {
+    public void getScheduleById_notExisted() {
         assertThrows(ScheduleNotFoundException.class, () -> scheduleService.findById(scheduleId+1));
     }
 }

@@ -68,35 +68,35 @@ public class AuthControllerTest extends BaseControllerTest {
     @SneakyThrows
     @ParameterizedTest
     @MethodSource("provideInvalidRegisterUserDTOs")
-    public void postRegisterNewTeacherInvalid(RegisterUserDTO registerUserDTO) {
+    public void postRegisterNewTeacher_invalid(RegisterUserDTO registerUserDTO) {
         checkPostRegisteringInvalid("/teacher", registerUserDTO);
     }
 
     @SneakyThrows
     @ParameterizedTest
     @MethodSource("provideInvalidRegisterUserDTOs")
-    public void postRegisterNewParentInvalid(RegisterUserDTO registerUserDTO) {
+    public void postRegisterNewParent_invalid(RegisterUserDTO registerUserDTO) {
         checkPostRegisteringInvalid("/parent", registerUserDTO);
     }
 
     @SneakyThrows
     @ParameterizedTest
     @MethodSource("provideInvalidRegisterUserDTOs")
-    public void postRegisterNewStudentInvalid(RegisterUserDTO registerUserDTO) {
+    public void postRegisterNewStudent_invalid(RegisterUserDTO registerUserDTO) {
         checkPostRegisteringInvalid("/student", registerUserDTO);
     }
 
     @SneakyThrows
     @ParameterizedTest
     @MethodSource("provideInvalidRegisterUserDTOs")
-    public void postRegisterNewAdminInvalid(RegisterUserDTO registerUserDTO) {
+    public void postRegisterNewAdmin_invalid(RegisterUserDTO registerUserDTO) {
         checkPostRegisteringInvalid("/admin", registerUserDTO);
     }
 
     @SneakyThrows
     @Test
     @DisplayName("Should register new admin and return status 200")
-    public void postMethodForRegisterNewAdminWithRoleAdmin() {
+    public void postMethodRegisterNewAdmin_roleAdmin() {
         postRegisterUserValid("/admin", HttpStatus.FOUND);
     }
 
@@ -104,7 +104,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void postMethodForRegisterNewAdminWithRoleParent() {
+    public void postMethodForRegisterNewAdmin_roleParent() {
         postRegisterUserValid("/admin", HttpStatus.FORBIDDEN);
     }
 
@@ -112,7 +112,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void postMethodForRegisterNewAdminWithRoleTeacher() {
+    public void postMethodForRegisterNewAdmin_roleTeacher() {
         postRegisterUserValid("/admin", HttpStatus.FORBIDDEN);
     }
 
@@ -120,14 +120,14 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void postMethodForRegisterNewAdminWithRoleStudent() {
+    public void postMethodForRegisterNewAdmin_roleStudent() {
         postRegisterUserValid("/admin", HttpStatus.FORBIDDEN);
     }
 
     @SneakyThrows
     @Test
     @DisplayName("Should register new teacher and return status 200")
-    public void postMethodForRegisterNewTeacherWithRoleAdmin() {
+    public void postMethodForRegisterNewTeacher_roleAdmin() {
         postRegisterUserValid("/teacher", HttpStatus.FOUND);
     }
 
@@ -135,7 +135,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void postMethodForRegisterNewTeacherWithRoleParent() {
+    public void postMethodForRegisterNewTeacher_roleParent() {
         postRegisterUserValid("/teacher", HttpStatus.FORBIDDEN);
     }
 
@@ -143,7 +143,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void postMethodForRegisterNewTeacherWithRoleTeacher() {
+    public void postMethodForRegisterNewTeacher_roleTeacher() {
         postRegisterUserValid("/teacher", HttpStatus.FORBIDDEN);
     }
 
@@ -151,14 +151,14 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void postMethodForRegisterNewTeacherWithRoleStudent() {
+    public void postMethodForRegisterNewTeacher_roleStudent() {
         postRegisterUserValid("/teacher", HttpStatus.FORBIDDEN);
     }
 
     @SneakyThrows
     @Test
     @DisplayName("Should register new student and return status 200")
-    public void postMethodForRegisterNewStudentWithRoleAdmin() {
+    public void postMethodForRegisterNewStudent_roleAdmin() {
         postRegisterUserValid("/student", HttpStatus.FOUND);
     }
 
@@ -166,7 +166,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void postMethodForRegisterNewStudentWithRoleParent() {
+    public void postMethodForRegisterNewStudent_roleParent() {
         postRegisterUserValid("/student", HttpStatus.FORBIDDEN);
     }
 
@@ -174,7 +174,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void postMethodForRegisterNewStudentWithRoleTeacher() {
+    public void postMethodForRegisterNewStudent_roleTeacher() {
         postRegisterUserValid("/student", HttpStatus.FORBIDDEN);
     }
 
@@ -182,14 +182,14 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void postMethodForRegisterNewStudentWithRoleStudent() {
+    public void postMethodForRegisterNewStudent_roleStudent() {
         postRegisterUserValid("/student", HttpStatus.FORBIDDEN);
     }
 
     @SneakyThrows
     @Test
     @DisplayName("Should register new parent and return status 200")
-    public void postMethodForRegisterNewParentWithRoleAdmin() {
+    public void postMethodForRegisterNewParent_roleAdmin() {
         postRegisterUserValid("/parent", HttpStatus.FOUND);
     }
 
@@ -197,7 +197,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void postMethodForRegisterNewParentWithRoleParent() {
+    public void postMethodForRegisterNewParent_roleParent() {
         postRegisterUserValid("/parent", HttpStatus.FORBIDDEN);
     }
 
@@ -205,7 +205,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void postMethodForRegisterNewParentWithRoleTeacher() {
+    public void postMethodForRegisterNewParent_roleTeacher() {
         postRegisterUserValid("/parent", HttpStatus.FORBIDDEN);
     }
 
@@ -213,14 +213,14 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void postMethodForRegisterNewParentWithRoleStudent() {
+    public void postMethodForRegisterNewParent_roleStudent() {
         postRegisterUserValid("/parent", HttpStatus.FORBIDDEN);
     }
 
     @SneakyThrows
     @Test
     @DisplayName("Should return page for registering admin")
-    public void getMethodForRegisterNewAdminForUserWithRoleAdmin() {
+    public void getMethodForRegisterNewAdminForUser_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/admin")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().isOk())
@@ -231,7 +231,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getMethodForRegisterNewAdminForUserWithRoleStudent() {
+    public void getMethodForRegisterNewAdminForUser_roleStudent() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/admin")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -241,7 +241,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getMethodForRegisterNewAdminForUserWithRoleParent() {
+    public void getMethodForRegisterNewAdminForUser_roleParent() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/admin")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -251,7 +251,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getMethodForRegisterNewAdminForUserWithRoleTeacher() {
+    public void getMethodForRegisterNewAdminForUser_roleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/admin")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -260,7 +260,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @SneakyThrows
     @Test
     @DisplayName("Should return page for registering student")
-    public void getMethodForRegisterNewStudentForUserWithRoleAdmin() {
+    public void getMethodForRegisterNewStudentForUser_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/student")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
@@ -271,7 +271,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getMethodForRegisterNewStudentForUserWithRoleStudent() {
+    public void getMethodForRegisterNewStudentForUser_roleStudent() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/student")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -281,7 +281,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getMethodForRegisterNewStudentForUserWithRoleParent() {
+    public void getMethodForRegisterNewStudentForUser_roleParent() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/student")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -291,7 +291,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getMethodForRegisterNewStudentForUserWithRoleTeacher() {
+    public void getMethodForRegisterNewStudentForUser_roleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/student")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -300,7 +300,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @SneakyThrows
     @Test
     @DisplayName("Should return page for registering student")
-    public void getMethodForRegisterNewTeacherForUserWithRoleAdmin() {
+    public void getMethodForRegisterNewTeacherForUser_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/teacher")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
@@ -311,7 +311,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getMethodForRegisterNewTeacherForUserWithRoleStudent() {
+    public void getMethodForRegisterNewTeacherForUser_roleStudent() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/teacher")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -321,7 +321,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getMethodForRegisterNewTeacherForUserWithRoleParent() {
+    public void getMethodForRegisterNewTeacherForUser_roleParent() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/teacher")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -331,7 +331,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getMethodForRegisterNewTeacherForUserWithRoleTeacher() {
+    public void getMethodForRegisterNewTeacherForUser_roleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/teacher")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -340,7 +340,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @SneakyThrows
     @Test
     @DisplayName("Should return page for registering student")
-    public void getMethodForRegisterNewParentForUserWithRoleAdmin() {
+    public void getMethodForRegisterNewParentForUser_roleAdmin() {
         when(studentService.findAllStudentsWithNotParent()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(MockMvcRequestBuilders.get(AUTH_URL+"/parent")
@@ -354,7 +354,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "STUDENT")
-    public void getMethodForRegisterNewParentForUserWithRoleStudent() {
+    public void getMethodForRegisterNewParentForUser_roleStudent() {
         checkForbiddenGetRegistering();
     }
 
@@ -362,7 +362,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "PARENT")
-    public void getMethodForRegisterNewParentForUserWithRoleParent() {
+    public void getMethodForRegisterNewParentForUser_roleParent() {
         checkForbiddenGetRegistering();
     }
 
@@ -370,7 +370,7 @@ public class AuthControllerTest extends BaseControllerTest {
     @Test
     @DisplayName("Should return status 403")
     @WithMockUser(roles = "TEACHER")
-    public void getMethodForRegisterNewParentForUserWithRoleTeacher() {
+    public void getMethodForRegisterNewParentForUser_roleTeacher() {
         checkForbiddenGetRegistering();
     }
 

@@ -38,7 +38,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateTeacherByExistedEmail() {
+    public void updateTeacherByEmail_existed() {
         var teacherForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerTeacher(teacherForCreating);
 
@@ -65,7 +65,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateTeacherByNotExistedEmail() {
+    public void updateTeacherByEmail_notExisted() {
         var teacherForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerTeacher(teacherForCreating);
 
@@ -83,7 +83,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateStudentByExistedEmail() {
+    public void updateStudentByEmail_existed() {
         var studentForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerStudent(studentForCreating);
 
@@ -110,7 +110,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateStudentByNotExistedEmail() {
+    public void updateStudentByEmail_notExisted() {
         var studentForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerStudent(studentForCreating);
 
@@ -128,7 +128,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateParentByExistedEmail() {
+    public void updateParentByEmail_existed() {
         var parentForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerParent(parentForCreating);
 
@@ -155,7 +155,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateParentByNotExistedEmail() {
+    public void updateParentByNotEmail_notExisted() {
         var parentForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerParent(parentForCreating);
 
@@ -173,7 +173,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteParentByEmail() {
+    public void deleteParentByEmail_existed() {
         var parentForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerParent(parentForCreating);
 
@@ -196,7 +196,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteTeacherByEmail() {
+    public void deleteTeacherByEmail_existed() {
         var teacherForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerTeacher(teacherForCreating);
 
@@ -217,7 +217,7 @@ public class MyUserDetailsServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteStudentByEmail() {
+    public void deleteStudentByEmail_existed() {
         var studentForCreating = getDefaultRegisterUserDTOByEmail("test@mail.ru");
         registrationService.registerStudent(studentForCreating);
 
