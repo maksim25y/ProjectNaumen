@@ -34,6 +34,9 @@ public class ParentService {
         return parentFacade.convertEntityToDTO(parent);
     }
 
+    /**
+     * Метод для получения списка всех родителей
+     */
     public List<ParentDTO> findAllParents() {
         var allParents = parentRepository.findAll();
 
@@ -42,6 +45,11 @@ public class ParentService {
                 .toList();
     }
 
+    /**
+     * Метод для получения родителя по id
+     *
+     * @param id - id родителя
+     */
     public ParentDTO findParentById(Long id) {
         var foundParent = parentRepository.findById(id)
                 .orElseThrow(() -> new ParentNotFoundException(id));

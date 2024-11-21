@@ -6,9 +6,17 @@ import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.facade.BaseFacade;
 import ru.mudan.util.ScheduleUtil;
 
+/**
+ * Класс для конвертации Schedule в ScheduleDTO
+ */
 @Component
 public class ScheduleFacade implements BaseFacade<Schedule, ScheduleDTO> {
 
+    /**
+     * Метод для конвертации Schedule в ScheduleDTO
+     *
+     * @param entity - сущность Schedule для конвертации
+     */
     @Override
     public ScheduleDTO convertEntityToDTO(Schedule entity) {
         return ScheduleDTO

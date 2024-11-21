@@ -5,9 +5,17 @@ import ru.mudan.domain.entity.Subject;
 import ru.mudan.dto.subjects.SubjectDTO;
 import ru.mudan.facade.BaseFacade;
 
+/**
+ * Класс для конвертации Subject в SubjectDTO
+ */
 @Component
 public class SubjectFacade implements BaseFacade<Subject, SubjectDTO> {
 
+    /**
+     * Метод для конвертации Subject в SubjectDTO
+     *
+     * @param entity - сущность Subject для конвертации
+     */
     @Override
     public SubjectDTO convertEntityToDTO(Subject entity) {
         return SubjectDTO

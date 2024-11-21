@@ -166,8 +166,8 @@ public class RegistrationService {
      * Метод для создания пользователя по userId, role, email
      *
      * @param userId - id пользователя с ролью role в таблице
-     * @param role - роль пользователя
-     * @param email - адрес электронной почты пользователя
+     * @param role   - роль пользователя
+     * @param email  - адрес электронной почты пользователя
      */
     private AppUser getAppUserByRoleUserIdAndEmail(Long userId, Role role, String email) {
         return new AppUser(userId, role, email);
@@ -182,29 +182,34 @@ public class RegistrationService {
         return passwordEncoder.encode(password);
     }
 
+    /**
+     * Метод для отправки сообщения об успешной регистрации
+     *
+     * @param registerUserDTO - входные данные для создания сообщения
+     */
     private void sendMessage(RegisterUserDTO registerUserDTO) {
         var emailDetails = EmailNotificationDetails.builder()
                 .subject("Уведомление о регистрации")
                 .text("""
-                <!DOCTYPE html>
-                <html lang="ru">
-                <head>
-                  <meta charset="UTF-8">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Добро пожаловать</title>
-                </head>
-                <body style="font-family: Arial, sans-serif; color: #333;">
-                  <div style="max-width: 600px; margin: 0 auto; padding: 20px;
-                  background-color: #f9f9f9; border: 1px solid #ddd;">
-                    <h2 style="color: #0078cf;">Здравствуйте, %s!</h2>
-                    <p>Вы успешно зарегистрированы на сайте электронного дневника <strong>[сайт]</strong>.</p>
-                    <p><strong>Ваш email:</strong> %s</p>
-                    <p><strong>Пароль:</strong> %s</p>
-                    <p>Для связи с администратором нажмите <a href="[ссылка]" style="color: #0078cf;">здесь</a>.</p>
-                  </div>
-                </body>
-                </html>
-                """.formatted(registerUserDTO.email(), registerUserDTO.email(), registerUserDTO.password()))
+                        <!DOCTYPE html>
+                        <html lang="ru">
+                        <head>
+                          <meta charset="UTF-8">
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                          <title>Добро пожаловать</title>
+                        </head>
+                        <body style="font-family: Arial, sans-serif; color: #333;">
+                          <div style="max-width: 600px; margin: 0 auto; padding: 20px;
+                          background-color: #f9f9f9; border: 1px solid #ddd;">
+                            <h2 style="color: #0078cf;">Здравствуйте, %s!</h2>
+                            <p>Вы успешно зарегистрированы на сайте электронного дневника <strong>[сайт]</strong>.</p>
+                            <p><strong>Ваш email:</strong> %s</p>
+                            <p><strong>Пароль:</strong> %s</p>
+                            <p>Для связи с администратором нажмите <a href="[ссылка]" style="color: #0078cf;">здесь</a>.</p>
+                          </div>
+                        </body>
+                        </html>
+                        """.formatted(registerUserDTO.email(), registerUserDTO.email(), registerUserDTO.password()))
                 .attachments(List.of())
                 .build();
 

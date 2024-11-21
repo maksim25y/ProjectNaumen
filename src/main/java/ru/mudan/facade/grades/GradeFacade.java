@@ -5,9 +5,17 @@ import ru.mudan.domain.entity.Grade;
 import ru.mudan.dto.grades.GradeDTO;
 import ru.mudan.facade.BaseFacade;
 
+/**
+ * Класс для конвертации Grade в GradeDTO
+ */
 @Component
 public class GradeFacade implements BaseFacade<Grade, GradeDTO> {
 
+    /**
+     * Метод для конвертации Grade в GradeDTO
+     *
+     * @param entity - сущность ClassEntity для конвертации
+     */
     @Override
     public GradeDTO convertEntityToDTO(Grade entity) {
         return GradeDTO

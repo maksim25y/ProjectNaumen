@@ -127,6 +127,9 @@ public class StudentService {
         return studentFacade.convertEntityToDTO(student);
     }
 
+    /**
+     * Метод для получения списка всех учеников
+     */
     public List<StudentDTO> findAll() {
         var allStudents = studentRepository.findAll();
 
