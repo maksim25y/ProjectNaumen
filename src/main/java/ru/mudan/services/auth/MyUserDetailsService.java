@@ -1,6 +1,7 @@
 package ru.mudan.services.auth;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.users.UserUpdateDTO;
 import ru.mudan.exceptions.entity.not_found.UserNotFoundException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
@@ -83,16 +85,22 @@ public class MyUserDetailsService implements UserDetailsService {
 
         switch (appUser.getRoleName()) {
             case ROLE_PARENT -> {
+                log.info("Started deleting parent with email {}", email);
                 parentRepository.deleteById(appUser.getUserId());
                 appUserRepository.delete(appUser);
+                log.info("Parent with email {} deleted successfully", email);
             }
             case ROLE_STUDENT -> {
+                log.info("Started deleting student with email {}", email);
                 studentRepository.deleteById(appUser.getUserId());
                 appUserRepository.delete(appUser);
+                log.info("Student with email {} deleted successfully", email);
             }
             case ROLE_TEACHER -> {
+                log.info("Started deleting teacher with email {}", email);
                 teacherRepository.deleteById(appUser.getUserId());
                 appUserRepository.delete(appUser);
+                log.info("Teacher with email {} deleted successfully", email);
             }
             default -> throw new UsernameNotFoundException(email);
         }
@@ -104,12 +112,14 @@ public class MyUserDetailsService implements UserDetailsService {
      * @param email - email учителя
      **/
     private void updateTeacher(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
+        log.info("Started updating teacher with email {}", email);
         var foundTeacher = teacherRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         foundTeacher.setFirstname(userUpdateDTO.firstname());
         foundTeacher.setLastname(userUpdateDTO.lastname());
         foundTeacher.setPatronymic(userUpdateDTO.patronymic());
         teacherRepository.save(foundTeacher);
+        log.info("Teacher with email {} updated successfully", email);
     }
 
     /**
@@ -118,12 +128,14 @@ public class MyUserDetailsService implements UserDetailsService {
      * @param email - email ученика
      **/
     private void updateStudent(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
+        log.info("Started updating student with email {}", email);
         var foundStudent = studentRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         foundStudent.setFirstname(userUpdateDTO.firstname());
         foundStudent.setLastname(userUpdateDTO.lastname());
         foundStudent.setPatronymic(userUpdateDTO.patronymic());
         studentRepository.save(foundStudent);
+        log.info("Student with email {} updated successfully", email);
     }
 
     /**
@@ -132,12 +144,14 @@ public class MyUserDetailsService implements UserDetailsService {
      * @param email - email родителя
      **/
     private void updateParent(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
+        log.info("Started updating parent with email {}", email);
         var foundParent = parentRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         foundParent.setFirstname(userUpdateDTO.firstname());
         foundParent.setLastname(userUpdateDTO.lastname());
         foundParent.setPatronymic(userUpdateDTO.patronymic());
         parentRepository.save(foundParent);
+        log.info("Parent with email {} updated successfully", email);
     }
 
     /**
@@ -146,12 +160,14 @@ public class MyUserDetailsService implements UserDetailsService {
      * @param email - email администратора
      **/
     private void updateAdmin(String email, UserUpdateDTO userUpdateDTO, AppUser appUser) {
+        log.info("Started updating admin with email {}", email);
         var foundAdmin = adminRepository.findById(appUser.getUserId())
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         foundAdmin.setFirstname(userUpdateDTO.firstname());
         foundAdmin.setLastname(userUpdateDTO.lastname());
         foundAdmin.setPatronymic(userUpdateDTO.patronymic());
         adminRepository.save(foundAdmin);
+        log.info("Admin with email {} updated successfully", email);
     }
 
 }
