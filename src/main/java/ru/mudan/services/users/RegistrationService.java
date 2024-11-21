@@ -190,6 +190,7 @@ public class RegistrationService {
     private void sendMessage(RegisterUserDTO registerUserDTO) {
         var emailDetails = EmailNotificationDetails.builder()
                 .subject("Уведомление о регистрации")
+                .recipient(registerUserDTO.email())
                 .text("""
                         <!DOCTYPE html>
                         <html lang="ru">
