@@ -16,10 +16,10 @@ import ru.mudan.services.classes.ClassService;
 import ru.mudan.services.schedule.ScheduleService;
 import ru.mudan.services.subjects.SubjectService;
 import ru.mudan.services.users.RegistrationService;
+import ru.mudan.util.enums.DayOfWeek;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.mudan.UtilConstants.*;
-import static ru.mudan.util.Util.days;
 
 public class ScheduleServiceIT extends IntegrationTest {
 
@@ -178,7 +178,7 @@ public class ScheduleServiceIT extends IntegrationTest {
         var scheduleBySubject = scheduleService.findById(scheduleId);
 
         assertAll("Grouped assertions for found schedule",
-                () -> assertEquals(days.get(scheduleCreateDTO.dayOfWeek()), scheduleBySubject.dayOfWeek()),
+                () -> assertEquals(DayOfWeek.getDayOfWeekByNumber(scheduleCreateDTO.dayOfWeek()).getName(), scheduleBySubject.dayOfWeek()),
                 () -> assertEquals(scheduleCreateDTO.numberOfClassroom(), scheduleBySubject.numberOfClassRoom()));
     }
 

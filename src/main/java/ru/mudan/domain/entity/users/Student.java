@@ -4,15 +4,12 @@ import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.domain.entity.ClassEntity;
 import ru.mudan.domain.entity.Grade;
-import ru.mudan.domain.entity.users.enums.Role;
+import ru.mudan.util.enums.Role;
 
 /**
  * Сущность для работы с таблицей students в БД
@@ -21,6 +18,7 @@ import ru.mudan.domain.entity.users.enums.Role;
 @Setter
 @ToString
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "grades")
 @Entity
 @Table(name = "students")
 public class Student implements UserDetails {

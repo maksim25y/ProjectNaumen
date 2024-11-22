@@ -2,10 +2,7 @@ package ru.mudan.domain.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ru.mudan.domain.entity.users.Student;
 
 /**
@@ -15,6 +12,7 @@ import ru.mudan.domain.entity.users.Student;
 @Setter
 @ToString
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"students", "subjects", "homeworks", "schedules"})
 @Entity
 @Table(name = "classes")
 public class ClassEntity {
