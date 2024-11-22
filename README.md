@@ -9,6 +9,7 @@
 * Testcontainers
 * JUnit
 * Docker/Docker Compose
+* Java Melody
 * Grafana
 * Prometheus
 ## Инструкция по запуску
@@ -35,7 +36,7 @@
      ...
      Вместо `<EMAIL>` необходимо вставить адрес электронной почты gmail.
      Вместо `<PASSWORD>` необходимо вставить пароль приложения для указанного адреса почты.
-     Подробнее: ссылка на создание
+     Подробнее о создании пароля приложения: https://www.lifewire.com/get-a-password-to-access-gmail-by-pop-imap-2-1171882
      ```
 4. Теперь можно запустить приложение:
     * Для Linux систем:
