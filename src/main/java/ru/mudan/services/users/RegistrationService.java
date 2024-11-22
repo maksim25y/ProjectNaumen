@@ -1,5 +1,8 @@
 package ru.mudan.services.users;
 
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +13,8 @@ import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
+import ru.mudan.services.notification.email.EmailNotificationDetails;
+import ru.mudan.services.notification.email.EmailService;
 
 /**
  * Класс с описанием бизнес-логики
@@ -21,12 +26,14 @@ import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 @Transactional
 public class RegistrationService {
 
+    private final EmailService emailService;
     private final AdminRepository adminRepository;
     private final ParentRepository parentRepository;
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     /**
      * Метод для регистрации администратора
@@ -48,6 +55,7 @@ public class RegistrationService {
         var appUser = getAppUserByRoleUserIdAndEmail(savedAdmin.getId(), Role.ROLE_ADMIN, savedAdmin.getEmail());
 
         appUserRepository.save(appUser);
+        executorService.submit(() -> sendMessage(registerUserDTO));
         log.info("Finished creating admin with email {}", registerUserDTO.email());
     }
 
@@ -71,6 +79,7 @@ public class RegistrationService {
         var appUser = getAppUserByRoleUserIdAndEmail(savedTeacher.getId(), Role.ROLE_TEACHER, savedTeacher.getEmail());
 
         appUserRepository.save(appUser);
+        executorService.submit(() -> sendMessage(registerUserDTO));
         log.info("Finished creating teacher with email {}", registerUserDTO.email());
     }
 
@@ -106,6 +115,7 @@ public class RegistrationService {
                 savedParent.getEmail()
         );
         appUserRepository.save(appUser);
+        executorService.submit(() -> sendMessage(registerUserDTO));
         log.info("Finished creating parent with email {}", registerUserDTO.email());
     }
 
@@ -135,6 +145,7 @@ public class RegistrationService {
         );
 
         appUserRepository.save(appUser);
+        executorService.submit(() -> sendMessage(registerUserDTO));
         log.info("Finished creating student with email {}", registerUserDTO.email());
     }
 
@@ -155,8 +166,8 @@ public class RegistrationService {
      * Метод для создания пользователя по userId, role, email
      *
      * @param userId - id пользователя с ролью role в таблице
-     * @param role - роль пользователя
-     * @param email - адрес электронной почты пользователя
+     * @param role   - роль пользователя
+     * @param email  - адрес электронной почты пользователя
      */
     private AppUser getAppUserByRoleUserIdAndEmail(Long userId, Role role, String email) {
         return new AppUser(userId, role, email);
@@ -169,5 +180,40 @@ public class RegistrationService {
      */
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    /**
+     * Метод для отправки сообщения об успешной регистрации
+     *
+     * @param registerUserDTO - входные данные для создания сообщения
+     */
+    private void sendMessage(RegisterUserDTO registerUserDTO) {
+        var emailDetails = EmailNotificationDetails.builder()
+                .subject("Уведомление о регистрации")
+                .recipient(registerUserDTO.email())
+                .text("""
+                        <!DOCTYPE html>
+                        <html lang="ru">
+                        <head>
+                          <meta charset="UTF-8">
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                          <title>Добро пожаловать</title>
+                        </head>
+                        <body style="font-family: Arial, sans-serif; color: #333;">
+                          <div style="max-width: 600px; margin: 0 auto; padding: 20px;
+                          background-color: #f9f9f9; border: 1px solid #ddd;">
+                            <h2 style="color: #0078cf;">Здравствуйте, %s!</h2>
+                            <p>Вы успешно зарегистрированы на сайте электронного дневника <strong>[сайт]</strong>.</p>
+                            <p><strong>Ваш email:</strong> %s</p>
+                            <p><strong>Пароль:</strong> %s</p>
+                            <p>Для связи с администратором нажмите <a href="[ссылка]" style="color: #0078cf;">здесь</a>.</p>
+                          </div>
+                        </body>
+                        </html>
+                        """.formatted(registerUserDTO.email(), registerUserDTO.email(), registerUserDTO.password()))
+                .attachments(List.of())
+                .build();
+
+        emailService.sendNotification(emailDetails);
     }
 }

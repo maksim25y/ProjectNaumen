@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список учителей</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{header-admin :: admin-header}"></div>
+    <hr>
+    <h1>Учителя в школе:</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Адрес электронной почты учителя</th>
+            <th scope="col">Фамилия учителя</th>
+            <th scope="col">Имя учителя</th>
+            <th scope="col">Отчество учителя</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light" th:each="teacher : ${teachers}">
+            <td class="table-light">
+                <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                   th:text="${teacher.email()}" th:href="@{/users/teachers/{id}(id=${teacher.id()})}"></a>
+            </td>
+            <td class="table-light" th:text="${teacher.lastname()}"></td>
+            <td class="table-light" th:text="${teacher.firstname()}"></td>
+            <td class="table-light" th:text="${teacher.patronymic()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/logout}" th:method="POST" class="me-2">
+        <button class="btn btn-outline-danger active" type="submit">
+            Выйти
+        </button>
+    </form>
+    <hr>
+    <div th:insert="~{footer :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

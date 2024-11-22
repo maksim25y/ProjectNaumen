@@ -48,6 +48,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+<!--        Actuator-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 <!--        Thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,6 +88,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!-- Spring mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 <!--        Testing-->
         <dependency>
@@ -160,6 +175,7 @@
                         </goals>
                         <configuration>
                             <excludes>
+                                <exclude>ru/mudan/*.class</exclude>
                                 <exclude>ru/mudan/dto/**/*.class</exclude>
                                 <exclude>ru/mudan/config/**/*.class</exclude>
                                 <exclude>ru/mudan/exceptions/**/*.class</exclude>
@@ -176,6 +192,7 @@
                         </goals>
                         <configuration>
                             <excludes>
+                                <exclude>ru/mudan/*.class</exclude>
                                 <exclude>ru/mudan/dto/**/*.class</exclude>
                                 <exclude>ru/mudan/config/**/*.class</exclude>
                                 <exclude>ru/mudan/exceptions/**/*.class</exclude>

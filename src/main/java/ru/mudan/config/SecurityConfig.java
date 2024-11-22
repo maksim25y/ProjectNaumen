@@ -4,7 +4,6 @@ package ru.mudan.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -30,7 +29,8 @@ public class SecurityConfig {
                                 .requestMatchers("/registration/**",
                                         "/subjects/**",
                                         "/classes/**",
-                                        "/monitoring").hasAnyRole("ADMIN")
+                                        "/monitoring",
+                                        "/users/**").hasAnyRole("ADMIN")
                                 .requestMatchers("/schedules/**",
                                         "/grades/**",
                                         "/homeworks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT", "PARENT")
@@ -38,7 +38,11 @@ public class SecurityConfig {
                                 .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
                                 .requestMatchers("/parent/**").hasAnyRole("PARENT")
                                 .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .permitAll()
+                )
                 .authenticationProvider(authProvider);
         return http.build();
     }

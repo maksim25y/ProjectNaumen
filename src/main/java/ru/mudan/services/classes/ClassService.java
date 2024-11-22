@@ -3,7 +3,6 @@ package ru.mudan.services.classes;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.ClassEntity;
@@ -15,6 +14,7 @@ import ru.mudan.exceptions.entity.already_exists.ClassAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.StudentNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
+import ru.mudan.facade.classes.ClassFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -26,11 +26,7 @@ import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 @Transactional
 public class ClassService {
 
-    /**
-     * Длина части названия предмета для генерации кода предмета
-     */
-    @Value("${size.of.code}")
-    private Integer sizeOfPartFromSubjectNameForSubjectCode;
+    private final ClassFacade classFacade;
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
     private final SubjectsRepository subjectsRepository;
@@ -44,13 +40,8 @@ public class ClassService {
         log.info("Finished getting all classes");
 
         return allClasses.stream()
-                .map(cl -> ClassDTO
-                        .builder()
-                        .id(cl.getId())
-                        .number(cl.getNumber())
-                        .letter(cl.getLetter())
-                        .description(cl.getDescription())
-                        .build()).toList();
+                .map(classFacade::convertEntityToDTO)
+                .toList();
     }
 
     /**
@@ -61,13 +52,7 @@ public class ClassService {
     public ClassDTO findById(Long id) {
         var foundClass = findClassEntityById(id);
 
-        return ClassDTO
-                .builder()
-                .id(foundClass.getId())
-                .number(foundClass.getNumber())
-                .letter(foundClass.getLetter())
-                .description(foundClass.getDescription())
-                .build();
+        return classFacade.convertEntityToDTO(foundClass);
     }
 
     /**
@@ -118,8 +103,7 @@ public class ClassService {
         var subjectsForClass = foundClass.getSubjects();
 
         subjectsForClass.forEach(sb -> {
-            var code = sb.getCode().substring(0,
-                    sizeOfPartFromSubjectNameForSubjectCode)
+            var code = sb.getCode().substring(0, sb.getCode().length() - 2).toUpperCase()
                     + foundClass.getNumber()
                     + foundClass.getLetter();
             sb.setCode(code);

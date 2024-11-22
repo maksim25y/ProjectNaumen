@@ -65,7 +65,7 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createNewSubject() {
+    public void createNewSubject_valid() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -79,7 +79,7 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllSubjects() {
+    public void getAllSubjects_notEmpty() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -96,7 +96,7 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getExistedSubjectById() {
+    public void getSubjectById_existed() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -114,12 +114,12 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getNotExistedSubjectById() {
+    public void getSubjectById_notExisted() {
         assertThrows(SubjectNotFoundException.class, () -> subjectService.findById(1L));
     }
 
     @Test
-    public void deleteExistedSubjectById() {
+    public void deleteSubjectById_existed() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -134,12 +134,12 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void deleteNotExistedSubjectById() {
+    public void deleteSubjectById_notExisted() {
         assertThrows(SubjectNotFoundException.class, () -> subjectService.deleteById(1L));
     }
 
     @Test
-    public void getAllSubjectsByClassId() {
+    public void getAllSubjectsByClassId_classExists() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -156,12 +156,12 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllSubjectsNotExistedClassId() {
+    public void getAllSubjectsByClassId_classNotExists() {
         assertThrows(ClassEntityNotFoundException.class, () -> subjectService.findAllSubjectsForClass(classId+1));
     }
 
     @Test
-    public void getAllSubjectsByTeacherId() {
+    public void getAllSubjectsByTeacherId_teacherExists() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -178,12 +178,12 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllSubjectsByNotExistedId() {
+    public void getAllSubjectsBydId_teacherNotExists() {
         assertThrows(TeacherNotFoundException.class, () -> subjectService.getSubjectsForTeacher(teacherId+1));
     }
 
     @Test
-    public void updateExistedSubject() {
+    public void updateSubject_existed() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);
@@ -207,7 +207,7 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateNotExistedSubject() {
+    public void updateSubject_notExisted() {
         var subjectUpdateDTO = SubjectUpdateDTO
                 .builder()
                 .type("Факультативный")
@@ -218,21 +218,21 @@ public class SubjectServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createSubjectWithNotExistedClass() {
+    public void createSubject_classNotExists() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId+1, teacherId);
 
         assertThrows(ClassEntityNotFoundException.class, () -> subjectService.save(subjectForCreating));
     }
 
     @Test
-    public void createSubjectWithNotExistedTeacher() {
+    public void createSubject_teacherNotExists() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId+1);
 
         assertThrows(TeacherNotFoundException.class, () -> subjectService.save(subjectForCreating));
     }
 
     @Test
-    public void createSubjectForClassForThisSubjectAlreadyExists() {
+    public void createSubject_subjectAlreadyExists() {
         var subjectForCreating = createSubjectDTOByClassIdAndTeacherId(classId, teacherId);
 
         subjectService.save(subjectForCreating);

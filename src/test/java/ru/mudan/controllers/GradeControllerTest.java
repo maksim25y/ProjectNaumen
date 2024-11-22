@@ -58,7 +58,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getAllGradesForExistedStudentBySubjectForRoleAdmin() {
+    public void getAllGradesForExistedStudentBySubject_roleAdmin() {
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(gradesService.findAllGradesForStudentWithSubject(any(), any())).thenReturn(List.of(getDefaultGradeDTO()));
         when(studentService.findById(any())).thenReturn(getDefaultStudentDTO());
@@ -74,7 +74,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
-    public void getAllGradesForExistedStudentBySubjectForRoleCurrentStudent() {
+    public void getAllGradesForExistedStudentBySubject_roleCurrentStudent() {
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(gradesService.findAllGradesForStudentWithSubject(any(), any())).thenReturn(List.of(getDefaultGradeDTO()));
         when(studentService.findById(any())).thenReturn(getDefaultStudentDTO());
@@ -90,7 +90,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getAllGradesForNotExistedStudentBySubjectForRoleAdmin() {
+    public void getAllGradesForNotExistedStudentBySubject_roleAdmin() {
         when(studentService.findById(any())).thenThrow(StudentNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Ученик с id=1 не найден");
 
@@ -119,7 +119,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
-    public void getAllGradesForExistedStudentBySubjectForRoleTeacher() {
+    public void getAllGradesForExistedStudentBySubject_roleTeacher() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1?subjectId=1")
@@ -134,7 +134,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
-    public void getAllGradesForExistedStudentBySubjectForRoleNotCurrentStudent() {
+    public void getAllGradesForExistedStudentBySubject_roleNotCurrentStudent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1?subjectId=1")
@@ -149,7 +149,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
-    public void getAllGradesForExistedStudentByExistedSubjectForRoleParent() {
+    public void getAllGradesForExistedStudentByExistedSubject_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1?subjectId=1")
@@ -164,7 +164,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
-    public void getAllGradesForExistedStudentForRoleParent() {
+    public void getAllGradesForExistedStudent_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1")
@@ -179,7 +179,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
-    public void getAllGradesForExistedStudentForRoleTeacher() {
+    public void getAllGradesForExistedStudent_roleTeacher() {
         doThrow(ApplicationForbiddenException.class).when(authService).hasRoleAdminOrStudentInClassWithSubjectOrParentHasStudentInClass(any(), any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/all/1")
@@ -194,7 +194,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getAllGradesForExistedStudentForRoleAdmin() {
+    public void getAllGradesForExistedStudent_roleAdmin() {
         when(subjectService.findById(any())).thenReturn(getDefaultSubjectDTO());
         when(gradesService.findAllGradesForStudent(any())).thenReturn(List.of(getDefaultGradeDTO()));
         when(studentService.findById(any())).thenReturn(getDefaultStudentDTO());
@@ -209,7 +209,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
-    public void getAllGradesForExistedStudentForRoleCurrentStudent() {
+    public void getAllGradesForExistedStudent_roleCurrentStudent() {
         when(gradesService.findAllGradesForStudent(any())).thenReturn(List.of(getDefaultGradeDTO()));
         when(studentService.findById(any())).thenReturn(getDefaultStudentDTO());
 
@@ -223,7 +223,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getAllGradesForNotExistedStudentForRoleAdmin() {
+    public void getAllGradesForNotExistedStudent_roleAdmin() {
         when(studentService.findById(any())).thenThrow(StudentNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Ученик с id=1 не найден");
 
@@ -237,7 +237,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getExistedGradeByIdForRoleAdmin() {
+    public void getExistedGradeById_roleAdmin() {
         when(gradesService.findById(any())).thenReturn(getDefaultGradeDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1")
@@ -249,7 +249,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getNotExistedGradeByIdForRoleAdmin() {
+    public void getNotExistedGradeById_roleAdmin() {
         when(gradesService.findById(any())).thenThrow(GradeNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Оценка с id=1 не найдена");
 
@@ -263,7 +263,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
-    public void getExistedGradeByIdForRoleTeacherHasGrade() {
+    public void getExistedGradeById_roleTeacherHasGrade() {
         when(gradesService.findById(any())).thenReturn(getDefaultGradeDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1")
@@ -275,7 +275,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
-    public void getNotExistedGradeByIdForRoleTeacherHasNotGrade() {
+    public void getNotExistedGradeById_roleTeacherHasNotGrade() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1")
@@ -287,7 +287,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
-    public void getNotExistedGradeByIdForRoleParent() {
+    public void getNotExistedGradeById_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1")
@@ -299,7 +299,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
-    public void getNotExistedGradeByIdForRoleStudent() {
+    public void getNotExistedGradeById_roleStudent() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1")
@@ -311,7 +311,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getPageForEditingGradeForRoleAdmin() {
+    public void getPageForEditingGrade_roleAdmin() {
         when(gradesService.findById(any())).thenReturn(getDefaultGradeDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1/edit")
@@ -324,7 +324,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     @SneakyThrows
-    public void getPageForEditingNotExistedGradeForRoleAdmin() {
+    public void getPageForEditingNotExistedGrade_roleAdmin() {
         when(gradesService.findById(any())).thenThrow(GradeNotFoundException.class);
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Оценка с id=1 не найдена");
 
@@ -338,7 +338,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
-    public void getPageForEditingGradeForRoleTeacherHasGrade() {
+    public void getPageForEditingGrade_roleTeacherHasGrade() {
         when(gradesService.findById(any())).thenReturn(getDefaultGradeDTO());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1/edit")
@@ -351,7 +351,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "TEACHER")
     @SneakyThrows
-    public void getPageForEditingGradeForRoleTeacherHasNotGrade() {
+    public void getPageForEditingGrade_roleTeacherHasNotGrade() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1/edit")
@@ -363,7 +363,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
-    public void getPageForEditingGradeForRoleParent() {
+    public void getPageForEditingGrade_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1/edit")
@@ -375,7 +375,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
-    public void getPageForEditingGradeForRoleStudent() {
+    public void getPageForEditingGrade_roleStudent() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.get(GRADES_URL + "/1/edit")
@@ -387,7 +387,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void deleteExistedGradeForRoleAdmin() {
+    public void deleteExistedGrade_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.delete(GRADES_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
@@ -396,7 +396,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void deleteNotExistedGradeForRoleAdmin() {
+    public void deleteNotExistedGrade_roleAdmin() {
         doThrow(GradeNotFoundException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Оценка c id=1 не найдена");
 
@@ -410,7 +410,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void deleteExistedGradeForRoleTeacherThatHasGrade() {
+    public void deleteExistedGrade_roleTeacherThatHasGrade() {
         mockMvc.perform(MockMvcRequestBuilders.delete(GRADES_URL + "/1")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FOUND.value()));
@@ -419,7 +419,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void deleteNotExistedGradeForRoleTeacherThatHasNotGrade() {
+    public void deleteNotExistedGrade_roleTeacherThatHasNotGrade() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.delete(GRADES_URL + "/1")
@@ -431,7 +431,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "PARENT")
     @SneakyThrows
-    public void deleteNotExistedGradeForRoleParent() {
+    public void deleteNotExistedGrade_roleParent() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.delete(GRADES_URL + "/1")
@@ -443,7 +443,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(roles = "STUDENT")
     @SneakyThrows
-    public void deleteNotExistedGradeForRoleStudent() {
+    public void deleteNotExistedGrade_roleStudent() {
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
         mockMvc.perform(MockMvcRequestBuilders.delete(GRADES_URL + "/1")
@@ -455,7 +455,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void postCreateGradeValidForRoleAdmin() {
+    public void postCreateGradeValid_roleAdmin() {
         var payload = getDefaultGradeDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.post(GRADES_URL)
@@ -472,7 +472,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void postCreateGradeValidForRoleTeacherHasGrade() {
+    public void postCreateGradeValid_roleTeacherHasGrade() {
         var payload = getDefaultGradeDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.post(GRADES_URL)
@@ -489,7 +489,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void postCreateGradeValidForRoleTeacherHasNotGrade() {
+    public void postCreateGradeValid_roleTeacherHasNotGrade() {
         var payload = getDefaultGradeDTO();
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasSubjectOrRoleIsAdmin(any(), any());
 
@@ -508,7 +508,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void postCreateGradeValidForRoleParent() {
+    public void postCreateGradeValid_roleParent() {
         var payload = getDefaultGradeDTO();
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasSubjectOrRoleIsAdmin(any(), any());
 
@@ -527,7 +527,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void postCreateGradeValidForRoleStudent() {
+    public void postCreateGradeValid_roleStudent() {
         var payload = getDefaultGradeDTO();
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasSubjectOrRoleIsAdmin(any(), any());
 
@@ -546,7 +546,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void putUpdateGradeValidForRoleAdmin() {
+    public void putUpdateGradeValid_roleAdmin() {
         var payload = getDefaultGradeDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.put(GRADES_URL+"/1")
@@ -561,7 +561,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void putUpdateGradeValidForRoleTeacherThatHasGrade() {
+    public void putUpdateGradeValid_roleTeacherThatHasGrade() {
         var payload = getDefaultGradeDTO();
 
         mockMvc.perform(MockMvcRequestBuilders.put(GRADES_URL+"/1")
@@ -576,7 +576,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void putUpdateGradeValidForRoleParent() {
+    public void putUpdateGradeValid_roleParent() {
         var payload = getDefaultGradeDTO();
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
@@ -593,7 +593,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void putUpdateGradeValidForRoleStudent() {
+    public void putUpdateGradeValid_roleStudent() {
         var payload = getDefaultGradeDTO();
         doThrow(ApplicationForbiddenException.class).when(authService).teacherHasGradeOrRoleIsAdmin(any(), any());
 
@@ -610,7 +610,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void putUpdateNotExistedGradeValidForRoleAdmin() {
+    public void putUpdateNotExistedGradeValid_roleAdmin() {
         var payload = getDefaultGradeDTO();
         doThrow(GradeNotFoundException.class).when(gradesService).update(any(), any());
         when(messageSource.getMessage(any(), any(), any())).thenReturn("Оценка с id=1 не найдена");
@@ -631,7 +631,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and errors")
     @MethodSource("provideInvalidGradeDTOs")
-    public void postCreateGradeInvalidForRoleAdmin(GradeDTO gradeDTO) {
+    public void postCreateGradeInvalid_roleAdmin(GradeDTO gradeDTO) {
         checkPostCreateInvalidGrade(gradeDTO);
     }
 
@@ -640,7 +640,7 @@ public class GradeControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Should return status 200 and errors")
     @MethodSource("provideInvalidGradeDTOs")
-    public void putUpdateGradeInvalidForRoleAdmin(GradeDTO gradeDTO) {
+    public void putUpdateGradeInvalid_roleAdmin(GradeDTO gradeDTO) {
         checkPutUpdateInvalidGrade(gradeDTO);
     }
 

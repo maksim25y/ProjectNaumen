@@ -33,7 +33,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     private StudentRepository studentRepository;
 
     @Test
-    public void registerNewTeacherTest() {
+    public void registerNewTeacher_valid() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerTeacher(payload);
@@ -44,7 +44,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewAdminTest() {
+    public void registerNewAdmin_valid() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerAdmin(payload);
@@ -55,7 +55,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewParentTest() {
+    public void registerNewParent_valid() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerParent(payload);
@@ -66,7 +66,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewStudentTest() {
+    public void registerNewStudentTest_valid() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerStudent(payload);
@@ -77,7 +77,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewTeacherUserAlreadyExistsTest() {
+    public void registerNewTeacher_alreadyExists() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerTeacher(payload);
@@ -89,7 +89,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewAdminUserAlreadyExistsTest() {
+    public void registerNewAdmin_alreadyExists() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerAdmin(payload);
@@ -101,7 +101,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewParentUserAlreadyExistsTest() {
+    public void registerNewParent_alreadyExists() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerParent(payload);
@@ -113,7 +113,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewStudentUserAlreadyExistsTest() {
+    public void registerNewStudent_alreadyExists() {
         var payload = getDefaultRegisterUserDTO();
 
         registrationService.registerStudent(payload);
@@ -125,7 +125,7 @@ public class RegistrationServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void registerNewParentWithStudentsTest() {
+    public void registerNewParent_withStudents() {
         var payloadForCreatingStudent = getDefaultRegisterUserDTO();
         registrationService.registerStudent(getDefaultRegisterUserDTO());
         var idOfCreatedStudent = appUserRepository.findByEmail(payloadForCreatingStudent.email()).get().getUserId();

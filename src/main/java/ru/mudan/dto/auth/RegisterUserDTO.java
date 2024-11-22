@@ -8,18 +8,25 @@ import lombok.Builder;
 
 /**
  * Входные данные для регистрации нового пользователя
+ *
+ * @param firstname   - имя пользователя
+ * @param lastname    - фамилия пользователя
+ * @param patronymic  - отчество пользователя
+ * @param email       - адрес электронной почты пользователя
+ * @param password    - пароль пользователя
+ * @param studentsIds - список id учеников (нужен для регистрации родителя)
  */
 @Builder
 public record RegisterUserDTO(
-        @Size(min = 4, max = 15, message = "{firstname.invalid_size}")
+        @Size(min = 2, max = 15, message = "{firstname.invalid_size}")
         @Pattern(regexp = "[А-ЯЁ][а-яё]+", message = "{firstname.invalid_pattern}")
         @NotBlank(message = "{firstname.is_blank}")
         String firstname,
-        @Size(min = 4, max = 15, message = "{lastname.invalid_size}")
+        @Size(min = 2, max = 15, message = "{lastname.invalid_size}")
         @Pattern(regexp = "[А-ЯЁ][а-яё]+", message = "{lastname.invalid_pattern}")
         @NotBlank(message = "{lastname.is_blank}")
         String lastname,
-        @Size(min = 4, max = 15, message = "{patronymic.invalid_size}")
+        @Size(min = 3, max = 15, message = "{patronymic.invalid_size}")
         @Pattern(regexp = "[А-ЯЁ][а-яё]+", message = "{patronymic.invalid_pattern}")
         @NotBlank(message = "{patronymic.is_blank}")
         String patronymic,

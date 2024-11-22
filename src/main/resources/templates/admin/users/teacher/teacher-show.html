@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация об учителе</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{header-admin :: admin-header}"></div>
+    <hr>
+    <h1 th:text="${'Информация об учителе '+teacher.email()}"></h1>
+    <ul class="list-group mb-2">
+        <li class="list-group-item" aria-current="true">
+            Имя: <span class="text-danger" th:text="${teacher.firstname()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Фамилия: <span class="text-danger" th:text="${teacher.lastname()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Отчество: <span class="text-danger" th:text="${teacher.patronymic()}"></span>
+        </li>
+        <li class="list-group-item" aria-current="true">
+            Почта: <span class="text-danger" th:text="${teacher.email()}"></span>
+        </li>
+    </ul>
+    <form th:method="DELETE" class="me-2 mb-2" th:action="@{/users}">
+        <input type="text" th:name="email" th:value="${teacher.email()}" hidden>
+        <button class="btn btn-outline-danger active" type="submit">
+            Удалить учителя
+        </button>
+    </form>
+    <a th:href="@{/users/teachers/{id}/edit(id=${teacher.id()})}" class="me-2">
+        <button class="btn btn-outline-warning active" type="submit">
+            Редактировать информацию об учителе
+        </button>
+    </a>
+    <hr>
+    <div th:insert="~{footer :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

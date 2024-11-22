@@ -3,7 +3,6 @@ package ru.mudan.services.subjects;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.mudan.domain.entity.Subject;
 import ru.mudan.domain.repositories.ClassRepository;
@@ -16,6 +15,7 @@ import ru.mudan.exceptions.entity.already_exists.SubjectAlreadyExistsException;
 import ru.mudan.exceptions.entity.not_found.ClassEntityNotFoundException;
 import ru.mudan.exceptions.entity.not_found.SubjectNotFoundException;
 import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
+import ru.mudan.facade.subjects.SubjectFacade;
 
 /**
  * Класс с описанием бизнес-логики
@@ -27,11 +27,7 @@ import ru.mudan.exceptions.entity.not_found.TeacherNotFoundException;
 public class SubjectService {
 
     private final TeacherRepository teacherRepository;
-    /**
-     * Длина части названия предмета для генерации кода предмета
-     */
-    @Value("${size.of.code}")
-    private Integer sizeOfPartFromSubjectNameForSubjectCode;
+    private final SubjectFacade subjectFacade;
     private final SubjectsRepository subjectsRepository;
     private final ClassRepository classRepository;
 
@@ -41,14 +37,7 @@ public class SubjectService {
     public List<SubjectDTO> findAll() {
         return subjectsRepository.findAll()
                 .stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .name(sb.getName())
-                        .description(sb.getDescription())
-                        .type(sb.getType())
-                        .build())
+                .map(subjectFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -62,14 +51,7 @@ public class SubjectService {
                 .orElseThrow(() -> new SubjectNotFoundException(id));
         log.info("Found subject with id={}", id);
 
-        return SubjectDTO
-                .builder()
-                .id(foundSubject.getId())
-                .name(foundSubject.getName())
-                .code(foundSubject.getCode())
-                .description(foundSubject.getDescription())
-                .type(foundSubject.getType())
-                .build();
+        return subjectFacade.convertEntityToDTO(foundSubject);
     }
 
     /**
@@ -112,7 +94,7 @@ public class SubjectService {
      * @param letter      - буква класса
      */
     private String generateCode(String name, Integer classNumber, String letter) {
-        return name.substring(0, sizeOfPartFromSubjectNameForSubjectCode).toUpperCase() + classNumber + letter;
+        return name.toUpperCase() + classNumber + letter;
     }
 
     /**
@@ -159,14 +141,7 @@ public class SubjectService {
         log.info("Finished getting all subjects for class with id={}", id);
 
         return subjectsForClass.stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .name(sb.getName())
-                        .description(sb.getDescription())
-                        .build())
+                .map(subjectFacade::convertEntityToDTO)
                 .toList();
     }
 
@@ -183,14 +158,7 @@ public class SubjectService {
         log.info("Finished getting all subjects for teacher with id={}", teacherId);
 
         return subjectsForTeacher.stream()
-                .map(sb -> SubjectDTO
-                        .builder()
-                        .id(sb.getId())
-                        .code(sb.getCode())
-                        .type(sb.getType())
-                        .description(sb.getDescription())
-                        .name(sb.getName())
-                        .build())
+                .map(subjectFacade::convertEntityToDTO)
                 .toList();
     }
 

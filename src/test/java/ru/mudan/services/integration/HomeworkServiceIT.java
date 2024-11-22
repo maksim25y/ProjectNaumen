@@ -90,13 +90,13 @@ public class HomeworkServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void createHomeworkWithNotExistedSubject() {
+    public void createHomework_subjectNotExists() {
         var homeworkDTO = createHomeworkCreateDTOBySubjectId(subjectId+1);
         assertThrows(SubjectNotFoundException.class, () -> homeworkService.save(homeworkDTO));
     }
 
     @Test
-    public void getAllHomeworksByExistedSubjectForExistedClass() {
+    public void getAllHomeworksBySubjectAndClass_valid() {
         var listOfHW = homeworkService.findAllByClassAndSubject(classId, subjectId);
 
         assertAll("Grouped assertions for found hw",
@@ -105,17 +105,17 @@ public class HomeworkServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllHomeworksByNotExistedSubjectForExistedClass() {
+    public void getAllHomeworksBtSubjectAndClass_subjectNotExists() {
         assertThrows(SubjectNotFoundException.class, () -> homeworkService.findAllByClassAndSubject(classId, subjectId+1));
     }
 
     @Test
-    public void getAllHomeworksByExistedSubjectForNotExistedClass() {
+    public void getAllHomeworksBySubjectAndClass_classNotExists() {
         assertThrows(ClassEntityNotFoundException.class, () -> homeworkService.findAllByClassAndSubject(classId+1, subjectId));
     }
 
     @Test
-    public void getAllHomeworkByExistedClass() {
+    public void getAllHomeworkByExistedClass_classExists() {
         var listOfHW = homeworkService.findAllByClass(classId);
 
         assertAll("Grouped assertions for found hw by class",
@@ -124,37 +124,37 @@ public class HomeworkServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllHomeworkByNotExistedClass() {
+    public void getAllHomeworkClass_classNotExists() {
         assertThrows(ClassEntityNotFoundException.class, () ->  homeworkService.findAllByClass(classId+1));
     }
 
     @Test
-    public void getHomeworkByExistedId() {
+    public void getHomeworkById_homeworkExists() {
         var foundHw = homeworkService.findById(homeworkId);
         assertNotNull(foundHw);
     }
 
     @Test
-    public void getHomeworkByNotExistedId() {
+    public void getHomeworkById_homeworkNotExists() {
         assertThrows(HomeworkNotFoundException.class, () -> homeworkService.findById(homeworkId+1));
     }
 
     @Test
-    public void deleteExistedHomework() {
+    public void deleteHomeworkById_homeworkExists() {
         assertEquals(1, homeworkRepository.count());
         homeworkService.delete(homeworkId);
         assertEquals(0, homeworkRepository.count());
     }
 
     @Test
-    public void deleteNotExistedHomework() {
+    public void deleteHomeworkById_homeworkNotExists() {
         assertEquals(1, homeworkRepository.count());
         assertThrows(HomeworkNotFoundException.class, () -> homeworkService.delete(homeworkId+1));
         assertEquals(1, homeworkRepository.count());
     }
 
     @Test
-    public void getAllHomeworksByExistedSubject() {
+    public void getAllHomeworksBySubject_subjectExists() {
         var listOfHW = homeworkService.findAllBySubject(subjectId);
 
         assertAll("Grouped assertions for found hw",
@@ -163,12 +163,12 @@ public class HomeworkServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void getAllHomeworksByNotExistedSubject() {
+    public void getAllHomeworksBySubject_subjectNotExists() {
         assertThrows(SubjectNotFoundException.class, () -> homeworkService.findAllBySubject(subjectId+1));
     }
 
     @Test
-    public void updateExistedHomework() {
+    public void updateHomework_existed() {
         var hwForUpdate = getDefaultHomeworkDTO();
 
         homeworkService.update(homeworkId, hwForUpdate);
@@ -183,7 +183,7 @@ public class HomeworkServiceIT extends IntegrationTest {
     }
 
     @Test
-    public void updateNotExistedHomework() {
+    public void updateHomework_notExisted() {
         var hwForUpdate = getDefaultHomeworkDTO();
 
         assertThrows(HomeworkNotFoundException.class, () -> homeworkService.update(homeworkId+1, hwForUpdate));

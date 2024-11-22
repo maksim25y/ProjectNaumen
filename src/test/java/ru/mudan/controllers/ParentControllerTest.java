@@ -27,7 +27,7 @@ public class ParentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "PARENT")
-    public void getPageAccountOfParentWithRoleParent() {
+    public void getPageAccountOfParent_roleParent() {
         when(parentService.findParentByAuth(any())).thenReturn(getDefaultParent());
         when(studentService.getAllStudentsForParent(any())).thenReturn(List.of(getDefaultStudentDTO()));
         mockMvc.perform(MockMvcRequestBuilders.get(PARENT_URL + "/account")
@@ -41,7 +41,7 @@ public class ParentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "ADMIN")
-    public void getPageAccountOfParentWithRoleAdmin() {
+    public void getPageAccountOfParent_roleAdmin() {
         mockMvc.perform(MockMvcRequestBuilders.get(PARENT_URL + "/account")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -50,7 +50,7 @@ public class ParentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "STUDENT")
-    public void getPageAccountOfParentWithRoleStudent() {
+    public void getPageAccountOfParent_roleStudent() {
         mockMvc.perform(MockMvcRequestBuilders.get(PARENT_URL + "/account")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
@@ -59,7 +59,7 @@ public class ParentControllerTest extends BaseControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(roles = "TEACHER")
-    public void getPageAccountOfParentWithRoleTeacher() {
+    public void getPageAccountOfParent_roleTeacher() {
         mockMvc.perform(MockMvcRequestBuilders.get(PARENT_URL + "/account")
                         .accept(MediaType.TEXT_HTML).with(csrf()))
                 .andExpect(status().is(HttpStatus.FORBIDDEN.value()));
