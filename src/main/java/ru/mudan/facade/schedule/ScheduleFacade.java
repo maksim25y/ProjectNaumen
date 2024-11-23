@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.mudan.domain.entity.Schedule;
 import ru.mudan.dto.schedule.ScheduleDTO;
 import ru.mudan.facade.BaseFacade;
-import ru.mudan.util.Util;
+import ru.mudan.util.enums.DayOfWeek;
 
 /**
  * Класс для конвертации Schedule в ScheduleDTO
@@ -23,7 +23,7 @@ public class ScheduleFacade implements BaseFacade<Schedule, ScheduleDTO> {
                 .builder()
                 .id(entity.getId())
                 .numberOfClassRoom(entity.getNumberOfClassroom())
-                .dayOfWeek(Util.days.get(entity.getDayOfWeek()))
+                .dayOfWeek(DayOfWeek.getDayOfWeekByNumber(entity.getDayOfWeek()).getName())
                 .subjectName(entity.getSubject().getName())
                 .startTime(entity.getStartTime())
                 .build();

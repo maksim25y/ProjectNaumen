@@ -1,4 +1,4 @@
-package ru.mudan.domain.entity.users.enums;
+package ru.mudan.util.enums;
 
 /**
  * Роли пользователей в приложении

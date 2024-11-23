@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.ProjectNaumenApplication;
 import ru.mudan.domain.entity.users.Parent;
-import ru.mudan.domain.entity.users.enums.Role;
+import ru.mudan.util.enums.Role;
 import ru.mudan.services.auth.MyUserDetailsService;
 import ru.mudan.services.parent.ParentService;
 

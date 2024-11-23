@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.mudan.domain.entity.users.enums.Role;
+import ru.mudan.util.enums.Role;
 
 /**
  * Сущность для работы с таблицей app_users в БД

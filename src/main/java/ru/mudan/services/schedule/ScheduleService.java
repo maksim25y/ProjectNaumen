@@ -43,7 +43,8 @@ public class ScheduleService {
         var foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassEntityNotFoundException(classId));
         var listOfSchedules = foundClass.getSchedules();
-        listOfSchedules.sort(Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime));
+        listOfSchedules.sort(Comparator.comparing(Schedule::getDayOfWeek)
+                .thenComparing(Schedule::getStartTime));
         log.info("Finished getting all schedules for class with id={}", classId);
 
         return listOfSchedules
@@ -137,7 +138,8 @@ public class ScheduleService {
                 .orElseThrow(() -> new SubjectNotFoundException(subjectId));
 
         var teacherSchedule = foundSubject.getSchedules();
-        teacherSchedule.sort((Comparator.comparing(Schedule::getDayOfWeek).thenComparing(Schedule::getStartTime)));
+        teacherSchedule.sort((Comparator.comparing(Schedule::getDayOfWeek)
+                .thenComparing(Schedule::getStartTime)));
         log.info("Finished getting all schedules for subject with id={}", subjectId);
 
         return teacherSchedule.stream()

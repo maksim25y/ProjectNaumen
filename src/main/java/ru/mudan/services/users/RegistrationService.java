@@ -9,12 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.domain.entity.users.*;
-import ru.mudan.domain.entity.users.enums.Role;
 import ru.mudan.domain.repositories.*;
 import ru.mudan.dto.auth.RegisterUserDTO;
 import ru.mudan.exceptions.entity.already_exists.UserAlreadyExistsException;
 import ru.mudan.services.notification.email.EmailNotificationDetails;
 import ru.mudan.services.notification.email.EmailService;
+import ru.mudan.util.enums.Role;
 
 /**
  * Класс с описанием бизнес-логики
@@ -44,11 +44,13 @@ public class RegistrationService {
         log.info("Started creating admin with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
-        var admin = new Admin(registerUserDTO.firstname(),
+        var admin = new Admin(
+                registerUserDTO.firstname(),
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
                 registerUserDTO.email(),
-                encodePassword(registerUserDTO.password()));
+                encodePassword(registerUserDTO.password())
+        );
 
         var savedAdmin = adminRepository.save(admin);
 
@@ -68,11 +70,13 @@ public class RegistrationService {
         log.info("Started creating teacher with email {}", registerUserDTO.email());
         checkUserExists(registerUserDTO.email());
 
-        var teacher = new Teacher(registerUserDTO.firstname(),
+        var teacher = new Teacher(
+                registerUserDTO.firstname(),
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
                 registerUserDTO.email(),
-                encodePassword(registerUserDTO.password()));
+                encodePassword(registerUserDTO.password())
+        );
 
         var savedTeacher = teacherRepository.save(teacher);
 
@@ -97,7 +101,8 @@ public class RegistrationService {
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
                 registerUserDTO.email(),
-                encodePassword(registerUserDTO.password()));
+                encodePassword(registerUserDTO.password())
+        );
 
         var savedParent = parentRepository.save(parent);
 
@@ -134,7 +139,8 @@ public class RegistrationService {
                 registerUserDTO.lastname(),
                 registerUserDTO.patronymic(),
                 registerUserDTO.email(),
-                encodePassword(registerUserDTO.password()));
+                encodePassword(registerUserDTO.password())
+        );
 
         var savedStudent = studentRepository.save(student);
 

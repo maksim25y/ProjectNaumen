@@ -4,14 +4,11 @@ import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mudan.domain.entity.Subject;
-import ru.mudan.domain.entity.users.enums.Role;
+import ru.mudan.util.enums.Role;
 
 /**
  * Сущность для работы с таблицей teachers в БД
@@ -20,6 +17,7 @@ import ru.mudan.domain.entity.users.enums.Role;
 @Setter
 @ToString
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "subjects")
 @Entity
 @Table(name = "teachers")
 public class Teacher implements UserDetails {
