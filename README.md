@@ -55,7 +55,7 @@
       Почта: admin@mail.ru
       Пароль: admin321@&123
       Данные для входа в аккаунт Grafana:
-      Почта: admin
+      Login: admin
       Пароль: admin
      ...
       ```
