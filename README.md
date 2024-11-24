@@ -41,15 +41,9 @@
 4. Теперь можно запустить приложение:
     * Для Linux систем:
       ```
-      Для запуска приложения без метрик grafana
-      docker compose -f compose.yml up
-      Для запуска приложения с метриками grafana
       docker compose -f metrics-compose.yml up
       ```
     * Для Windows систем:
       ```
-      Для запуска приложения без метрик grafana
-      docker-compose -f compose.yml up
-      Для запуска приложения с метриками grafana
       docker-compose -f metrics-compose.yml up
       ```
