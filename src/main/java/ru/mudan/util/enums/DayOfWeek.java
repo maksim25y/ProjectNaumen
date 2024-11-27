@@ -4,6 +4,10 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Дни недели, которые могут
+ * быть указаны в расписании
+ */
 @Getter
 @RequiredArgsConstructor
 public enum DayOfWeek {
