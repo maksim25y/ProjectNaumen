@@ -74,4 +74,7 @@ Cоздана ветка *dev*, ответвленная от *master*. Осно
 Почитать про *git flow* [можно тут](https://habr.com/ru/articles/767424/ "habr.ru")
 
 ---
+## Сертификат за успешную сдачу и зашиту проекта
+![Сертификат Максим Юданов, Naumen_page-0001](https://github.com/user-attachments/assets/526a3976-25f3-430b-9288-68941c905455)
+
     
